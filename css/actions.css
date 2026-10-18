@@ -1,4 +1,4 @@
-/* Skill action pages (Lumberjack, and later Mining, Fishing...): clickable action cards. */
+/* Skill action pages (Lumberjack, Crafting, and later Mining, Fishing...): clickable action cards. */
 
 .action-grid {
   display: grid;
@@ -38,6 +38,30 @@
   line-height: 1.1;
   margin-bottom: 6px;
 }
+/* Can't start yet: missing a tool or materials */
+.action-card.locked { cursor: not-allowed; opacity: 0.55; }
+.action-card.locked:hover { transform: none; border-color: var(--line); }
+
+.needs-tool {
+  margin-top: 6px;
+  font-size: 10px;
+  font-weight: 700;
+  color: #e8a25a;
+}
+.action-card:not(.locked) .needs-tool { display: none; }
+
+/* Recipe ingredients: "🌿 2/3", red when you don't have enough */
+.recipe-inputs {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 4px 8px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text);
+}
+.recipe-input.short { color: #e86a5a; }
+
 .action-card.active .action-icon {
   animation: chop 0.5s ease-in-out infinite alternate;
   transform-origin: bottom center;
@@ -79,7 +103,7 @@
   font-weight: 800;
   color: var(--text);
   pointer-events: none;
-  animation: pop-up 0.9s ease-out forwards;
+  animation: pop-up 0.9s ease-out both;
 }
 
 @keyframes chop {

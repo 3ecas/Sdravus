@@ -11,7 +11,13 @@ export const MENU_GROUPS = [
       { id: "gear",    name: "Gear",    icon: "🪖", color: "#8fa3b8" },
     ],
   },
-  // Ordered the way a new player progresses: gather -> make things -> fight.
+  // Ordered the way a new player progresses: explore -> gather -> make things -> fight.
+  {
+    title: "Explore",
+    pages: [
+      { id: "exploring", name: "Exploring", icon: "🧭", color: "#5bb5a2", skill: true },
+    ],
+  },
   {
     title: "Gathering",
     pages: [

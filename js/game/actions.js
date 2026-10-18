@@ -1,5 +1,9 @@
-// The one thing the player is doing right now (chopping, mining, ...).
+// The one thing the player is doing right now (chopping, exploring, crafting...).
 // Like other idle games, only one action runs at a time and it repeats until stopped.
+//
+// onComplete runs at the end of each cycle and returns what was gained, e.g.
+// [{ item: "logs", amount: 1 }], so the screen can show "+1 🪵". It may call
+// stopAction() itself (e.g. out of materials).
 
 import { notify } from "./state.js";
 
@@ -7,6 +11,7 @@ const TICK_MS = 100;
 
 let active = null; // { id, duration, startedAt, onComplete }
 let timer = null;
+const completeListeners = new Set();
 
 export function startAction(id, durationMs, onComplete) {
   clearInterval(timer);
@@ -32,14 +37,22 @@ export function actionProgress() {
   return Math.min((performance.now() - active.startedAt) / active.duration, 1);
 }
 
+// Call fn(actionId, gains) after each finished cycle. Returns a function that stops listening.
+export function onActionComplete(fn) {
+  completeListeners.add(fn);
+  return () => completeListeners.delete(fn);
+}
+
 function tick() {
   const now = performance.now();
   let completed = false;
 
   // A loop, so cycles missed while the tab was in the background still count.
   while (active && now - active.startedAt >= active.duration) {
+    const { id, onComplete } = active;
     active.startedAt += active.duration;
-    active.onComplete();
+    const gains = onComplete() || [];
+    completeListeners.forEach((fn) => fn(id, gains));
     completed = true;
   }
 

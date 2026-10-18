@@ -1,0 +1,108 @@
+/* Exploring page: area cards with a full picture background and a "?" finds list. */
+
+.area-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+  gap: 14px;
+}
+
+.area-card {
+  position: relative;
+  height: 170px;
+  border-radius: var(--radius);
+  border: 1px solid var(--line);
+  cursor: pointer;
+  user-select: none;
+  transition: border-color 0.15s, transform 0.15s, box-shadow 0.15s;
+}
+.area-card:hover {
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+  transform: translateY(-2px);
+}
+.area-card:active { transform: scale(0.98); }
+.area-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 6px 20px color-mix(in srgb, var(--accent) 30%, transparent);
+}
+
+/* The picture fills the whole card; kept in its own layer so the "?" pop-up isn't clipped */
+.area-bg {
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background-size: cover;
+  background-position: center;
+}
+.area-bg::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  background: linear-gradient(to top, rgba(10, 14, 22, 0.85), rgba(10, 14, 22, 0.1) 60%, transparent);
+}
+
+.area-footer {
+  position: absolute;
+  left: 12px;
+  right: 12px;
+  bottom: 10px;
+  color: #fff;
+}
+.area-name {
+  font-size: 16px;
+  font-weight: 800;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
+}
+.area-footer .action-meta { color: rgba(255, 255, 255, 0.75); margin-top: 2px; }
+.area-footer .action-progress { background: rgba(0, 0, 0, 0.45); }
+
+/* "?" button, top-right, showing the finds list on hover or tap */
+.info-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(10, 14, 22, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: help;
+}
+
+.info-pop {
+  display: none;
+  position: absolute;
+  top: 28px;
+  right: 0;
+  min-width: 150px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  cursor: default;
+}
+.info-btn:hover .info-pop,
+.info-btn:focus .info-pop { display: block; }
+
+.info-pop-title {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.info-pop ul { list-style: none; margin: 0; padding: 0; }
+.info-pop li { display: flex; gap: 8px; padding: 2px 0; }

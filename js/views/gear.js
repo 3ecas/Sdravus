@@ -1,7 +1,9 @@
-// Gear page: equipment slots arranged like a body on the left, backpack slots on the right.
+// Gear page: equipment slots arranged like a body on the left, backpack slots on the right,
+// and a tool belt underneath.
 // The backpack will hold food and supplies for fights you can't leave early.
+// The tool belt will hold key tools: axes, pickaxes, fishing rods...
 
-import { BACKPACK_SLOTS } from "../config.js";
+import { BACKPACK_SLOTS, TOOL_BELT_SLOTS } from "../config.js";
 import { GEAR_SLOTS } from "../data/gear.js";
 
 export function renderGear(container) {
@@ -13,9 +15,13 @@ export function renderGear(container) {
       </section>
       <section class="panel backpack-panel">
         <h2 class="panel-title">Backpack</h2>
-        <div class="backpack-grid">${backpackSlotsHtml()}</div>
+        <div class="backpack-grid">${emptySlotsHtml(BACKPACK_SLOTS)}</div>
       </section>
     </div>
+    <section class="panel tool-belt-panel">
+      <h2 class="panel-title">Tool Belt</h2>
+      <div class="tool-belt">${emptySlotsHtml(TOOL_BELT_SLOTS)}</div>
+    </section>
   `;
 }
 
@@ -28,6 +34,6 @@ function gearSlotHtml(slot) {
   `;
 }
 
-function backpackSlotsHtml() {
-  return Array.from({ length: BACKPACK_SLOTS }, () => `<div class="slot-box" title="Empty"></div>`).join("");
+function emptySlotsHtml(count) {
+  return Array.from({ length: count }, () => `<div class="slot-box" title="Empty"></div>`).join("");
 }

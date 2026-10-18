@@ -1,4 +1,4 @@
-/* Gear page: body-shaped equipment slots and the backpack grid. */
+/* Gear page: body-shaped equipment slots, the backpack grid and the tool belt. */
 
 .gear-panel,
 .backpack-panel { flex: 0 0 auto; }
@@ -49,3 +49,16 @@
   grid-template-columns: repeat(4, 48px);
   gap: 8px;
 }
+
+.tool-belt-panel {
+  display: inline-block;
+  margin-top: 16px;
+}
+
+/* One horizontal row of slots */
+.tool-belt {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+}
+.tool-belt .slot-box { flex-shrink: 0; }

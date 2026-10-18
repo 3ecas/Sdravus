@@ -7,10 +7,14 @@ import { renderPlaceholder } from "./placeholder.js";
 import { renderLumberjack } from "./lumberjack.js";
 import { renderStash } from "./stash.js";
 import { renderGear } from "./gear.js";
+import { renderExploring } from "./exploring.js";
+import { renderCrafting } from "./crafting.js";
 
 const VIEWS = {
   stash: renderStash,
   gear: renderGear,
+  exploring: renderExploring,
+  crafting: renderCrafting,
   lumberjack: renderLumberjack,
 };
 

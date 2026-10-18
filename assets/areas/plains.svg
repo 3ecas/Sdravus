@@ -1,0 +1,86 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 560 340" preserveAspectRatio="xMidYMid slice">
+  <defs>
+    <linearGradient id="sky" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6fb7e8"/>
+      <stop offset="0.55" stop-color="#b9e0f2"/>
+      <stop offset="1" stop-color="#fbeec4"/>
+    </linearGradient>
+    <radialGradient id="sun" cx="0.5" cy="0.5" r="0.5">
+      <stop offset="0" stop-color="#fff6c9"/>
+      <stop offset="0.45" stop-color="#ffe17a"/>
+      <stop offset="1" stop-color="#ffe17a" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="hillFar" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#a9cf8a"/>
+      <stop offset="1" stop-color="#8fbd72"/>
+    </linearGradient>
+    <linearGradient id="hillMid" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#86bf5f"/>
+      <stop offset="1" stop-color="#6aa64a"/>
+    </linearGradient>
+    <linearGradient id="meadow" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#6fae47"/>
+      <stop offset="1" stop-color="#3f7d2e"/>
+    </linearGradient>
+  </defs>
+
+  <!-- Sky and sun -->
+  <rect width="560" height="340" fill="url(#sky)"/>
+  <circle cx="430" cy="92" r="70" fill="url(#sun)"/>
+  <circle cx="430" cy="92" r="24" fill="#fff3b0"/>
+
+  <!-- Clouds -->
+  <g fill="#ffffff" opacity="0.85">
+    <ellipse cx="110" cy="70" rx="44" ry="13"/>
+    <ellipse cx="138" cy="60" rx="26" ry="14"/>
+    <ellipse cx="92" cy="62" rx="20" ry="11"/>
+    <ellipse cx="300" cy="44" rx="34" ry="9"/>
+    <ellipse cx="318" cy="37" rx="18" ry="9"/>
+  </g>
+
+  <!-- Distant hills with small trees -->
+  <path d="M0 196 C 70 160 140 170 210 184 S 360 150 430 170 S 530 178 560 168 V 340 H 0 Z" fill="url(#hillFar)"/>
+  <g fill="#5f8f4a">
+    <circle cx="172" cy="176" r="7"/><rect x="171" y="180" width="2" height="7" fill="#6b4f35"/>
+    <circle cx="186" cy="179" r="5"/>
+    <circle cx="392" cy="166" r="8"/><rect x="391" y="171" width="2" height="8" fill="#6b4f35"/>
+    <circle cx="408" cy="169" r="6"/>
+  </g>
+
+  <!-- Middle rolling hill -->
+  <path d="M0 236 C 90 204 180 214 260 228 S 420 206 560 222 V 340 H 0 Z" fill="url(#hillMid)"/>
+
+  <!-- Front meadow -->
+  <path d="M0 270 C 120 250 240 262 340 258 S 480 248 560 262 V 340 H 0 Z" fill="url(#meadow)"/>
+
+  <!-- Dirt path -->
+  <path d="M250 340 C 262 310 300 290 330 274 C 342 268 352 264 360 262 C 350 270 330 286 318 304 C 306 322 300 334 298 340 Z" fill="#c9a66b" opacity="0.75"/>
+
+  <!-- Grass tufts -->
+  <g stroke="#2f6b25" stroke-width="2" stroke-linecap="round" fill="none">
+    <path d="M40 300 l-4 -12 M44 300 l0 -14 M48 300 l4 -11"/>
+    <path d="M150 318 l-4 -12 M154 318 l0 -15 M158 318 l4 -11"/>
+    <path d="M440 310 l-4 -12 M444 310 l0 -14 M448 310 l4 -11"/>
+    <path d="M520 290 l-3 -10 M523 290 l0 -12 M526 290 l3 -9"/>
+    <path d="M95 280 l-3 -9 M98 280 l0 -11 M101 280 l3 -8"/>
+  </g>
+
+  <!-- Wildflowers -->
+  <g>
+    <circle cx="70" cy="290" r="3.5" fill="#ffd84d"/>
+    <circle cx="120" cy="300" r="3" fill="#ffffff"/>
+    <circle cx="190" cy="286" r="3.5" fill="#ff8fb1"/>
+    <circle cx="210" cy="312" r="3" fill="#ffd84d"/>
+    <circle cx="395" cy="292" r="3.5" fill="#ffffff"/>
+    <circle cx="470" cy="284" r="3" fill="#ff8fb1"/>
+    <circle cx="500" cy="318" r="3.5" fill="#ffd84d"/>
+    <circle cx="30" cy="324" r="3" fill="#c9a3ff"/>
+    <circle cx="420" cy="328" r="3" fill="#c9a3ff"/>
+  </g>
+
+  <!-- Birds -->
+  <g stroke="#3d5566" stroke-width="1.6" fill="none" stroke-linecap="round">
+    <path d="M220 96 q5 -5 10 0 q5 -5 10 0"/>
+    <path d="M250 110 q4 -4 8 0 q4 -4 8 0"/>
+  </g>
+</svg>

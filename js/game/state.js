@@ -28,8 +28,17 @@ export function addItem(id, amount = 1) {
   state.items[id] = (state.items[id] || 0) + amount;
 }
 
+export function removeItem(id, amount = 1) {
+  state.items[id] = Math.max(itemCount(id) - amount, 0);
+}
+
 export function itemCount(id) {
   return state.items[id] || 0;
+}
+
+// True if the player owns at least `amount` of each item in a list like [{ item, amount }].
+export function hasItems(list) {
+  return list.every(({ item, amount }) => itemCount(item) >= amount);
 }
 
 export function addXp(skillId, amount) {

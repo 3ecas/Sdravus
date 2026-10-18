@@ -21,4 +21,20 @@ body {
   color: var(--text);
   font-family: "Nunito", system-ui, sans-serif;
   font-size: 15px;
+
+  /* Game feel: no text selection, no long-press callout, no tap flash */
+  user-select: none;
+  -webkit-user-select: none;
+  -webkit-touch-callout: none;
+  -webkit-tap-highlight-color: transparent;
 }
+
+/* Text boxes still let you select and edit text */
+input,
+textarea {
+  user-select: text;
+  -webkit-user-select: text;
+}
+
+img,
+svg { -webkit-user-drag: none; }
