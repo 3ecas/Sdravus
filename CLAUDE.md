@@ -34,7 +34,7 @@ ES modules don't load from `file://`. Serve the folder: `python3 -m http.server`
 - **Gates:** each recipe has one station (or none) plus one skill level. Stations unlock new *kinds* of things; levels unlock better tiers within them.
 
 ## XP and levels
-- Level curve (`XP_CURVE` in config.js): Level 2 = 10 XP, each next level needs ×1.14. Lv 10 = 161, Lv 50 ≈ 44K, Lv 90 ≈ 8.3M, Lv 100 ≈ 30.7M total XP. About 100+ hours to max a skill.
+- Level curve (`XP_CURVE` in config.js): Level 2 = 60 XP, each next level needs ×1.14. Lv 10 ≈ 965, Lv 50 ≈ 263K, Lv 90 ≈ 50M, Lv 100 ≈ 184M total XP. Pace target: ~40 min to Lv 10, a day of play to Lv 50, ~650 hours to Lv 100.
 - Action XP guide: about `1.066^(level - 1)` for a node/recipe that needs that level, so each level still takes a bit longer than the last: Lv 1 = 1, Lv 10 ≈ 2, Lv 20 ≈ 3, Lv 30 ≈ 6, Lv 50 ≈ 23, Lv 75 ≈ 110, Lv 90 ≈ 300. Small integers early (+1 per new tier). Recipes with more ingredients give a bit more.
 - When the XP scale changes, bump `SAVE_VERSION` and convert old XP in `save.js`.
 
