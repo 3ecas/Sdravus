@@ -1,4 +1,4 @@
-// Every item the player can own.
+// Every item the player can own. tool: true means it can go on the Tool Belt.
 
 export const ITEMS = {
   // Found while exploring
@@ -13,7 +13,7 @@ export const ITEMS = {
 
   // Crafted
   twine:     { name: "Twine",     icon: "🧶" },
-  stone_axe: { name: "Stone Axe", icon: "🪓" },
+  stone_axe: { name: "Stone Axe", icon: "🪓", tool: true },
 };
 
 export function getItem(id) {

@@ -29,6 +29,7 @@
 }
 .context-menu-item:hover { background: var(--panel); }
 .context-menu-item.danger { color: #e8867a; }
+.context-menu-item:disabled { color: var(--muted); cursor: default; background: none; }
 .context-menu-item.confirming {
   background: color-mix(in srgb, #e8867a 18%, transparent);
   font-weight: 800;

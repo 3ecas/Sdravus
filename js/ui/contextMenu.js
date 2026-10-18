@@ -1,7 +1,7 @@
 // The game's own right-click menu.
 //
 // openContextMenu(x, y, actions) shows a small list of actions at the mouse position.
-//   actions: [{ label, onClick, danger?, confirmLabel? }]
+//   actions: [{ label, onClick, danger?, disabled?, confirmLabel? }]
 //            confirmLabel: the first click changes the button to this text, and a
 //            second click is needed to run it (for things you can't undo).
 // The menu closes on any click outside it, Esc, scrolling, resizing or changing page.
@@ -15,13 +15,13 @@ export function openContextMenu(x, y, actions) {
   menuEl.className = "context-menu";
   menuEl.innerHTML = `
     ${actions.map((action, i) => `
-      <button class="context-menu-item${action.danger ? " danger" : ""}" data-index="${i}">${action.label}</button>
+      <button class="context-menu-item${action.danger ? " danger" : ""}" data-index="${i}"${action.disabled ? " disabled" : ""}>${action.label}</button>
     `).join("")}
   `;
 
   menuEl.addEventListener("click", (event) => {
     const button = event.target.closest(".context-menu-item");
-    if (!button) return;
+    if (!button || button.disabled) return;
     const action = actions[button.dataset.index];
 
     if (action.confirmLabel && !button.classList.contains("confirming")) {

@@ -32,6 +32,14 @@
   border: 1px dashed var(--line);
 }
 
+/* Slot with an item in it */
+.slot-box.filled {
+  border-style: solid;
+  border-color: color-mix(in srgb, var(--accent) 50%, var(--line));
+  background: var(--panel-2);
+}
+.slot-icon { font-size: 24px; line-height: 1; }
+
 /* Faded icon showing what goes in an empty gear slot */
 .gear-hint {
   font-size: 22px;

@@ -1,5 +1,6 @@
-// Saves progress (skill XP and items) in the browser's localStorage, and loads it on startup.
+// Saves progress (skill XP, items, tool belt) in the browser's localStorage, and loads it on startup.
 
+import { ITEMS } from "../data/items.js";
 import { state, onChange } from "./state.js";
 
 const SAVE_KEY = "sdravus-save";
@@ -21,10 +22,13 @@ export function loadGame() {
   for (const [id, count] of Object.entries(data.items || {})) {
     if (isCount(count)) state.items[id] = count;
   }
+  (data.toolBelt || []).forEach((id, slot) => {
+    if (slot < state.toolBelt.length && ITEMS[id]?.tool) state.toolBelt[slot] = id;
+  });
 }
 
 export function saveGame() {
-  const data = { version: SAVE_VERSION, skills: state.skills, items: state.items };
+  const data = { version: SAVE_VERSION, skills: state.skills, items: state.items, toolBelt: state.toolBelt };
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   } catch {

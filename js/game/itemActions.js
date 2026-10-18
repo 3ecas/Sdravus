@@ -1,16 +1,28 @@
 // What you can do with an item from its right-click menu.
-// Item-specific actions (e.g. "Add to fireplace" for logs) go in ITEM_ACTIONS;
-// every item also gets the drop actions at the end.
+// Tools get "Equip to Tool Belt". Item-specific actions (e.g. "Add to fireplace" for logs)
+// go in ITEM_ACTIONS. Every item also gets the drop actions at the end.
 
 import { getItem } from "../data/items.js";
 import { itemCount, removeItem, notify } from "./state.js";
+import { equipTool, freeToolSlot, hasToolEquipped } from "./toolBelt.js";
 
 // itemId -> [{ label, run(itemId) }]
 const ITEM_ACTIONS = {};
 
 export function getItemActions(itemId) {
   const count = itemCount(itemId);
-  const name = getItem(itemId).name;
+  const item = getItem(itemId);
+  const name = item.name;
+
+  const equip = [];
+  if (item.tool && !hasToolEquipped(itemId)) {
+    equip.push(
+      freeToolSlot() === -1
+        ? { label: "Tool Belt is full", disabled: true }
+        : { label: "Equip to Tool Belt", onClick: () => equipTool(itemId) }
+    );
+  }
+
   const specific = (ITEM_ACTIONS[itemId] || []).map((action) => ({
     label: action.label,
     onClick: () => action.run(itemId),
@@ -26,7 +38,7 @@ export function getItemActions(itemId) {
     });
   }
 
-  return [...specific, ...drop];
+  return [...equip, ...specific, ...drop];
 }
 
 function dropItem(itemId, amount) {

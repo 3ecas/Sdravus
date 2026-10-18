@@ -1,7 +1,7 @@
-// The player's progress: skill XP and items owned.
+// The player's progress: skill XP, items in the stash, and tools on the Tool Belt.
 // Anything that changes state calls notify() so the screen can update.
 
-import { MAX_LEVEL } from "../config.js";
+import { MAX_LEVEL, TOOL_BELT_SLOTS } from "../config.js";
 import { PAGES } from "../data/pages.js";
 import { xpForLevel } from "./xp.js";
 
@@ -10,6 +10,7 @@ export const state = {
     PAGES.filter((page) => page.skill).map((page) => [page.id, { xp: 0 }])
   ),
   items: {},
+  toolBelt: Array(TOOL_BELT_SLOTS).fill(null), // item id per slot, or null if empty
 };
 
 const listeners = new Set();

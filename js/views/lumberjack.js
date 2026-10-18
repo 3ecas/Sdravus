@@ -42,7 +42,7 @@ function treeCardHtml(tree) {
         <span>+${tree.xp} XP</span>
       </span>
       <span class="action-progress"><span class="action-progress-fill"></span></span>
-      ${tool ? `<span class="needs-tool" title="Needs ${tool.name}">${tool.icon}</span>` : ""}
+      ${tool ? `<span class="needs-tool" title="Needs ${tool.name} on the Tool Belt">${tool.icon}</span>` : ""}
     </button>
   `;
 }
