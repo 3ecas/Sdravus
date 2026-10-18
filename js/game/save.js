@@ -1,13 +1,14 @@
-// Saves progress (items, tool belt, built stations/buildings, discoveries) in the browser's
+// Saves progress (items, tool belt, built stations/buildings, villagers, discoveries) in the browser's
 // localStorage, and loads it on startup.
 
 import { ITEMS } from "../data/items.js";
 import { getStation } from "../data/stations.js";
 import { getBuilding } from "../data/buildings.js";
 import { state, onChange } from "./state.js";
+import { WORK_SPOTS, villagerCount } from "./villagers.js";
 
 const SAVE_KEY = "sdravus-save";
-const SAVE_VERSION = 3; // 3: no XP or levels (older saves keep everything except XP)
+const SAVE_VERSION = 4; // 3: no XP or levels (older saves keep everything except XP). 4: villagers
 
 // Old id -> new id, so progress carries over when something is renamed.
 const RENAMED_ITEMS = { pebble: "flint", stone_axe: "flint_axe", stone_pickaxe: "flint_pickaxe", uncut_gem: "quartz" };
@@ -35,6 +36,15 @@ export function loadGame() {
   for (const [id, count] of Object.entries(data.built || data.stations || {})) {
     if (getStation(id) || getBuilding(id)) state.built[id] = count === true ? 1 : Number(count) || 0;
   }
+  // Villagers at known spots, never more than the Huts house.
+  let free = villagerCount();
+  for (const [key, count] of Object.entries(data.workers || {})) {
+    const n = Math.min(Math.floor(Number(count)) || 0, free);
+    if (WORK_SPOTS[key] && n > 0) {
+      state.workers[key] = n;
+      free -= n;
+    }
+  }
   for (const oldId of Object.keys(data.seen || {})) {
     const id = renamedItem(oldId);
     if (ITEMS[id]) state.seen[id] = true;
@@ -50,8 +60,8 @@ export function loadGame() {
 }
 
 export function saveGame() {
-  const { items, toolBelt, built, seen, viewed } = state;
-  const data = { version: SAVE_VERSION, items, toolBelt, built, seen, viewed };
+  const { items, toolBelt, built, workers, seen, viewed } = state;
+  const data = { version: SAVE_VERSION, items, toolBelt, built, workers, seen, viewed };
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   } catch {

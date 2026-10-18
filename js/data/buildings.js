@@ -1,8 +1,24 @@
 // Village buildings: built once (instantly), then they produce resources on their own over time,
 // even while you're doing something else. (Stations, which unlock recipes, are in stations.js.)
 // A building shows up in the Village once you've had any of its materials.
+//
+// Huts are different: build as many as you like (`repeatable`), each one costing `costGrowth`
+// times more than the last, and each houses `houses` villagers who can gather for you.
 
 export const BUILDINGS = [
+  {
+    id: "hut",
+    name: "Hut",
+    icon: "🛖",
+    repeatable: true,
+    costGrowth: 1.5,
+    houses: 2,
+    cost: [
+      { item: "logs", amount: 30 },
+      { item: "planks", amount: 10 },
+      { item: "twine", amount: 6 },
+    ],
+  },
   {
     id: "well",
     name: "Well",

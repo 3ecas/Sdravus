@@ -2,7 +2,8 @@
 // Nodes are grouped into places (Mining: sites like the Quarry). With `tabs: true` each
 // place is a tab (#mining/quarry); otherwise the single place's nodes are shown directly.
 // A place or node needs a tool of some tier on the Tool Belt; one you can't use yet is greyed
-// out with that tool crossed out. Each card shows what one click gives with your best tool.
+// out with that tool crossed out. Each card shows what one click gives with your best tool,
+// and (once you have villagers) the "− 👤 +" control to put villagers to work there.
 //
 // nodePage("mining", MINING_SITES, { tabs: true }) returns the page's render function.
 // A place is { id, name, icon, toolTier, nodes (or rocks), rare: [{ item, chance }] }.
@@ -14,6 +15,8 @@ import { hasToolTier } from "../game/toolBelt.js";
 import { routeHref } from "../router.js";
 import { showGains } from "../ui/pop.js";
 import { iconHtml } from "../ui/format.js";
+import { spotKey } from "../game/villagers.js";
+import { workersHtml, updateWorkers, handleWorkerClick, startWorkerVisuals } from "../ui/workers.js";
 
 export function nodePage(skill, places, { tabs = false } = {}) {
   return (container, page, route) => {
@@ -24,7 +27,7 @@ export function nodePage(skill, places, { tabs = false } = {}) {
 
     container.addEventListener("click", (event) => {
       const card = event.target.closest(".action-card");
-      if (!card) return;
+      if (!card || handleWorkerClick(event)) return;
       showGains(card, gather(getNode(card.dataset.id), place.rare));
     });
 
@@ -36,7 +39,7 @@ export function nodePage(skill, places, { tabs = false } = {}) {
         container.innerHTML = `
           ${tabs ? tabsHtml(skill, places, place, route.from) : ""}
           ${canReach(place)
-            ? `${rareHtml(place)}<div class="action-grid">${nodes.map(nodeCardHtml).join("")}</div>`
+            ? `${rareHtml(place)}<div class="action-grid">${nodes.map((node) => nodeCardHtml(skill, node)).join("")}</div>`
             : `<p class="craft-hint">You need ${neededToolText(place)} on the Tool Belt to work at the ${place.name}.</p>`}
         `;
       }
@@ -47,10 +50,16 @@ export function nodePage(skill, places, { tabs = false } = {}) {
         card.querySelector(".needs-tool")?.toggleAttribute("hidden", usable);
         card.querySelector(".node-yield").textContent = `+${gatherYield(node)}`;
       });
+      updateWorkers(container);
     }
 
     update();
-    return onChange(update);
+    const stopListening = onChange(update);
+    const stopVisuals = startWorkerVisuals(container);
+    return () => {
+      stopListening();
+      stopVisuals();
+    };
   };
 }
 
@@ -90,17 +99,18 @@ function rareHtml(place) {
   return `<p class="craft-hint place-note">Rare finds here: ${list}</p>`;
 }
 
-function nodeCardHtml(node) {
+function nodeCardHtml(skill, node) {
   const tool = node.toolType ? toolForTier(node.toolType, node.toolTier) : null;
   const item = getItem(node.item);
   return `
-    <button class="action-card" data-id="${node.id}">
+    <div class="action-card" role="button" tabindex="0" data-id="${node.id}" data-spot="${spotKey(skill, node.id)}">
       <span class="action-icon">${iconHtml(node)}</span>
       <span class="action-name">${node.name}</span>
       <span class="action-meta center" title="Per click with your best tool">
         <span><span class="node-yield">+1</span> ${iconHtml(item)}</span>
       </span>
       ${tool ? `<span class="needs-tool" title="Needs a ${tool.name} or better on the Tool Belt">${iconHtml(tool)}</span>` : ""}
-    </button>
+      ${workersHtml()}
+    </div>
   `;
 }

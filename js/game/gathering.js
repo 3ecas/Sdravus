@@ -19,6 +19,13 @@ export function gatherYield(node) {
 
 // One click on a node. rare: the place's [{ item, chance }]. Returns what was gained.
 export function gather(node, rare = []) {
+  const gains = collect(node, rare);
+  notify();
+  return gains;
+}
+
+// Same as one click, without updating the screen (villagers gather many at once, then notify).
+export function collect(node, rare = []) {
   if (!hasToolFor(node)) return [];
 
   const gains = node.finds
@@ -29,7 +36,6 @@ export function gather(node, rare = []) {
   });
 
   gains.forEach(({ item, amount }) => addItem(item, amount));
-  notify();
   return gains;
 }
 

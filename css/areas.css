@@ -19,7 +19,7 @@
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
   transform: translateY(-2px);
 }
-.area-card:active { transform: scale(0.97); }
+.area-card:active:not(:has(.workers:active)) { transform: scale(0.97); }
 
 /* The picture fills the whole card; kept in its own layer so the "?" pop-up isn't clipped */
 .area-bg {
@@ -50,4 +50,16 @@
   text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 .area-hint { display: block; font-size: 11px; color: rgba(255, 255, 255, 0.75); margin-top: 2px; }
+
+/* Name on the left, villagers "− 👤 +" on the right, their bar underneath */
+.area-footer-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 4px 8px;
+}
+.area-footer .worker-btn { background: rgba(10, 14, 22, 0.6); color: #fff; }
+.area-footer .work-bar { flex-basis: 100%; margin-top: 2px; background: rgba(10, 14, 22, 0.6); }
 .area-card .pop { top: 40%; font-size: 16px; text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7); }
+.area-card .pop.from-worker { font-size: 13px; color: rgba(255, 255, 255, 0.8); }

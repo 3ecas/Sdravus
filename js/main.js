@@ -4,6 +4,7 @@ import { DEFAULT_PAGE } from "./config.js";
 import { getPage } from "./data/pages.js";
 import { loadGame, startAutoSave } from "./game/save.js";
 import { startProduction } from "./game/production.js";
+import { startVillagers } from "./game/villagers.js";
 import { disableBrowserDefaults } from "./ui/browserDefaults.js";
 import { currentRoute, onRouteChange } from "./router.js";
 import { renderSidebar, setActivePage, closeSidebar } from "./ui/sidebar.js";
@@ -20,6 +21,7 @@ disableBrowserDefaults();
 loadGame();
 startAutoSave();
 startProduction();
+startVillagers();
 
 renderSidebar();
 onRouteChange(showPage);

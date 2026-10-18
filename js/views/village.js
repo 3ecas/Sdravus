@@ -1,20 +1,24 @@
 // Village page, in two sections:
 //   Stations  – unlock recipes (e.g. the Workbench). Click a built station to open its tab on
 //               the page that uses it (Workbench -> Crafting › Workbench).
-//   Buildings – produce resources on their own over time (e.g. the Well).
+//   Buildings – produce resources on their own over time (e.g. the Well), or house villagers
+//               (Huts: build as many as you like, each costs more).
 // Each appears once you've had any of its materials. Click to build it instantly.
+// Once you have villagers, a line on top shows how many are idle and where the others work.
 
 import { getStation } from "../data/stations.js";
 import { getBuilding } from "../data/buildings.js";
 import { getItem } from "../data/items.js";
 import { getPage } from "../data/pages.js";
 import { routeHref } from "../router.js";
-import { onChange } from "../game/state.js";
+import { state, onChange } from "../game/state.js";
 import { visibleStations, visibleBuildings, isNew, markViewed } from "../game/discovery.js";
-import { build, canBuild, isBuilt } from "../game/village.js";
+import { build, canBuild, isBuilt, builtCount, buildCost } from "../game/village.js";
 import { productionProgress, onProduced } from "../game/production.js";
+import { WORK_SPOTS, villagerCount, idleCount } from "../game/villagers.js";
 import { showGains } from "../ui/pop.js";
 import { costHtml, updateCost } from "../ui/costList.js";
+import { iconHtml } from "../ui/format.js";
 
 const SECTIONS = [
   { type: "station", title: "Stations", visible: visibleStations, get: getStation },
@@ -24,6 +28,7 @@ const SECTIONS = [
 export function renderVillage(container) {
   const newThisVisit = new Set(); // "type:id" shown with a "New" badge during this visit
   let layoutKey = null; // what was last drawn; null so the first update always draws
+  let villagersKey = null;
 
   container.addEventListener("click", (event) => {
     if (event.target.closest(".info-btn")) return event.preventDefault(); // "?" only shows info
@@ -32,20 +37,28 @@ export function renderVillage(container) {
   });
 
   function update() {
-    const key = SECTIONS.map((s) => s.visible().map((t) => `${t.id}:${isBuilt(t.id)}`).join()).join("|");
+    const key = SECTIONS.map((s) => s.visible().map((t) => `${t.id}:${builtCount(t.id)}`).join()).join("|");
     if (key !== layoutKey) {
       layoutKey = key;
+      villagersKey = null;
       SECTIONS.forEach(({ type, visible }) => {
         visible().filter((t) => !isBuilt(t.id) && isNew(type, t.id)).forEach((t) => newThisVisit.add(`${type}:${t.id}`));
       });
-      container.innerHTML = sectionsHtml(newThisVisit);
+      container.innerHTML = `<div class="villagers-line"></div>${sectionsHtml(newThisVisit)}`;
       SECTIONS.forEach(({ type, visible }) => markViewed(type, visible()));
+    }
+
+    // Redraw the villagers line only when it changes, so its links don't flicker.
+    const vKey = `${villagerCount()}:${JSON.stringify(state.workers)}`;
+    if (vKey !== villagersKey) {
+      villagersKey = vKey;
+      container.querySelector(".villagers-line").innerHTML = villagersHtml();
     }
 
     container.querySelectorAll(".action-card[data-id]").forEach((card) => {
       const thing = thingFor(card);
       card.classList.toggle("locked", !canBuild(thing));
-      updateCost(card, thing.cost);
+      updateCost(card, buildCost(thing));
     });
   }
 
@@ -93,11 +106,31 @@ function sectionsHtml(newKeys) {
   return html || `<p class="craft-hint">Nothing to build yet. Gather materials to discover what you can build.</p>`;
 }
 
+// "👤 4 villagers · 1 idle   🌳 Tree 2  🟠 Copper Rock 1" (each place links to its page).
+function villagersHtml() {
+  const total = villagerCount();
+  if (!total) return "";
+  const jobs = Object.entries(state.workers).map(([key, count]) => {
+    const { node, page, tab } = WORK_SPOTS[key];
+    const icon = node.icon ? iconHtml(node) : getPage(page).icon;
+    return `<a class="job-chip" href="${routeHref(page, tab, "village")}">${icon} ${node.name} <b>${count}</b></a>`;
+  });
+  return `
+    <div class="villagers">
+      <span class="villagers-count">👤 ${total} villager${total === 1 ? "" : "s"} · <b>${idleCount()}</b> idle</span>
+      ${jobs.length ? jobs.join("") : `<span class="villagers-hint">Send them to work with + on the Plains, trees and rocks.</span>`}
+    </div>
+  `;
+}
+
 // "?" in the corner: hover to see what a station unlocks, or what a building produces.
 function infoHtml(thing) {
   let title = "Unlocks";
   let text = thing.unlocks;
-  if (thing.produces) {
+  if (thing.houses) {
+    title = "Houses";
+    text = `👤 ${thing.houses} villagers, who can gather for you. Each Hut costs more than the last.`;
+  } else if (thing.produces) {
     const { item, amount, seconds } = thing.produces;
     title = "Produces";
     text = `${getItem(item).icon} ${amount} ${getItem(item).name} every ${seconds}s`;
@@ -124,7 +157,7 @@ function cardHtml(type, thing, isNewThing) {
       </a>
     `;
   }
-  if (isBuilt(thing.id)) {
+  if (isBuilt(thing.id) && !thing.repeatable) {
     // A built building keeps working: show the bar toward its next delivery.
     const producing = thing.produces
       ? `<span class="action-progress"><span class="action-progress-fill"></span></span>`
@@ -138,14 +171,15 @@ function cardHtml(type, thing, isNewThing) {
       </div>
     `;
   }
+  const count = builtCount(thing.id); // repeatable buildings (Huts) can already have some
   return `
     <button class="action-card" data-type="${type}" data-id="${thing.id}">
-      ${isNewThing ? `<span class="new-tag">New</span>` : ""}
+      ${isNewThing && !count ? `<span class="new-tag">New</span>` : ""}
       <span class="action-icon">${thing.icon}</span>
-      <span class="action-name">${thing.name}</span>
+      <span class="action-name">${thing.name}${count ? ` <span class="owned-count">×${count}</span>` : ""}</span>
       ${infoHtml(thing)}
-      ${costHtml(thing.cost)}
-      <span class="build-tag">Build</span>
+      ${costHtml(buildCost(thing))}
+      <span class="build-tag">${count ? "Build another" : "Build"}</span>
     </button>
   `;
 }

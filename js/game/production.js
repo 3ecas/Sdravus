@@ -32,7 +32,7 @@ function tick() {
   let changed = false;
 
   for (const building of BUILDINGS) {
-    if (!isBuilt(building.id)) continue;
+    if (!building.produces || !isBuilt(building.id)) continue;
     const { item, amount, seconds } = building.produces;
     elapsed[building.id] = (elapsed[building.id] || 0) + dt;
 

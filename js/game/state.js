@@ -1,5 +1,5 @@
 // The player's progress: items in the stash, tools on the Tool Belt, what's built in the
-// Village, and what they've discovered.
+// Village, where villagers work, and what they've discovered.
 // Anything that changes state calls notify() so the screen can update.
 
 import { TOOL_BELT_SLOTS } from "../config.js";
@@ -8,6 +8,7 @@ export const state = {
   items: {},
   toolBelt: Array(TOOL_BELT_SLOTS).fill(null), // item id per slot, or null if empty
   built: {},  // station or building id -> how many are built (stations: 1)
+  workers: {}, // work spot key ("lumberjack:tree") -> villagers working there
   seen: {},   // item id -> true once ever owned (reveals recipes, stations and buildings)
   viewed: {}, // "recipe:id" / "station:id" / "building:id" -> true once shown (for "New" badges)
 };

@@ -1,0 +1,29 @@
+/* Village page: the villagers line on top ("👤 4 villagers · 1 idle" + where the others work). */
+
+.villagers-line:empty { display: none; }
+.villagers-line { margin-bottom: 16px; }
+
+.villagers {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  font-size: 12px;
+}
+.villagers-count { margin-right: 4px; font-weight: 700; }
+.villagers-hint { color: var(--muted); }
+
+/* A place where villagers work; links to its page */
+.job-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  padding: 2px 8px;
+  border-radius: 99px;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  color: var(--text);
+  font-size: 11px;
+  text-decoration: none;
+}
+.job-chip:hover { border-color: color-mix(in srgb, var(--accent) 60%, var(--line)); }
