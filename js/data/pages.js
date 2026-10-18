@@ -8,6 +8,7 @@ export const MENU_GROUPS = [
     pages: [
       { id: "village", name: "Village", icon: "🏡", color: "#e8b04a" },
       { id: "stash",   name: "Stash",   icon: "🎒", color: "#c98b5a" },
+      { id: "gear",    name: "Gear",    icon: "🪖", color: "#8fa3b8" },
     ],
   },
   // Ordered the way a new player progresses: gather -> make things -> fight.

@@ -1,4 +1,7 @@
-/* Gear panel on the Stash page: slots laid out like a body. */
+/* Gear page: body-shaped equipment slots and the backpack grid. */
+
+.gear-panel,
+.backpack-panel { flex: 0 0 auto; }
 
 .gear-grid {
   display: grid;
@@ -18,7 +21,8 @@
   gap: 3px;
 }
 
-.gear-box {
+/* Empty slot: small dashed box (gear and backpack) */
+.slot-box {
   width: 48px;
   height: 48px;
   display: grid;
@@ -28,7 +32,7 @@
   border: 1px dashed var(--line);
 }
 
-/* Faded icon showing what goes in an empty slot */
+/* Faded icon showing what goes in an empty gear slot */
 .gear-hint {
   font-size: 22px;
   opacity: 0.25;
@@ -38,4 +42,10 @@
 .gear-name {
   font-size: 10px;
   color: var(--muted);
+}
+
+.backpack-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 48px);
+  gap: 8px;
 }
