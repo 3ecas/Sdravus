@@ -1,5 +1,12 @@
 /* Sidebar contents: brand and menu items. */
 
+/* Menu sizing: tweak these to resize the whole menu. */
+.sidebar {
+  --menu-text: 10px;
+  --menu-icon: 16px;
+  --menu-row-pad: 3px;
+}
+
 .brand {
   display: flex;
   align-items: center;
@@ -16,7 +23,7 @@
   letter-spacing: 1px;
 }
 
-.menu-group { padding: 8px 0; }
+.menu-group { padding: 4px 0; }
 .menu-group + .menu-group { border-top: 1px solid var(--line); }
 
 .menu-heading {
@@ -25,19 +32,19 @@
   letter-spacing: 1.2px;
   text-transform: uppercase;
   color: var(--muted);
-  padding: 6px 10px 4px;
+  padding: 4px 8px 2px;
 }
 
 .menu-item {
   display: flex;
   align-items: center;
-  gap: 10px;
-  padding: 5px 8px;
-  margin: 1px 0;
-  border-radius: 8px;
+  gap: 6px;
+  padding: var(--menu-row-pad) 8px;
+  margin: 0;
+  border-radius: 6px;
   color: var(--text);
   text-decoration: none;
-  font-size: 13px;
+  font-size: var(--menu-text);
   font-weight: 600;
   transition: background 0.15s, transform 0.15s;
 }
@@ -45,12 +52,12 @@
 .menu-item:active { transform: scale(0.98); }
 
 .menu-icon {
-  width: 24px;
-  height: 24px;
-  border-radius: 7px;
+  width: var(--menu-icon);
+  height: var(--menu-icon);
+  border-radius: 3px;
   display: grid;
   place-items: center;
-  font-size: 13px;
+  font-size: calc(var(--menu-icon) * 0.55);
   background: color-mix(in srgb, var(--accent) 18%, transparent);
   flex-shrink: 0;
 }
@@ -60,11 +67,11 @@
   min-width: 0;
   display: flex;
   flex-direction: column;
-  gap: 3px;
+  gap: 1px;
 }
 
 .menu-xp {
-  height: 3px;
+  height: 2px;
   background: var(--bg);
   border-radius: 99px;
   overflow: hidden;
@@ -72,7 +79,7 @@
 .menu-xp-fill { display: block; height: 100%; background: var(--accent); }
 
 .menu-level {
-  font-size: 11px;
+  font-size: calc(var(--menu-text) * 0.85);
   color: var(--muted);
   font-weight: 700;
 }
