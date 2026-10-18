@@ -1,11 +1,11 @@
 /* Small pieces used on several pages. */
 
-/* Pixel-art icons (16x16 PNGs): sized like the emoji they replace, pixels kept sharp */
+/* Drawn icons (PNG/SVG in assets/icons): sized like the emoji they replace, scaled smoothly */
 .pixel-icon {
   width: 1em;
   height: 1em;
   vertical-align: -0.125em;
-  image-rendering: pixelated;
+  object-fit: contain;
 }
 
 /* Icon tints to tell tool tiers apart (items with tint: "bronze", ...) */
