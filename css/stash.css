@@ -1,4 +1,35 @@
-/* Stash page: search, sort buttons and a grid of small item cells. */
+/* Stash page: gear panel + stash panel side by side, search, sort buttons and a grid of small item cells. */
+
+.stash-layout {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  gap: 16px;
+}
+
+.panel {
+  padding: 12px 14px 14px;
+  border-radius: var(--radius);
+  background: var(--panel);
+  border: 1px solid var(--line);
+}
+
+.panel-title {
+  margin: 0 0 10px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+.gear-panel { flex: 0 0 auto; }
+
+/* Narrow column (6 cells wide) so the stash grows downward */
+.stash-panel {
+  flex: 0 1 412px;
+  min-height: 260px;
+}
 
 .stash-toolbar {
   display: flex;
@@ -8,12 +39,12 @@
 }
 
 .stash-search {
-  flex: 1 1 180px;
-  max-width: 260px;
+  flex: 1 1 140px;
+  min-width: 0;
   padding: 6px 10px;
   border-radius: 8px;
   border: 1px solid var(--line);
-  background: var(--panel);
+  background: var(--bg);
   color: var(--text);
   font: inherit;
   font-size: 12px;
@@ -25,7 +56,7 @@
   padding: 6px 10px;
   border-radius: 8px;
   border: 1px solid var(--line);
-  background: var(--panel);
+  background: var(--bg);
   color: var(--muted);
   font: inherit;
   font-size: 12px;
@@ -37,7 +68,7 @@
 .sort-btn.active {
   color: var(--text);
   border-color: var(--accent);
-  background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+  background: color-mix(in srgb, var(--accent) 14%, var(--bg));
 }
 
 .stash-grid {
@@ -60,7 +91,7 @@
   display: grid;
   place-items: center;
   border-radius: 10px;
-  background: var(--panel);
+  background: var(--bg);
   border: 1px solid var(--line);
   transition: border-color 0.15s;
 }

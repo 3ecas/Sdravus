@@ -45,12 +45,12 @@
 
 .action-name { font-size: 13px; font-weight: 700; }
 
-/* Time on the left, XP on the right, under the progress bar */
+/* Time on the left, XP on the right, above the progress bar */
 .action-meta {
   width: 100%;
   display: flex;
   justify-content: space-between;
-  margin-top: 5px;
+  margin-top: 8px;
   font-size: 11px;
   color: var(--muted);
 }
@@ -58,7 +58,7 @@
 .action-progress {
   width: 100%;
   height: 4px;
-  margin-top: 8px;
+  margin-top: 5px;
   border-radius: 99px;
   background: var(--bg);
   overflow: hidden;

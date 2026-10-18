@@ -1,8 +1,9 @@
-// Stash page: a searchable, sortable grid of every item the player owns.
+// Stash page: a searchable, sortable grid of owned items on the left, and gear slots on the right.
 
 import { ITEMS } from "../data/items.js";
 import { onChange, itemCount } from "../game/state.js";
 import { formatCount, escapeHtml } from "../ui/format.js";
+import { gearPanelHtml } from "./gear.js";
 
 // Remembered while the game is open, so leaving and coming back keeps your choice.
 const view = {
@@ -18,12 +19,18 @@ const SORT_LABELS = {
 
 export function renderStash(container) {
   container.innerHTML = `
-    <div class="stash-toolbar">
-      <input class="stash-search" type="search" placeholder="Search items…" value="${escapeHtml(view.search)}" />
-      <button class="sort-btn" data-sort="name"></button>
-      <button class="sort-btn" data-sort="count"></button>
+    <div class="stash-layout">
+      <section class="panel stash-panel">
+        <h2 class="panel-title">Stash</h2>
+        <div class="stash-toolbar">
+          <input class="stash-search" type="search" placeholder="Search items…" value="${escapeHtml(view.search)}" />
+          <button class="sort-btn" data-sort="name"></button>
+          <button class="sort-btn" data-sort="count"></button>
+        </div>
+        <div class="stash-items"></div>
+      </section>
+      ${gearPanelHtml()}
     </div>
-    <div class="stash-items"></div>
   `;
 
   const searchEl = container.querySelector(".stash-search");

@@ -67,11 +67,11 @@ function treeCardHtml(tree) {
     <button class="action-card" data-id="${tree.id}">
       <span class="action-icon">${tree.icon}</span>
       <span class="action-name">${tree.name}</span>
-      <span class="action-progress"><span class="action-progress-fill"></span></span>
       <span class="action-meta">
         <span>${tree.seconds}s</span>
         <span>+${tree.xp} XP</span>
       </span>
+      <span class="action-progress"><span class="action-progress-fill"></span></span>
     </button>
   `;
 }
