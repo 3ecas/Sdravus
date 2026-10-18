@@ -9,7 +9,7 @@ const MENU = [
       { id: "gear",    name: "Gear",    icon: "🪖", color: "#8fa3b8", blurb: "Equip weapons, armour and tools." },
     ],
   },
-  // Ordered the way a new player progresses: gather -> craft -> fight.
+  // Ordered the way a new player progresses: gather -> make things -> fight.
   {
     title: "Gathering",
     items: [
@@ -20,10 +20,11 @@ const MENU = [
     ],
   },
   {
-    title: "Crafting",
+    title: "Workshop",
     items: [
       { id: "cooking",    name: "Cooking",    icon: "🍲", color: "#e5894a", blurb: "Turn raw food into meals.", skill: true },
       { id: "smithing",   name: "Smithing",   icon: "🔨", color: "#d0a24e", blurb: "Smelt bars and forge gear.", skill: true },
+      { id: "crafting",   name: "Crafting",   icon: "🧵", color: "#d77fb0", blurb: "Make leather goods, jewellery and tools.", skill: true },
     ],
   },
   {
