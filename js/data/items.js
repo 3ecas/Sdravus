@@ -12,8 +12,10 @@ export const ITEMS = {
   logs: { name: "Logs", icon: "🪵" },
 
   // Crafted
-  twine:     { name: "Twine",     icon: "🧶" },
-  stone_axe: { name: "Stone Axe", icon: "🪓", tool: true },
+  twine:       { name: "Twine",       icon: "🧶" },
+  stone_axe:   { name: "Stone Axe",   icon: "🪓", tool: true },
+  planks:      { name: "Planks",      icon: "🟫" },
+  wooden_bowl: { name: "Wooden Bowl", icon: "🥣" },
 };
 
 export function getItem(id) {

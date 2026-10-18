@@ -9,8 +9,10 @@ import { renderStash } from "./stash.js";
 import { renderGear } from "./gear.js";
 import { renderForaging } from "./foraging.js";
 import { renderCrafting } from "./crafting.js";
+import { renderVillage } from "./village.js";
 
 const VIEWS = {
+  village: renderVillage,
   stash: renderStash,
   gear: renderGear,
   foraging: renderForaging,

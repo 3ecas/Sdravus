@@ -3,17 +3,18 @@
 //   - the "active" class while its action runs
 //   - its .action-progress-fill bar filled smoothly
 //   - a floating "+1 🪵" for each item gained when a cycle finishes
+// Cards are looked up each time, so cards added later (e.g. a newly discovered recipe) work too.
 
 import { getItem } from "../data/items.js";
 import { activeActionId, actionProgress, onActionComplete } from "../game/actions.js";
 
 export function bindActionCards(container) {
-  const cards = [...container.querySelectorAll("[data-action]")];
+  const cards = () => [...container.querySelectorAll("[data-action]")];
 
   let frame;
   function animate() {
     const activeId = activeActionId();
-    cards.forEach((card) => {
+    cards().forEach((card) => {
       const active = card.dataset.action === activeId;
       card.classList.toggle("active", active);
       const fill = card.querySelector(".action-progress-fill");
@@ -23,7 +24,7 @@ export function bindActionCards(container) {
   }
 
   const stopListening = onActionComplete((actionId, gains) => {
-    const card = cards.find((c) => c.dataset.action === actionId);
+    const card = cards().find((c) => c.dataset.action === actionId);
     if (!card) return;
     gains.forEach(({ item, amount }, i) => showPop(card, `+${amount} ${getItem(item).icon}`, i));
   });

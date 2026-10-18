@@ -1,4 +1,5 @@
-// The player's progress: skill XP, items in the stash, and tools on the Tool Belt.
+// The player's progress: skill XP, items in the stash, tools on the Tool Belt,
+// village stations, and what they've discovered.
 // Anything that changes state calls notify() so the screen can update.
 
 import { MAX_LEVEL, TOOL_BELT_SLOTS } from "../config.js";
@@ -11,6 +12,9 @@ export const state = {
   ),
   items: {},
   toolBelt: Array(TOOL_BELT_SLOTS).fill(null), // item id per slot, or null if empty
+  stations: {}, // station id -> true once built
+  seen: {},     // item id -> true once ever owned (reveals recipes and stations)
+  viewed: {},   // "recipe:id" / "station:id" -> true once shown to the player (for "New" badges)
 };
 
 const listeners = new Set();
@@ -27,6 +31,7 @@ export function notify() {
 
 export function addItem(id, amount = 1) {
   state.items[id] = (state.items[id] || 0) + amount;
+  state.seen[id] = true;
 }
 
 export function removeItem(id, amount = 1) {

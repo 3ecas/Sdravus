@@ -24,6 +24,14 @@
   color: var(--muted);
 }
 
+/* Sections on Crafting / Village pages, e.g. "✋ By hand", "🪚 Workbench" */
+.craft-section + .craft-section { margin-top: 20px; }
+.craft-hint {
+  margin: 0;
+  font-size: 12px;
+  color: var(--muted);
+}
+
 /* Item amount in the bottom-left corner of a box (stash cells). */
 .item-count {
   position: absolute;

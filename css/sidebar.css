@@ -64,6 +64,16 @@
 
 .menu-label { flex: 1; }
 
+/* Small dot on pages with something new (e.g. a newly discovered recipe) */
+.menu-new {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px var(--gold);
+}
+.menu-new[hidden] { display: none; }
+
 .menu-level {
   font-size: calc(var(--menu-text) * 0.85);
   color: var(--muted);

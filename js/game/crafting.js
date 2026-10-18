@@ -1,9 +1,11 @@
 // Crafting rules: use up a recipe's inputs to make its output.
+// Needs the recipe's Crafting level and station (if any).
 // Repeats until out of materials, except recipes with repeat: false (tools) which make one.
 
 import { startAction, stopAction, activeActionId } from "./actions.js";
 import { addItem, removeItem, hasItems, addXp, skillXp } from "./state.js";
 import { levelFromXp } from "./xp.js";
+import { isBuilt } from "./village.js";
 
 const SKILL = "crafting";
 
@@ -15,8 +17,12 @@ export function hasLevelFor(recipe) {
   return levelFromXp(skillXp(SKILL)) >= recipe.level;
 }
 
+export function hasStationFor(recipe) {
+  return !recipe.station || isBuilt(recipe.station);
+}
+
 export function canCraft(recipe) {
-  return hasLevelFor(recipe) && hasItems(recipe.inputs);
+  return hasStationFor(recipe) && hasLevelFor(recipe) && hasItems(recipe.inputs);
 }
 
 export function isCrafting(recipe) {

@@ -15,9 +15,9 @@ This will grow into a big game, so keep things separated and `index.html` clean.
   - `main.js` — entry point, wires everything together.
   - `config.js` — game-wide settings (`MAX_LEVEL` is 100, `BACKPACK_SLOTS`, `TOOL_BELT_SLOTS`).
   - `router.js` — URL hash routing.
-  - `data/` — static game data: `pages.js` (menu), `items.js`, `areas.js` (Foraging areas), `trees.js`, `recipes.js`, `gear.js` (equipment slots).
-  - `game/` — game rules, no DOM: `state.js` (player XP/items + `onChange`/`notify`), `xp.js` (level curve), `actions.js` (the one repeating idle action), `save.js` (localStorage save/load; bump `SAVE_VERSION` if the save format changes; when renaming a skill or item id, add it to `RENAMED_SKILLS` / `RENAMED_ITEMS` so saves carry over), `toolBelt.js` (equip/unequip tools; skills check the belt for tools), one file per skill (`foraging.js`, `lumberjack.js`, `crafting.js`). Action `onComplete` returns gains like `[{ item, amount }]`. `itemActions.js` lists right-click actions per item (add item-specific ones to `ITEM_ACTIONS`).
-  - `ui/` — shared UI pieces: `sidebar.js`, `view.js` (listen to `onChange`), `actionCards.js` (progress bar + "+1" pops for any `[data-action]` card), `format.js`, `contextMenu.js` (the game's right-click menu), `browserDefaults.js` (no browser right-click menu, dragging or text selection; the game will have its own right-click menus).
+  - `data/` — static game data: `pages.js` (menu), `items.js`, `areas.js` (Foraging areas), `trees.js`, `recipes.js` (each has a `station` or null = by hand, and a Crafting `level`), `stations.js` (Village stations), `gear.js` (equipment slots).
+  - `game/` — game rules, no DOM: `state.js` (player XP/items + `onChange`/`notify`), `xp.js` (level curve), `actions.js` (the one repeating idle action), `save.js` (localStorage save/load; bump `SAVE_VERSION` if the save format changes; when renaming a skill or item id, add it to `RENAMED_SKILLS` / `RENAMED_ITEMS` so saves carry over), `toolBelt.js` (equip/unequip tools; skills check the belt for tools), `village.js` (building stations), `discovery.js` (recipes/stations appear once you've had one of their materials; "new" tracking for badges and menu dots), one file per skill (`foraging.js`, `lumberjack.js`, `crafting.js`). Action `onComplete` returns gains like `[{ item, amount }]`. `itemActions.js` lists right-click actions per item (add item-specific ones to `ITEM_ACTIONS`).
+  - `ui/` — shared UI pieces: `sidebar.js`, `view.js` (listen to `onChange`), `actionCards.js` (progress bar + "+1" pops for any `[data-action]` card), `format.js`, `costList.js` ("have/need" ingredient lists), `contextMenu.js` (the game's right-click menu), `browserDefaults.js` (no browser right-click menu, dragging or text selection; the game will have its own right-click menus).
   - `views/` — one file per page's content; register it in `views/index.js`. A view may return a cleanup function (stop listeners/animations) that runs when leaving the page. Pages without one show `placeholder.js`.
 
 ## Cache busting
@@ -25,6 +25,11 @@ The CSS and `js/main.js` links in `index.html` end in `?v=N`. Bump N (all of the
 
 ## Running locally
 ES modules don't load from `file://`. Serve the folder: `python3 -m http.server` then open http://localhost:8000.
+
+## Game design notes
+- **Discovery:** recipes and stations are hidden until the player has had any of their materials (`state.seen`). No long lists of locked things.
+- **Stations vs buildings:** stations (Workbench, Campfire, Furnace) are built once in the Village and unlock a group of recipes. Buildings (Well, Cow Pen) will produce resources over time; not built yet.
+- **Gates:** each recipe has one station (or none) plus one skill level. Stations unlock new *kinds* of things; levels unlock better tiers within them.
 
 ## Scope
 Only add what is asked for. Suggest extras instead of adding them.

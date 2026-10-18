@@ -3,6 +3,7 @@
 import { MENU_GROUPS } from "../data/pages.js";
 import { onChange, skillXp } from "../game/state.js";
 import { levelFromXp } from "../game/xp.js";
+import { pageHasNew } from "../game/discovery.js";
 
 const sidebarEl = document.getElementById("sidebar");
 const menuEl = document.getElementById("menu");
@@ -16,7 +17,16 @@ export function renderSidebar() {
   scrimEl.addEventListener("click", closeSidebar);
 
   updateLevels();
+  updateNewDots();
   onChange(updateLevels);
+  onChange(updateNewDots);
+}
+
+// A small dot on pages with something new to see (e.g. a newly discovered recipe).
+function updateNewDots() {
+  menuEl.querySelectorAll(".menu-new").forEach((dot) => {
+    dot.hidden = !pageHasNew(dot.dataset.page);
+  });
 }
 
 // Keep each skill's "Lv" in the menu up to date.
@@ -56,6 +66,7 @@ function itemHtml(page) {
     <a class="menu-item" href="#${page.id}" data-id="${page.id}" style="--accent:${page.color}">
       <span class="menu-icon">${page.icon}</span>
       <span class="menu-label">${page.name}</span>
+      <span class="menu-new" data-page="${page.id}" title="Something new" hidden></span>
       ${page.skill ? `<span class="menu-level" data-skill="${page.id}">Lv 1</span>` : ""}
     </a>
   `;

@@ -40,7 +40,7 @@
 }
 /* Can't start yet: missing a tool or materials. Everything fades except the missing-tool badge. */
 .action-card.locked { cursor: not-allowed; }
-.action-card.locked > :not(.needs-tool) { opacity: 0.45; }
+.action-card.locked > :not(.needs-tool, .needs-level, .new-tag) { opacity: 0.45; }
 .action-card.locked:hover { transform: none; border-color: var(--line); }
 
 /* Missing tool: its icon in the top-right corner with a red prohibition sign over it */
@@ -71,6 +71,53 @@
   );
 }
 .action-card:not(.locked) .needs-tool { display: none; }
+
+/* "New" badge (top-left) on a recipe or station seen for the first time */
+.new-tag {
+  position: absolute;
+  top: 8px;
+  left: 8px;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: var(--gold);
+  color: #2a1e05;
+  font-size: 9px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.6px;
+}
+
+/* Level needed (top-right), shown while your level is too low */
+.needs-level {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: rgba(229, 83, 75, 0.18);
+  border: 1px solid rgba(229, 83, 75, 0.6);
+  color: #f0a39b;
+  font-size: 10px;
+  font-weight: 800;
+}
+.needs-level[hidden] { display: none; }
+.action-card.locked > .needs-level { opacity: 1; }
+
+/* Built station: no longer clickable */
+.action-card.built { cursor: default; }
+.action-card.built:hover { transform: none; border-color: var(--line); }
+.built-tag {
+  margin-top: 8px;
+  font-size: 11px;
+  font-weight: 800;
+  color: #7cc47f;
+}
+.station-unlocks {
+  max-width: 100%;
+  font-size: 10px;
+  color: var(--muted);
+  text-align: center;
+}
 
 /* Recipe ingredients: "🌿 2/3", red when you don't have enough */
 .recipe-inputs {
