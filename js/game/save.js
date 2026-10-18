@@ -11,7 +11,7 @@ const SAVE_VERSION = 2; // 2: new XP scale (actions give ~1 XP early)
 
 // Old id -> new id, so progress carries over when something is renamed.
 const RENAMED_SKILLS = { exploring: "foraging" };
-const RENAMED_ITEMS = { pebble: "flint", stone_axe: "flint_axe", stone_pickaxe: "flint_pickaxe" };
+const RENAMED_ITEMS = { pebble: "flint", stone_axe: "flint_axe", stone_pickaxe: "flint_pickaxe", uncut_gem: "quartz" };
 const renamedItem = (id) => RENAMED_ITEMS[id] || id;
 
 export function loadGame() {

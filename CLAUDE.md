@@ -27,10 +27,10 @@ The CSS and `js/main.js` links in `index.html` end in `?v=N`. Bump N (all of the
 ES modules don't load from `file://`. Serve the folder: `python3 -m http.server` then open http://localhost:8000.
 
 ## Game design notes
-- **Discovery:** recipes and stations are hidden until the player has had any of their materials (`state.seen`). No long lists of locked things.
+- **Discovery:** stations and buildings appear once the player has had any of their materials; recipes appear once the player has had their main ingredient (first input) (`state.seen`). No long lists of locked things.
 - **Stations vs buildings:** stations (Workbench, Campfire, Furnace) are built once in the Village and unlock a group of recipes. Buildings (Well, later Cow Pen) produce resources over time on their own.
 - **Stations belong to skills:** each station has a `skill`; its recipes show as a tab on that skill's page (Crafting: [By hand] [Workbench]; later Cooking: [Campfire], Smithing: [Furnace] [Anvil]). One tab at a time, never one giant page. Clicking a built station in the Village opens its tab.
-- **Mining:** sites (Quarry, later Hillside, Deep Cave) unlock with Mining level; inside a site you pick the rock and always get its ore, plus small rare-find chances. Foraging stays the random one.
+- **Mining:** 5 sites unlock with Mining level: Quarry 1 (stone, copper, tin, clay; quartz), Hillside 15 (iron, coal; sapphire), Old Mine 40 (silver, mithril; emerald), Deep Cave 55 (gold, adamant; ruby), Starfall Crater 80 (star ore; diamond). Metal tiers: Bronze, Iron, Steel (iron + coal), Mithril, Adamant, Starsteel; Silver and Gold for jewelry; inside a site you pick the rock and always get its ore, plus small rare-find chances. Foraging stays the random one.
 - **Gates:** each recipe has one station (or none) plus one skill level. Stations unlock new *kinds* of things; levels unlock better tiers within them.
 
 ## XP and levels

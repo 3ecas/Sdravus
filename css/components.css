@@ -64,6 +64,7 @@
   background: color-mix(in srgb, var(--accent) 16%, var(--panel));
 }
 .tab.unbuilt { opacity: 0.6; }
+.tab-level { font-size: 10px; color: #f0a39b; }
 .tab-dot {
   width: 6px;
   height: 6px;

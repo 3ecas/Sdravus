@@ -61,13 +61,14 @@ function tabsHtml(skill, places, active, from) {
       ${places.map((p) => `
         <a class="tab${p === active ? " active" : ""}${hasLevelFor(skill, p) ? "" : " unbuilt"}" href="${routeHref(skill, p.id, from)}">
           <span>${p.icon}</span>${p.name}
+          ${hasLevelFor(skill, p) ? "" : `<span class="tab-level">Lv ${p.level}</span>`}
         </a>
       `).join("")}
     </nav>
   `;
 }
 
-// "Rare finds here: 💎 Uncut Gem"
+// "Rare finds here: 💠 Quartz"
 function rareHtml(place) {
   if (!place.rare?.length) return "";
   const list = place.rare.map(({ item }) => `${getItem(item).icon} ${getItem(item).name}`).join(", ");

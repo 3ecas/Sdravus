@@ -12,8 +12,9 @@ function hasSeenAny(list) {
 }
 
 // Recipes you know about, whether or not their station is built yet.
+// A recipe is revealed by its main ingredient (its first input).
 export function knownRecipes() {
-  return RECIPES.filter((recipe) => hasSeenAny(recipe.inputs));
+  return RECIPES.filter((recipe) => state.seen[recipe.inputs[0].item]);
 }
 
 // Known recipes you can see on the Crafting page (hand recipes + built stations).

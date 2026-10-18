@@ -1,7 +1,8 @@
 // Recipes for skills that make things (Crafting, Cooking...).
 // skill: which skill page it shows on and gives XP to; level is that skill's level.
 // station: null = by hand, or the Village station needed (e.g. "workbench").
-// inputs are used up each time.
+// inputs are used up each time. The FIRST input is the main ingredient: having it is
+// what reveals the recipe (so common things like charcoal don't reveal every bar).
 // repeat: false crafts one at a time (tools: you only need one).
 // A recipe shows up once you've had any of its inputs (and its station is built).
 
@@ -165,6 +166,111 @@ export const RECIPES = [
       { item: "charcoal",   amount: 1 },
     ],
     output: { item: "bronze_bar", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "iron_bar",
+    name: "Iron Bar",
+    skill: "smithing",
+    station: "furnace",
+    level: 15,
+    xp: 3,
+    seconds: 5,
+    inputs: [
+      { item: "iron_ore", amount: 1 },
+      { item: "charcoal", amount: 1 },
+    ],
+    output: { item: "iron_bar", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "steel_bar",
+    name: "Steel Bar",
+    skill: "smithing",
+    station: "furnace",
+    level: 30,
+    xp: 8,
+    seconds: 6,
+    inputs: [
+      { item: "iron_ore", amount: 1 },
+      { item: "coal", amount: 2 },
+    ],
+    output: { item: "steel_bar", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "silver_bar",
+    name: "Silver Bar",
+    skill: "smithing",
+    station: "furnace",
+    level: 40,
+    xp: 15,
+    seconds: 6,
+    inputs: [
+      { item: "silver_ore", amount: 1 },
+      { item: "charcoal", amount: 1 },
+    ],
+    output: { item: "silver_bar", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "mithril_bar",
+    name: "Mithril Bar",
+    skill: "smithing",
+    station: "furnace",
+    level: 45,
+    xp: 22,
+    seconds: 6,
+    inputs: [
+      { item: "mithril_ore", amount: 1 },
+      { item: "coal", amount: 3 },
+    ],
+    output: { item: "mithril_bar", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "gold_bar",
+    name: "Gold Bar",
+    skill: "smithing",
+    station: "furnace",
+    level: 55,
+    xp: 40,
+    seconds: 6,
+    inputs: [
+      { item: "gold_ore", amount: 1 },
+      { item: "charcoal", amount: 1 },
+    ],
+    output: { item: "gold_bar", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "adamant_bar",
+    name: "Adamant Bar",
+    skill: "smithing",
+    station: "furnace",
+    level: 60,
+    xp: 55,
+    seconds: 7,
+    inputs: [
+      { item: "adamant_ore", amount: 1 },
+      { item: "coal", amount: 4 },
+    ],
+    output: { item: "adamant_bar", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "starsteel_bar",
+    name: "Starsteel Bar",
+    skill: "smithing",
+    station: "furnace",
+    level: 85,
+    xp: 330,
+    seconds: 8,
+    inputs: [
+      { item: "star_ore", amount: 1 },
+      { item: "coal", amount: 5 },
+    ],
+    output: { item: "starsteel_bar", amount: 1 },
     repeat: true,
   },
 ];

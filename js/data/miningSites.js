@@ -1,8 +1,10 @@
 // Mining sites: places you mine, each with its own rocks (a tab on the Mining page).
-// You pick a rock and always get its ore. Each hit also has a small chance of a rare find.
+// Sites unlock with Mining level. Inside a site you pick a rock and always get its ore.
+// Each hit also has a small chance of the site's rare find (gems get better deeper down).
 //
 // site.level: Mining level needed to mine there.
 // rock: level (Mining level), tool (needed on the Tool Belt), xp and seconds per hit, item it gives.
+//       XP follows the guide in CLAUDE.md (~x1.066 per level), scaled up for slower rocks.
 // rare: [{ item, chance }] rolled on every hit at the site (0.02 = 2%).
 
 const PICKAXE = "flint_pickaxe";
@@ -17,7 +19,51 @@ export const MINING_SITES = [
       { id: "rock",   name: "Rock",        icon: "⛰️", level: 1, tool: PICKAXE, xp: 1, seconds: 4, item: "stone" },
       { id: "copper", name: "Copper Rock", icon: "🟠", level: 3, tool: PICKAXE, xp: 2, seconds: 4, item: "copper_ore" },
       { id: "tin",    name: "Tin Rock",    icon: "⚪", level: 5, tool: PICKAXE, xp: 3, seconds: 4, item: "tin_ore" },
+      { id: "clay",   name: "Clay Pit",    icon: "🏺", level: 8, tool: PICKAXE, xp: 2, seconds: 4, item: "clay" },
     ],
-    rare: [{ item: "uncut_gem", chance: 0.02 }],
+    rare: [{ item: "quartz", chance: 0.02 }],
+  },
+  {
+    id: "hillside",
+    name: "Hillside",
+    icon: "⛰️",
+    level: 15,
+    rocks: [
+      { id: "iron", name: "Iron Rock", icon: "🟤", level: 15, tool: PICKAXE, xp: 3, seconds: 4, item: "iron_ore" },
+      { id: "coal", name: "Coal Rock", icon: "⬛", level: 30, tool: PICKAXE, xp: 8, seconds: 5, item: "coal" },
+    ],
+    rare: [{ item: "sapphire", chance: 0.015 }],
+  },
+  {
+    id: "old_mine",
+    name: "Old Mine",
+    icon: "🕳️",
+    level: 40,
+    rocks: [
+      { id: "silver",  name: "Silver Rock",  icon: "🔘", level: 40, tool: PICKAXE, xp: 15, seconds: 5, item: "silver_ore" },
+      { id: "mithril", name: "Mithril Rock", icon: "🔵", level: 45, tool: PICKAXE, xp: 21, seconds: 5, item: "mithril_ore" },
+    ],
+    rare: [{ item: "emerald", chance: 0.012 }],
+  },
+  {
+    id: "deep_cave",
+    name: "Deep Cave",
+    icon: "🦇",
+    level: 55,
+    rocks: [
+      { id: "gold",    name: "Gold Rock",    icon: "🟡", level: 55, tool: PICKAXE, xp: 40, seconds: 5, item: "gold_ore" },
+      { id: "adamant", name: "Adamant Rock", icon: "🟢", level: 60, tool: PICKAXE, xp: 54, seconds: 5, item: "adamant_ore" },
+    ],
+    rare: [{ item: "ruby", chance: 0.01 }],
+  },
+  {
+    id: "starfall_crater",
+    name: "Starfall Crater",
+    icon: "☄️",
+    level: 80,
+    rocks: [
+      { id: "fallen_star", name: "Fallen Star", icon: "🌟", level: 85, tool: PICKAXE, xp: 320, seconds: 6, item: "star_ore" },
+    ],
+    rare: [{ item: "diamond", chance: 0.008 }],
   },
 ];
