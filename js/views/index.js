@@ -5,8 +5,10 @@
 
 import { renderPlaceholder } from "./placeholder.js";
 import { renderLumberjack } from "./lumberjack.js";
+import { renderStash } from "./stash.js";
 
 const VIEWS = {
+  stash: renderStash,
   lumberjack: renderLumberjack,
 };
 

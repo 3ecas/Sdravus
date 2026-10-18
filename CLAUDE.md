@@ -10,7 +10,7 @@ This will grow into a big game, so keep things separated and `index.html` clean.
 
 - `index.html` — page shell only: links to CSS files and the `js/main.js` module. No inline scripts or styles.
 - `assets/` — images, icons, favicon.
-- `css/` — one file per area: `base.css` (tokens, reset), `layout.css` (app shell, mobile), `sidebar.css`, `view.css`, `actions.css` (skill action cards). Add a new file per new area and link it in `index.html`.
+- `css/` — one file per area: `base.css` (tokens, reset), `layout.css` (app shell, mobile), `sidebar.css`, `view.css`, `actions.css` (skill action cards), `stash.css`. Add a new file per new area and link it in `index.html`.
 - `js/` — ES modules (`import`/`export`), no globals.
   - `main.js` — entry point, wires everything together.
   - `config.js` — game-wide settings (`MAX_LEVEL` is 100).
