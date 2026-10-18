@@ -11,16 +11,11 @@ export const MENU_GROUPS = [
       { id: "gear",    name: "Gear",    icon: "🪖", color: "#8fa3b8" },
     ],
   },
-  // Ordered the way a new player progresses: explore -> gather -> make things -> fight.
-  {
-    title: "Explore",
-    pages: [
-      { id: "exploring", name: "Exploring", icon: "🧭", color: "#5bb5a2", skill: true },
-    ],
-  },
+  // Ordered the way a new player progresses: gather -> make things -> fight.
   {
     title: "Gathering",
     pages: [
+      { id: "foraging",   name: "Foraging",   icon: "🧺", color: "#5bb5a2", skill: true },
       { id: "lumberjack", name: "Lumberjack", icon: "🪓", color: "#b98a52", skill: true },
       { id: "fishing",    name: "Fishing",    icon: "🎣", color: "#4fb3c9", skill: true },
       { id: "mining",     name: "Mining",     icon: "⛏️", color: "#9aa0a8", skill: true },

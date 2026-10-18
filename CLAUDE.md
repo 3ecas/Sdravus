@@ -10,13 +10,13 @@ This will grow into a big game, so keep things separated and `index.html` clean.
 
 - `index.html` — page shell only: links to CSS files and the `js/main.js` module. No inline scripts or styles.
 - `assets/` — images, icons, favicon.
-- `css/` — one file per area: `base.css` (tokens, reset), `layout.css` (app shell, mobile), `sidebar.css`, `view.css`, `components.css` (shared bits: `.panel`, `.panel-row`, `.item-count`), `actions.css` (skill action cards), `explore.css` (area cards), `stash.css`, `gear.css`, `context-menu.css`. Add a new file per new area and link it in `index.html`.
+- `css/` — one file per area: `base.css` (tokens, reset), `layout.css` (app shell, mobile), `sidebar.css`, `view.css`, `components.css` (shared bits: `.panel`, `.panel-row`, `.item-count`), `actions.css` (skill action cards), `areas.css` (Foraging area cards), `stash.css`, `gear.css`, `context-menu.css`. Add a new file per new area and link it in `index.html`.
 - `js/` — ES modules (`import`/`export`), no globals.
   - `main.js` — entry point, wires everything together.
   - `config.js` — game-wide settings (`MAX_LEVEL` is 100, `BACKPACK_SLOTS`, `TOOL_BELT_SLOTS`).
   - `router.js` — URL hash routing.
-  - `data/` — static game data: `pages.js` (menu), `items.js`, `areas.js` (Exploring), `trees.js`, `recipes.js`, `gear.js` (equipment slots).
-  - `game/` — game rules, no DOM: `state.js` (player XP/items + `onChange`/`notify`), `xp.js` (level curve), `actions.js` (the one repeating idle action), `save.js` (localStorage save/load; bump `SAVE_VERSION` if the save format changes), `toolBelt.js` (equip/unequip tools; skills check the belt for tools), one file per skill (`exploring.js`, `lumberjack.js`, `crafting.js`). Action `onComplete` returns gains like `[{ item, amount }]`. `itemActions.js` lists right-click actions per item (add item-specific ones to `ITEM_ACTIONS`).
+  - `data/` — static game data: `pages.js` (menu), `items.js`, `areas.js` (Foraging areas), `trees.js`, `recipes.js`, `gear.js` (equipment slots).
+  - `game/` — game rules, no DOM: `state.js` (player XP/items + `onChange`/`notify`), `xp.js` (level curve), `actions.js` (the one repeating idle action), `save.js` (localStorage save/load; bump `SAVE_VERSION` if the save format changes; when renaming a skill or item id, add it to `RENAMED_SKILLS` / `RENAMED_ITEMS` so saves carry over), `toolBelt.js` (equip/unequip tools; skills check the belt for tools), one file per skill (`foraging.js`, `lumberjack.js`, `crafting.js`). Action `onComplete` returns gains like `[{ item, amount }]`. `itemActions.js` lists right-click actions per item (add item-specific ones to `ITEM_ACTIONS`).
   - `ui/` — shared UI pieces: `sidebar.js`, `view.js` (listen to `onChange`), `actionCards.js` (progress bar + "+1" pops for any `[data-action]` card), `format.js`, `contextMenu.js` (the game's right-click menu), `browserDefaults.js` (no browser right-click menu, dragging or text selection; the game will have its own right-click menus).
   - `views/` — one file per page's content; register it in `views/index.js`. A view may return a cleanup function (stop listeners/animations) that runs when leaving the page. Pages without one show `placeholder.js`.
 

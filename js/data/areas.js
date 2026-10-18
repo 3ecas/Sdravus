@@ -1,4 +1,4 @@
-// Places to explore. Each cycle finds one random item from `finds`;
+// Places to forage. Each cycle finds one random item from `finds`;
 // a higher weight means it turns up more often.
 
 export const AREAS = [
@@ -12,7 +12,7 @@ export const AREAS = [
     finds: [
       { item: "fiber",   weight: 30 },
       { item: "branch",  weight: 28 },
-      { item: "pebble",  weight: 25 },
+      { item: "flint",   weight: 25 },
       { item: "berries", weight: 12 },
       { item: "flower",  weight: 5 },
     ],

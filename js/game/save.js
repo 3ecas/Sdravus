@@ -6,6 +6,10 @@ import { state, onChange } from "./state.js";
 const SAVE_KEY = "sdravus-save";
 const SAVE_VERSION = 1;
 
+// Old id -> new id, so progress carries over when something is renamed.
+const RENAMED_SKILLS = { exploring: "foraging" };
+const RENAMED_ITEMS = { pebble: "flint" };
+
 export function loadGame() {
   let data;
   try {
@@ -16,11 +20,13 @@ export function loadGame() {
   if (!data || data.version !== SAVE_VERSION) return;
 
   // Only copy known skills and valid numbers, so an old or edited save can't break the game.
-  for (const [id, skill] of Object.entries(data.skills || {})) {
-    if (state.skills[id] && isCount(skill.xp)) state.skills[id].xp = skill.xp;
+  for (const [oldId, skill] of Object.entries(data.skills || {})) {
+    const id = RENAMED_SKILLS[oldId] || oldId;
+    if (state.skills[id] && isCount(skill.xp)) state.skills[id].xp = Math.max(state.skills[id].xp, skill.xp);
   }
-  for (const [id, count] of Object.entries(data.items || {})) {
-    if (isCount(count)) state.items[id] = count;
+  for (const [oldId, count] of Object.entries(data.items || {})) {
+    const id = RENAMED_ITEMS[oldId] || oldId;
+    if (ITEMS[id] && isCount(count)) state.items[id] = (state.items[id] || 0) + count;
   }
   (data.toolBelt || []).forEach((id, slot) => {
     if (slot < state.toolBelt.length && ITEMS[id]?.tool) state.toolBelt[slot] = id;

@@ -1,18 +1,18 @@
-// Exploring page: area cards with a picture of the place. Click to explore, click again to stop.
+// Foraging page: area cards with a picture of the place. Click to forage, click again to stop.
 // The "?" shows what can be found there.
 
 import { AREAS, getArea } from "../data/areas.js";
 import { getItem } from "../data/items.js";
-import { toggleExplore, exploreActionId } from "../game/exploring.js";
+import { toggleForage, forageActionId } from "../game/foraging.js";
 import { bindActionCards } from "../ui/actionCards.js";
 
-export function renderExploring(container) {
+export function renderForaging(container) {
   container.innerHTML = `<div class="area-grid">${AREAS.map(areaCardHtml).join("")}</div>`;
 
   container.querySelectorAll(".area-card").forEach((card) => {
     card.addEventListener("click", (event) => {
       if (event.target.closest(".info-btn")) return; // "?" only shows the list
-      toggleExplore(getArea(card.dataset.id));
+      toggleForage(getArea(card.dataset.id));
     });
   });
 
@@ -21,7 +21,7 @@ export function renderExploring(container) {
 
 function areaCardHtml(area) {
   return `
-    <div class="area-card" role="button" tabindex="0" data-id="${area.id}" data-action="${exploreActionId(area)}">
+    <div class="area-card" role="button" tabindex="0" data-id="${area.id}" data-action="${forageActionId(area)}">
       <div class="area-bg" style="background-image:url('${area.image}')"></div>
       <span class="info-btn" tabindex="0" aria-label="What can be found here">?
         <span class="info-pop">

@@ -20,7 +20,7 @@ export const RECIPES = [
     seconds: 4,
     inputs: [
       { item: "branch", amount: 1 },
-      { item: "pebble", amount: 1 },
+      { item: "flint",  amount: 1 },
       { item: "twine",  amount: 1 },
     ],
     output: { item: "stone_axe", amount: 1 },
