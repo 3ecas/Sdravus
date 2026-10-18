@@ -1,0 +1,70 @@
+/* Sidebar contents: brand and menu items. */
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 4px 10px 18px;
+  border-bottom: 1px solid var(--line);
+  margin-bottom: 8px;
+}
+.brand-mark { font-size: 26px; }
+.brand-name {
+  font-family: "Cinzel", serif;
+  font-size: 22px;
+  color: var(--gold);
+  letter-spacing: 1px;
+}
+
+.menu-group { padding: 8px 0; }
+.menu-group + .menu-group { border-top: 1px solid var(--line); }
+
+.menu-heading {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.4px;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding: 8px 12px 6px;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  margin: 2px 0;
+  border-radius: 10px;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 600;
+  transition: background 0.15s, transform 0.15s;
+}
+.menu-item:hover { background: var(--panel-2); }
+.menu-item:active { transform: scale(0.98); }
+
+.menu-icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 9px;
+  display: grid;
+  place-items: center;
+  font-size: 17px;
+  background: color-mix(in srgb, var(--accent) 18%, transparent);
+  flex-shrink: 0;
+}
+
+.menu-label { flex: 1; }
+
+.menu-level {
+  font-size: 12px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.menu-item.active {
+  background: color-mix(in srgb, var(--accent) 16%, var(--panel));
+  box-shadow: inset 3px 0 0 var(--accent);
+}
+.menu-item.active .menu-icon { background: color-mix(in srgb, var(--accent) 32%, transparent); }
+.menu-item.active .menu-level { color: var(--accent); }

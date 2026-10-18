@@ -1,0 +1,24 @@
+/* Design tokens, reset and page defaults. */
+
+:root {
+  --bg: #1b1f2a;
+  --panel: #232836;
+  --panel-2: #2b3142;
+  --line: #343b4f;
+  --text: #e9e6df;
+  --muted: #9198a8;
+  --gold: #e8b04a;
+  --sidebar-w: 248px;
+  --radius: 12px;
+}
+
+* { box-sizing: border-box; }
+
+html, body { margin: 0; height: 100%; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: "Nunito", system-ui, sans-serif;
+  font-size: 15px;
+}
