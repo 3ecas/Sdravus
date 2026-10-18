@@ -3,13 +3,14 @@
 
 import { getItem } from "../data/items.js";
 import { itemCount } from "../game/state.js";
+import { iconHtml } from "./format.js";
 
 export function costHtml(list) {
   return `
     <span class="recipe-inputs">
       ${list.map(({ item, amount }, index) => `
         <span class="recipe-input" data-input="${index}" title="${getItem(item).name}">
-          ${getItem(item).icon} <span class="have">0</span>/${amount}
+          ${iconHtml(getItem(item))} <span class="have">0</span>/${amount}
         </span>
       `).join("")}
     </span>

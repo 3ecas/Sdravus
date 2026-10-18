@@ -18,6 +18,7 @@ import { levelFromXp } from "../game/xp.js";
 import { routeHref } from "../router.js";
 import { bindActionCards } from "../ui/actionCards.js";
 import { costHtml, updateCost } from "../ui/costList.js";
+import { iconHtml } from "../ui/format.js";
 
 const HAND = { id: "hand", name: "By hand", icon: "✋" };
 
@@ -120,7 +121,7 @@ function recipeCardHtml(recipe, isNewRecipe) {
     <button class="action-card" data-id="${recipe.id}" data-action="${craftActionId(recipe)}">
       ${isNewRecipe ? `<span class="new-tag">New</span>` : ""}
       <span class="needs-level" title="Needs ${getPage(recipe.skill).name} level ${recipe.level}" hidden>Lv ${recipe.level}</span>
-      <span class="action-icon">${output.icon}</span>
+      <span class="action-icon">${iconHtml(output)}</span>
       <span class="action-name">${recipe.name}</span>
       ${costHtml(recipe.inputs)}
       <span class="action-meta">

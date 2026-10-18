@@ -1,4 +1,9 @@
-// Every item the player can own. tool: true means it can go on the Tool Belt.
+// Every item the player can own.
+// tool: { type, tier, speed } means it goes on the Tool Belt. type: "axe" / "pickaxe";
+//   tier: which trees/rocks it can work (a node needs a tool of at least its toolTier);
+//   speed: how much faster than a flint tool (0.2 = 20% faster). Planned ladder:
+//   Flint 0, Bronze 0.2, Iron 0.35, Steel 0.45, Mithril 0.55, Adamant 0.62, Starsteel 0.7.
+// tint: optional colour tint for the icon, to tell tiers apart (see .tint-* in components.css).
 
 export const ITEMS = {
   // Found while foraging
@@ -36,10 +41,11 @@ export const ITEMS = {
 
   // Crafted
   twine:       { name: "Twine",       icon: "🧶" },
-  flint_axe:     { name: "Flint Axe",     icon: "🪓", tool: true },
-  flint_pickaxe: { name: "Flint Pickaxe", icon: "⛏️", tool: true },
+  flint_axe:     { name: "Flint Axe",     icon: "🪓", tool: { type: "axe",     tier: 1, speed: 0 } },
+  flint_pickaxe: { name: "Flint Pickaxe", icon: "⛏️", tool: { type: "pickaxe", tier: 1, speed: 0 } },
   planks:      { name: "Planks",      icon: "🟫" },
   wooden_bowl: { name: "Wooden Bowl", icon: "🥣" },
+  wooden_handle: { name: "Wooden Handle", icon: "🦯" },
 
   // Cooked
   roasted_berries: { name: "Roasted Berries", icon: "🍢" },
@@ -57,8 +63,19 @@ export const ITEMS = {
   gold_bar:      { name: "Gold Bar",      icon: "🥇" },
   adamant_bar:   { name: "Adamant Bar",   icon: "🟩" },
   starsteel_bar: { name: "Starsteel Bar", icon: "⭐" },
+
+  // Anvil (Smithing): metal tools
+  bronze_axe:     { name: "Bronze Axe",     icon: "🪓", tint: "bronze", tool: { type: "axe",     tier: 2, speed: 0.2 } },
+  bronze_pickaxe: { name: "Bronze Pickaxe", icon: "⛏️", tint: "bronze", tool: { type: "pickaxe", tier: 2, speed: 0.2 } },
 };
 
 export function getItem(id) {
   return ITEMS[id];
+}
+
+// The weakest tool of a type that's at least this tier (for "you need this" badges).
+export function toolForTier(type, tier) {
+  return Object.values(ITEMS)
+    .filter((item) => item.tool?.type === type && item.tool.tier >= tier)
+    .sort((a, b) => a.tool.tier - b.tool.tier)[0];
 }

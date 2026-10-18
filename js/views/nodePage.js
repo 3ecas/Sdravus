@@ -2,16 +2,18 @@
 // Nodes are grouped into places (Mining: sites like the Quarry). With `tabs: true` each
 // place is a tab (#mining/quarry); otherwise the single place's nodes are shown directly.
 // Click a node to start, click again to stop. A node you can't use yet is greyed out with
-// the missing tool crossed out (top-right) and/or the level needed (top-left).
+// the tool it needs crossed out (top-right) and/or the level needed (top-left).
+// The time shown is with your best tool on the belt.
 //
 // nodePage("mining", MINING_SITES, { verb: "Mining", tabs: true }) returns the render function.
 // A place is { id, name, icon, level, nodes (or rocks), rare: [{ item, chance }] }.
 
-import { getItem } from "../data/items.js";
+import { getItem, toolForTier } from "../data/items.js";
 import { onChange } from "../game/state.js";
-import { toggleGather, gatherActionId, hasToolFor, hasLevelFor } from "../game/gathering.js";
+import { toggleGather, gatherActionId, hasToolFor, hasLevelFor, gatherSeconds } from "../game/gathering.js";
 import { routeHref } from "../router.js";
 import { bindActionCards } from "../ui/actionCards.js";
+import { iconHtml, formatSeconds } from "../ui/format.js";
 
 export function nodePage(skill, places, { verb, tabs = false }) {
   return (container, page, route) => {
@@ -41,6 +43,7 @@ export function nodePage(skill, places, { verb, tabs = false }) {
         card.classList.toggle("locked", !(hasTool && hasLevel));
         card.querySelector(".needs-tool")?.toggleAttribute("hidden", hasTool);
         card.querySelector(".needs-level").hidden = hasLevel;
+        card.querySelector(".node-time").textContent = formatSeconds(gatherSeconds(node));
       });
     }
 
@@ -76,18 +79,18 @@ function rareHtml(place) {
 }
 
 function nodeCardHtml(skill, node) {
-  const tool = node.tool ? getItem(node.tool) : null;
+  const tool = node.toolType ? toolForTier(node.toolType, node.toolTier) : null;
   return `
     <button class="action-card" data-id="${node.id}" data-action="${gatherActionId(skill, node)}">
       <span class="needs-level left" title="Needs level ${node.level}" hidden>Lv ${node.level}</span>
       <span class="action-icon">${node.icon}</span>
       <span class="action-name">${node.name}</span>
       <span class="action-meta">
-        <span>${node.seconds}s</span>
+        <span class="node-time">${formatSeconds(node.seconds)}</span>
         <span>+${node.xp} XP</span>
       </span>
       <span class="action-progress"><span class="action-progress-fill"></span></span>
-      ${tool ? `<span class="needs-tool" title="Needs ${tool.name} on the Tool Belt">${tool.icon}</span>` : ""}
+      ${tool ? `<span class="needs-tool" title="Needs a ${tool.name} or better on the Tool Belt">${iconHtml(tool)}</span>` : ""}
     </button>
   `;
 }

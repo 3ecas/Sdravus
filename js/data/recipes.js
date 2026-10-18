@@ -78,6 +78,18 @@ export const RECIPES = [
     output: { item: "wooden_bowl", amount: 1 },
     repeat: true,
   },
+  {
+    id: "wooden_handle",
+    name: "Wooden Handle",
+    skill: "crafting",
+    station: "workbench",
+    level: 2,
+    xp: 1,
+    seconds: 3,
+    inputs: [{ item: "logs", amount: 1 }],
+    output: { item: "wooden_handle", amount: 1 },
+    repeat: true,
+  },
 
   // Campfire (Cooking)
   {
@@ -272,6 +284,38 @@ export const RECIPES = [
     ],
     output: { item: "starsteel_bar", amount: 1 },
     repeat: true,
+  },
+
+  // Anvil (Smithing)
+  {
+    id: "bronze_axe",
+    name: "Bronze Axe",
+    skill: "smithing",
+    station: "anvil",
+    level: 5,
+    xp: 3,
+    seconds: 6,
+    inputs: [
+      { item: "bronze_bar",    amount: 2 },
+      { item: "wooden_handle", amount: 1 },
+    ],
+    output: { item: "bronze_axe", amount: 1 },
+    repeat: false,
+  },
+  {
+    id: "bronze_pickaxe",
+    name: "Bronze Pickaxe",
+    skill: "smithing",
+    station: "anvil",
+    level: 5,
+    xp: 3,
+    seconds: 6,
+    inputs: [
+      { item: "bronze_bar",    amount: 2 },
+      { item: "wooden_handle", amount: 1 },
+    ],
+    output: { item: "bronze_pickaxe", amount: 1 },
+    repeat: false,
   },
 ];
 

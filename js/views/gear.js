@@ -9,6 +9,7 @@ import { getItem } from "../data/items.js";
 import { state, onChange } from "../game/state.js";
 import { unequipTool } from "../game/toolBelt.js";
 import { openContextMenu } from "../ui/contextMenu.js";
+import { iconHtml } from "../ui/format.js";
 
 export function renderGear(container) {
   container.innerHTML = `
@@ -61,7 +62,7 @@ function toolSlotHtml(itemId, index) {
   const item = getItem(itemId);
   return `
     <div class="slot-box filled" data-slot="${index}" title="${item.name}">
-      <span class="slot-icon">${item.icon}</span>
+      <span class="slot-icon">${iconHtml(item)}</span>
     </div>
   `;
 }

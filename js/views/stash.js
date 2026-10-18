@@ -3,7 +3,7 @@
 
 import { ITEMS } from "../data/items.js";
 import { onChange, itemCount } from "../game/state.js";
-import { formatCount, escapeHtml } from "../ui/format.js";
+import { formatCount, escapeHtml, iconHtml } from "../ui/format.js";
 import { openContextMenu } from "../ui/contextMenu.js";
 import { getItemActions } from "../game/itemActions.js";
 
@@ -110,7 +110,7 @@ function cellHtml(id) {
   return `
     <div class="stash-cell" data-item="${id}" title="${item.name}: ${count.toLocaleString()}">
       <div class="stash-box">
-        <span class="stash-icon">${item.icon}</span>
+        <span class="stash-icon">${iconHtml(item)}</span>
         <span class="item-count">${formatCount(count)}</span>
       </div>
       <span class="stash-name">${item.name}</span>

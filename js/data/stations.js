@@ -42,6 +42,18 @@ export const STATIONS = [
     ],
     unlocks: "Smithing: charcoal, stone bricks, metal bars",
   },
+  {
+    id: "anvil",
+    name: "Anvil",
+    icon: "⚒️",
+    skill: "smithing",
+    seconds: 15,
+    cost: [
+      { item: "stone_bricks", amount: 5 },
+      { item: "bronze_bar",   amount: 3 },
+    ],
+    unlocks: "Smithing: metal tools",
+  },
 ];
 
 export function getStation(id) {
