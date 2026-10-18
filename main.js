@@ -30,14 +30,11 @@ const MENU = [
   {
     title: "Combat",
     items: [
-      { id: "attack",     name: "Attack",     icon: "⚔️", color: "#e0675a", blurb: "Land your hits more often in combat.", skill: true },
-      { id: "strength",   name: "Strength",   icon: "💪", color: "#ef9a4b", blurb: "Hit for more damage with each blow.", skill: true },
+      { id: "attack",     name: "Attack",     icon: "⚔️", color: "#e0675a", blurb: "Hit harder and more often in combat.", skill: true },
       { id: "defense",    name: "Defense",    icon: "🛡️", color: "#5f9bd6", blurb: "Take less damage from enemies.", skill: true },
-      { id: "health",     name: "Health",     icon: "❤️", color: "#e45f7d", blurb: "More hitpoints to survive longer fights.", skill: true },
+      { id: "vitality",   name: "Vitality",   icon: "❤️", color: "#e45f7d", blurb: "Grow tougher to survive longer fights.", skill: true },
       { id: "archery",    name: "Archery",    icon: "🏹", color: "#7cb86a", blurb: "Strike from a distance with bows.", skill: true },
       { id: "witchcraft", name: "Witchcraft", icon: "🔮", color: "#a97ad8", blurb: "Cast spells and brew curses.", skill: true },
-      { id: "prayer",     name: "Prayer",     icon: "🙏", color: "#f0d36b", blurb: "Call on blessings that boost you in battle.", skill: true },
-      { id: "slayer",     name: "Slayer",     icon: "💀", color: "#b07a8f", blurb: "Hunt down assigned monsters for rewards.", skill: true },
     ],
   },
 ];
