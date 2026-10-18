@@ -1,16 +1,16 @@
-// Saves progress (items, tool belt, built stations/buildings, villagers, discoveries) in the browser's
+// Saves progress (skill XP, items, tool belt, built stations/buildings, discoveries) in the browser's
 // localStorage, and loads it on startup.
 
 import { ITEMS } from "../data/items.js";
 import { getStation } from "../data/stations.js";
 import { getBuilding } from "../data/buildings.js";
 import { state, onChange } from "./state.js";
-import { WORK_SPOTS, villagerCount } from "./villagers.js";
 
 const SAVE_KEY = "sdravus-save";
-const SAVE_VERSION = 4; // 3: no XP or levels (older saves keep everything except XP). 4: villagers
+const SAVE_VERSION = 5; // 2: new XP scale (actions give ~1 XP early). 3-4: no-XP test versions (no skills, built counts). 5: XP is back
 
 // Old id -> new id, so progress carries over when something is renamed.
+const RENAMED_SKILLS = { exploring: "foraging" };
 const RENAMED_ITEMS = { pebble: "flint", stone_axe: "flint_axe", stone_pickaxe: "flint_pickaxe", uncut_gem: "quartz" };
 const renamedItem = (id) => RENAMED_ITEMS[id] || id;
 
@@ -22,8 +22,16 @@ export function loadGame() {
     return; // No access to storage, or a broken save: start fresh.
   }
   if (!data || !data.version || data.version > SAVE_VERSION) return;
+  // Version 1 saves earned ~10x more XP per action, so scale it down to keep progress fair.
+  const xpScale = data.version < 2 ? 0.1 : 1;
 
-  // Only copy known ids and valid numbers, so an old or edited save can't break the game.
+  // Only copy known skills and valid numbers, so an old or edited save can't break the game.
+  for (const [oldId, skill] of Object.entries(data.skills || {})) {
+    const id = RENAMED_SKILLS[oldId] || oldId;
+    if (state.skills[id] && isCount(skill.xp)) {
+      state.skills[id].xp = Math.max(state.skills[id].xp, Math.round(skill.xp * xpScale));
+    }
+  }
   for (const [oldId, count] of Object.entries(data.items || {})) {
     const id = renamedItem(oldId);
     if (ITEMS[id] && isCount(count)) state.items[id] = (state.items[id] || 0) + count;
@@ -32,18 +40,9 @@ export function loadGame() {
     const id = renamedItem(oldId);
     if (slot < state.toolBelt.length && ITEMS[id]?.tool) state.toolBelt[slot] = id;
   });
-  // ("stations" is the older name for "built"; older saves stored true instead of a count)
-  for (const [id, count] of Object.entries(data.built || data.stations || {})) {
-    if (getStation(id) || getBuilding(id)) state.built[id] = count === true ? 1 : Number(count) || 0;
-  }
-  // Villagers at known spots, never more than the Huts house.
-  let free = villagerCount();
-  for (const [key, count] of Object.entries(data.workers || {})) {
-    const n = Math.min(Math.floor(Number(count)) || 0, free);
-    if (WORK_SPOTS[key] && n > 0) {
-      state.workers[key] = n;
-      free -= n;
-    }
+  // ("stations" is the older name for "built"; versions 3-4 stored counts instead of true)
+  for (const id of Object.keys(data.built || data.stations || {})) {
+    if (getStation(id) || getBuilding(id)) state.built[id] = true;
   }
   for (const oldId of Object.keys(data.seen || {})) {
     const id = renamedItem(oldId);
@@ -60,8 +59,8 @@ export function loadGame() {
 }
 
 export function saveGame() {
-  const { items, toolBelt, built, workers, seen, viewed } = state;
-  const data = { version: SAVE_VERSION, items, toolBelt, built, workers, seen, viewed };
+  const { skills, items, toolBelt, built, seen, viewed } = state;
+  const data = { version: SAVE_VERSION, skills, items, toolBelt, built, seen, viewed };
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   } catch {

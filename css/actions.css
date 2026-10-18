@@ -1,4 +1,4 @@
-/* Clickable cards (trees, rocks, recipes, Village): click once to gather / make / build. */
+/* Skill action pages (Lumberjack, Crafting, and later Mining, Fishing...): clickable action cards. */
 
 /* Fixed-width columns, so cards stay compact instead of stretching on wide screens */
 .action-grid {
@@ -27,10 +27,12 @@
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
   transform: translateY(-2px);
 }
-/* Press feedback, but not when pressing the villager − / + buttons inside the card */
-.action-card:active:not(:has(.workers:active)) { transform: scale(0.94); }
-.action-card:active:not(:has(.workers:active)) .action-icon { transform: scale(0.9) rotate(-6deg); }
-.action-icon { transition: transform 0.08s; }
+.action-card:active { transform: scale(0.97); }
+
+.action-card.active {
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent), 0 6px 20px color-mix(in srgb, var(--accent) 25%, transparent);
+}
 
 .action-icon {
   font-size: 32px;
@@ -39,7 +41,7 @@
 }
 /* Can't start yet: missing a tool or materials. Everything fades except the missing-tool badge. */
 .action-card.locked { cursor: not-allowed; }
-.action-card.locked > :not(.needs-tool, .new-tag, .info-btn) { opacity: 0.45; }
+.action-card.locked > :not(.needs-tool, .needs-level, .new-tag, .info-btn) { opacity: 0.45; }
 .action-card.locked:hover { transform: none; border-color: var(--line); }
 
 /* Missing tool: its icon in the top-right corner with a red prohibition sign over it */
@@ -86,7 +88,23 @@
   letter-spacing: 0.6px;
 }
 
+/* Level needed (top-right), shown while your level is too low */
+.needs-level {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  padding: 1px 6px;
+  border-radius: 99px;
+  background: rgba(229, 83, 75, 0.18);
+  border: 1px solid rgba(229, 83, 75, 0.6);
+  color: #f0a39b;
+  font-size: 9px;
+  font-weight: 800;
+}
+.needs-level[hidden] { display: none; }
+.needs-level.left { right: auto; left: 6px; }
 .needs-tool[hidden] { display: none; }
+.action-card.locked > .needs-level { opacity: 1; }
 
 /* Built: no longer clickable to build. A built station links to its skill page instead. */
 .action-card.built { cursor: default; }
@@ -102,13 +120,6 @@
   font-weight: 800;
   color: #7cc47f;
 }
-.build-tag {
-  margin-top: 6px;
-  font-size: 10px;
-  font-weight: 800;
-  color: var(--accent);
-}
-.owned-count { color: var(--muted); font-weight: 800; }
 .built-tag {
   margin-top: 6px;
   font-size: 10px;
@@ -127,9 +138,14 @@
 }
 .recipe-input.short { color: #e86a5a; }
 
+.action-card.active .action-icon {
+  animation: chop 0.5s ease-in-out infinite alternate;
+  transform-origin: bottom center;
+}
+
 .action-name { font-size: 12px; font-weight: 700; }
 
-/* Small info line under the name, e.g. "+2 🪵" per click */
+/* Time on the left, XP on the right, above the progress bar */
 .action-meta {
   width: 100%;
   display: flex;
@@ -138,9 +154,7 @@
   font-size: 10px;
   color: var(--muted);
 }
-.action-meta.center { justify-content: center; font-size: 11px; color: var(--text); font-weight: 700; }
 
-/* Bar toward the next delivery: a building's (Village) or villagers' (work cards) */
 .action-progress {
   display: block;
   width: 100%;
@@ -156,40 +170,8 @@
   height: 100%;
   background: var(--accent);
 }
-.action-progress[hidden] { display: none; }
 
-/* Villagers working at a card: "− 👤 2 +" */
-.workers {
-  display: inline-flex;
-  align-items: center;
-  gap: 5px;
-  margin-top: 6px;
-  font-size: 11px;
-  font-weight: 700;
-}
-.workers[hidden] { display: none; }
-.worker-btn {
-  width: 18px;
-  height: 18px;
-  display: grid;
-  place-items: center;
-  padding: 0;
-  border-radius: 50%;
-  border: 1px solid var(--line);
-  background: var(--bg);
-  color: var(--text);
-  font: inherit;
-  font-size: 13px;
-  line-height: 1;
-  cursor: pointer;
-}
-.worker-btn:hover { border-color: var(--accent); }
-.worker-btn:active { transform: scale(0.9); }
-.worker-btn.disabled { opacity: 0.3; cursor: default; }
-.worker-btn.disabled:hover { border-color: var(--line); }
-.worker-count { min-width: 28px; text-align: center; }
-
-/* "+2 🪵" that floats up after a click or a delivery */
+/* "+1 🪵" that floats up when a chop finishes */
 .pop {
   position: absolute;
   top: 10px;
@@ -201,8 +183,10 @@
   animation: pop-up 0.9s ease-out both;
 }
 
-/* What villagers gathered: same pop, quieter */
-.pop.from-worker { font-size: 11px; color: var(--muted); }
+@keyframes chop {
+  from { transform: rotate(-3deg); }
+  to   { transform: rotate(3deg); }
+}
 
 @keyframes pop-up {
   from { opacity: 1; transform: translate(-50%, 0); }

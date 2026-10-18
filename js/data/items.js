@@ -1,8 +1,8 @@
 // Every item the player can own.
-// tool: { type, tier, yield } means it goes on the Tool Belt. type: "axe" / "pickaxe";
+// tool: { type, tier, yield } means it goes on the Tool Belt. type: "axe" / "pickaxe" / "bucket";
 //   tier: which trees/rocks it can work (a node needs a tool of at least its toolTier);
-//   yield: how many items each click gives. Planned ladder:
-//   Flint 1, Bronze 2, Iron 3, Steel 4, Mithril 5, Adamant 6, Starsteel 8.
+//   yield: items per gathering cycle (for buckets: how much water one trip carries).
+//   Axes/pickaxes: Flint 1, Bronze 2, Iron 3, Steel 4 (planned: Mithril 5, Adamant 6, Starsteel 8).
 // tint: optional colour tint for the icon, to tell tiers apart (see .tint-* in components.css).
 
 export const ITEMS = {
@@ -69,12 +69,16 @@ export const ITEMS = {
   starsteel_bar: { name: "Starsteel Bar", icon: "⭐" },
 
   // Anvil (Smithing): metal tools
+  nails:          { name: "Nails",          icon: "📌" },
   bronze_axe:     { name: "Bronze Axe",     icon: "🪓", tint: "bronze", tool: { type: "axe",     tier: 2, yield: 2 } },
   bronze_pickaxe: { name: "Bronze Pickaxe", icon: "⛏️", tint: "bronze", tool: { type: "pickaxe", tier: 2, yield: 2 } },
   iron_axe:       { name: "Iron Axe",       icon: "🪓", tint: "iron",   tool: { type: "axe",     tier: 3, yield: 3 } },
   iron_pickaxe:   { name: "Iron Pickaxe",   icon: "⛏️", tint: "iron",   tool: { type: "pickaxe", tier: 3, yield: 3 } },
   steel_axe:      { name: "Steel Axe",      icon: "🪓", tint: "steel",  tool: { type: "axe",     tier: 4, yield: 4 } },
   steel_pickaxe:  { name: "Steel Pickaxe",  icon: "⛏️", tint: "steel",  tool: { type: "pickaxe", tier: 4, yield: 4 } },
+
+  // Buckets: carry water from the Well. Planned tiers carry more per trip.
+  wooden_bucket:  { name: "Wooden Bucket",  icon: "🪣", tint: "oak",    tool: { type: "bucket",  tier: 1, yield: 5 } },
 };
 
 export function getItem(id) {

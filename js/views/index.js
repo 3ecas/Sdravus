@@ -21,8 +21,8 @@ const VIEWS = {
   crafting: recipePage("crafting", { verb: "craft", empty: "Nothing to craft yet. Go foraging to find materials." }),
   cooking: recipePage("cooking", { verb: "cook", empty: "Nothing to cook yet. Find some food first, like berries while foraging." }),
   smithing: recipePage("smithing", { verb: "smith", empty: "Nothing to smith yet. Get some logs or mine some stone first." }),
-  lumberjack: nodePage("lumberjack", [{ id: "trees", nodes: TREES }]),
-  mining: nodePage("mining", MINING_SITES, { tabs: true }),
+  lumberjack: nodePage("lumberjack", [{ id: "trees", level: 1, nodes: TREES }], { verb: "Chopping" }),
+  mining: nodePage("mining", MINING_SITES, { verb: "Mining", tabs: true }),
 };
 
 export function getPageView(id) {

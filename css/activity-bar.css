@@ -1,0 +1,57 @@
+/* Slim "what you're doing" bar at the top of the page (js/ui/activityBar.js). */
+
+.activity-bar {
+  position: sticky;
+  top: 0;
+  z-index: 4;
+  margin: 12px 32px 0;
+  max-width: 1036px; /* lines up with the page content below */
+  border-radius: 10px;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--accent) 14%, var(--panel));
+  border: 1px solid color-mix(in srgb, var(--accent) 40%, var(--line));
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+  animation: bar-in 0.2s ease-out;
+}
+.activity-bar[hidden] { display: none; }
+
+/* Pull the page up a bit while the bar is showing */
+.activity-bar:not([hidden]) + .view { padding-top: 14px; }
+
+.activity-link {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 6px 12px;
+  color: var(--muted);
+  font-size: 11px;
+  text-decoration: none;
+}
+.activity-link:hover { color: var(--text); }
+.activity-link strong { color: var(--text); font-weight: 800; }
+.activity-icon { font-size: 14px; line-height: 1; }
+.activity-text { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.activity-go { font-size: 14px; font-weight: 800; }
+
+/* Thin progress line along the bottom edge */
+.activity-track {
+  display: block;
+  height: 2px;
+  background: rgba(0, 0, 0, 0.35);
+}
+.activity-fill {
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--accent);
+}
+
+@keyframes bar-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+
+@media (max-width: 800px) {
+  /* Sits under the sticky mobile top bar */
+  .activity-bar { top: 63px; margin: 10px 16px 0; }
+}

@@ -1,4 +1,4 @@
-// Places to forage. Each click finds one random item from `finds`;
+// Places to forage. Each cycle finds one random item from `finds`;
 // a higher weight means it turns up more often.
 
 export const AREAS = [
@@ -6,6 +6,9 @@ export const AREAS = [
     id: "plains",
     name: "Plains",
     image: "assets/areas/plains.svg",
+    level: 1,
+    xp: 1,
+    seconds: 5,
     finds: [
       { item: "fiber",   weight: 30 },
       { item: "branch",  weight: 28 },

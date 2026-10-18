@@ -16,3 +16,12 @@ export function iconHtml(item) {
   return item.tint ? `<span class="tint tint-${item.tint}">${item.icon}</span>` : item.icon;
 }
 
+// 2.55 -> "2.6s", 3 -> "3s"
+export function formatSeconds(seconds) {
+  return `${Number.isInteger(seconds) ? seconds : seconds.toFixed(1)}s`;
+}
+
+// "a Bronze Axe", "an Iron Axe"
+export function withArticle(name) {
+  return `${/^[aeiou]/i.test(name) ? "an" : "a"} ${name}`;
+}

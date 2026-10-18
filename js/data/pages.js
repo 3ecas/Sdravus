@@ -1,5 +1,6 @@
 // Every page in the game and how the sidebar groups them.
 // To add a page: add an entry to a group below.
+// `skill: true` gives the page a level and XP bar.
 
 export const MENU_GROUPS = [
   {
@@ -14,29 +15,29 @@ export const MENU_GROUPS = [
   {
     title: "Gathering",
     pages: [
-      { id: "foraging",   name: "Foraging",   icon: "🧺", color: "#5bb5a2" },
-      { id: "lumberjack", name: "Lumberjack", icon: "🪓", color: "#b98a52" },
-      { id: "fishing",    name: "Fishing",    icon: "🎣", color: "#4fb3c9" },
-      { id: "mining",     name: "Mining",     icon: "⛏️", color: "#9aa0a8" },
-      { id: "farming",    name: "Farming",    icon: "🌾", color: "#9cc35a" },
+      { id: "foraging",   name: "Foraging",   icon: "🧺", color: "#5bb5a2", skill: true },
+      { id: "lumberjack", name: "Lumberjack", icon: "🪓", color: "#b98a52", skill: true },
+      { id: "fishing",    name: "Fishing",    icon: "🎣", color: "#4fb3c9", skill: true },
+      { id: "mining",     name: "Mining",     icon: "⛏️", color: "#9aa0a8", skill: true },
+      { id: "farming",    name: "Farming",    icon: "🌾", color: "#9cc35a", skill: true },
     ],
   },
   {
     title: "Workshop",
     pages: [
-      { id: "cooking",  name: "Cooking",  icon: "🍲", color: "#e5894a" },
-      { id: "smithing", name: "Smithing", icon: "🔨", color: "#d0a24e" },
-      { id: "crafting", name: "Crafting", icon: "🧵", color: "#d77fb0" },
+      { id: "cooking",  name: "Cooking",  icon: "🍲", color: "#e5894a", skill: true },
+      { id: "smithing", name: "Smithing", icon: "🔨", color: "#d0a24e", skill: true },
+      { id: "crafting", name: "Crafting", icon: "🧵", color: "#d77fb0", skill: true },
     ],
   },
   {
     title: "Combat",
     pages: [
-      { id: "attack",     name: "Attack",     icon: "⚔️", color: "#e0675a" },
-      { id: "defense",    name: "Defense",    icon: "🛡️", color: "#5f9bd6" },
-      { id: "vitality",   name: "Vitality",   icon: "❤️", color: "#e45f7d" },
-      { id: "archery",    name: "Archery",    icon: "🏹", color: "#7cb86a" },
-      { id: "witchcraft", name: "Witchcraft", icon: "🔮", color: "#a97ad8" },
+      { id: "attack",     name: "Attack",     icon: "⚔️", color: "#e0675a", skill: true },
+      { id: "defense",    name: "Defense",    icon: "🛡️", color: "#5f9bd6", skill: true },
+      { id: "vitality",   name: "Vitality",   icon: "❤️", color: "#e45f7d", skill: true },
+      { id: "archery",    name: "Archery",    icon: "🏹", color: "#7cb86a", skill: true },
+      { id: "witchcraft", name: "Witchcraft", icon: "🔮", color: "#a97ad8", skill: true },
     ],
   },
 ];
