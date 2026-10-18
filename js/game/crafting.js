@@ -8,7 +8,7 @@ import { levelFromXp } from "./xp.js";
 import { isBuilt } from "./village.js";
 import { getItem } from "../data/items.js";
 
-const VERBS = { crafting: "Crafting", cooking: "Cooking" };
+const VERBS = { crafting: "Crafting", cooking: "Cooking", smithing: "Smithing" };
 
 export function craftActionId(recipe) {
   return `${recipe.skill}:${recipe.id}`;

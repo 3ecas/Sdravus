@@ -30,6 +30,18 @@ export const STATIONS = [
     ],
     unlocks: "Cooking: roasted berries, tea, stew",
   },
+  {
+    id: "furnace",
+    name: "Furnace",
+    icon: "🧱",
+    skill: "smithing",
+    seconds: 12,
+    cost: [
+      { item: "stone", amount: 10 },
+      { item: "logs",  amount: 4 },
+    ],
+    unlocks: "Smithing: charcoal, stone bricks (metal bars later)",
+  },
 ];
 
 export function getStation(id) {

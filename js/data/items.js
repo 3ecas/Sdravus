@@ -3,20 +3,22 @@
 export const ITEMS = {
   // Found while foraging
   branch:  { name: "Branch",      icon: "🥢" },
-  flint:   { name: "Flint",       icon: "🪨" },
+  flint:   { name: "Flint",       icon: "🔺" },
   fiber:   { name: "Plant Fiber", icon: "🌿" },
   berries: { name: "Berries",     icon: "🫐" },
   flower:  { name: "Flower",      icon: "🌼" },
 
   // Gathered with tools
-  logs: { name: "Logs", icon: "🪵" },
+  logs:  { name: "Logs",  icon: "🪵" },
+  stone: { name: "Stone", icon: "🪨" },
 
   // Produced by village buildings
   water: { name: "Water", icon: "💧" },
 
   // Crafted
   twine:       { name: "Twine",       icon: "🧶" },
-  stone_axe:   { name: "Stone Axe",   icon: "🪓", tool: true },
+  flint_axe:     { name: "Flint Axe",     icon: "🪓", tool: true },
+  flint_pickaxe: { name: "Flint Pickaxe", icon: "⛏️", tool: true },
   planks:      { name: "Planks",      icon: "🟫" },
   wooden_bowl: { name: "Wooden Bowl", icon: "🥣" },
 
@@ -24,6 +26,10 @@ export const ITEMS = {
   roasted_berries: { name: "Roasted Berries", icon: "🍢" },
   flower_tea:      { name: "Flower Tea",      icon: "🍵" },
   berry_stew:      { name: "Berry Stew",      icon: "🍲" },
+
+  // Furnace (Smithing)
+  charcoal:     { name: "Charcoal",     icon: "⚫" },
+  stone_bricks: { name: "Stone Bricks", icon: "🧱" },
 };
 
 export function getItem(id) {

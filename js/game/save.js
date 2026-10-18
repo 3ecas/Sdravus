@@ -11,7 +11,8 @@ const SAVE_VERSION = 1;
 
 // Old id -> new id, so progress carries over when something is renamed.
 const RENAMED_SKILLS = { exploring: "foraging" };
-const RENAMED_ITEMS = { pebble: "flint" };
+const RENAMED_ITEMS = { pebble: "flint", stone_axe: "flint_axe", stone_pickaxe: "flint_pickaxe" };
+const renamedItem = (id) => RENAMED_ITEMS[id] || id;
 
 export function loadGame() {
   let data;
@@ -28,10 +29,11 @@ export function loadGame() {
     if (state.skills[id] && isCount(skill.xp)) state.skills[id].xp = Math.max(state.skills[id].xp, skill.xp);
   }
   for (const [oldId, count] of Object.entries(data.items || {})) {
-    const id = RENAMED_ITEMS[oldId] || oldId;
+    const id = renamedItem(oldId);
     if (ITEMS[id] && isCount(count)) state.items[id] = (state.items[id] || 0) + count;
   }
-  (data.toolBelt || []).forEach((id, slot) => {
+  (data.toolBelt || []).forEach((oldId, slot) => {
+    const id = renamedItem(oldId);
     if (slot < state.toolBelt.length && ITEMS[id]?.tool) state.toolBelt[slot] = id;
   });
   // ("stations" is the older name for "built")
@@ -39,10 +41,13 @@ export function loadGame() {
     if (getStation(id) || getBuilding(id)) state.built[id] = true;
   }
   for (const oldId of Object.keys(data.seen || {})) {
-    const id = RENAMED_ITEMS[oldId] || oldId;
+    const id = renamedItem(oldId);
     if (ITEMS[id]) state.seen[id] = true;
   }
-  for (const key of Object.keys(data.viewed || {})) state.viewed[key] = true;
+  for (const key of Object.keys(data.viewed || {})) {
+    const [type, id] = key.split(":"); // e.g. "recipe:stone_axe" -> "recipe:flint_axe"
+    state.viewed[`${type}:${renamedItem(id)}`] = true;
+  }
 
   // Anything you own now counts as seen (also covers saves from before discovery existed).
   Object.keys(state.items).forEach((id) => (state.seen[id] = true));
