@@ -1,1 +1,1 @@
-Item icons: 16x16 PNG, transparent background, named after the item id (e.g. logs.png).
+Item icons: 512x512 PNG, transparent background, named after the item id (e.g. logs.png).
