@@ -9,25 +9,31 @@ const MENU = [
       { id: "gear",    name: "Gear",    icon: "🪖", color: "#8fa3b8", blurb: "Equip weapons, armour and tools." },
     ],
   },
+  // Ordered the way a new player progresses: gather -> craft -> fight.
   {
-    title: "Skills",
+    title: "Gathering",
+    items: [
+      { id: "lumberjack", name: "Lumberjack", icon: "🪓", color: "#b98a52", blurb: "Chop trees for logs.", skill: true },
+      { id: "fishing",    name: "Fishing",    icon: "🎣", color: "#4fb3c9", blurb: "Catch fish from rivers and seas.", skill: true },
+      { id: "mining",     name: "Mining",     icon: "⛏️", color: "#9aa0a8", blurb: "Mine ores and gems.", skill: true },
+      { id: "farming",    name: "Farming",    icon: "🌾", color: "#9cc35a", blurb: "Plant seeds and harvest crops.", skill: true },
+    ],
+  },
+  {
+    title: "Crafting",
+    items: [
+      { id: "cooking",    name: "Cooking",    icon: "🍲", color: "#e5894a", blurb: "Turn raw food into meals.", skill: true },
+      { id: "smithing",   name: "Smithing",   icon: "🔨", color: "#d0a24e", blurb: "Smelt bars and forge gear.", skill: true },
+    ],
+  },
+  {
+    title: "Combat",
     items: [
       { id: "attack",     name: "Attack",     icon: "⚔️", color: "#e0675a", blurb: "Hit harder and more often in combat.", skill: true },
       { id: "defense",    name: "Defense",    icon: "🛡️", color: "#5f9bd6", blurb: "Take less damage from enemies.", skill: true },
       { id: "health",     name: "Health",     icon: "❤️", color: "#e45f7d", blurb: "More hitpoints to survive longer fights.", skill: true },
       { id: "archery",    name: "Archery",    icon: "🏹", color: "#7cb86a", blurb: "Strike from a distance with bows.", skill: true },
       { id: "witchcraft", name: "Witchcraft", icon: "🔮", color: "#a97ad8", blurb: "Cast spells and brew curses.", skill: true },
-    ],
-  },
-  {
-    title: "Natural Resources",
-    items: [
-      { id: "farming",    name: "Farming",    icon: "🌾", color: "#9cc35a", blurb: "Plant seeds and harvest crops.", skill: true },
-      { id: "lumberjack", name: "Lumberjack", icon: "🪓", color: "#b98a52", blurb: "Chop trees for logs.", skill: true },
-      { id: "mining",     name: "Mining",     icon: "⛏️", color: "#9aa0a8", blurb: "Mine ores and gems.", skill: true },
-      { id: "fishing",    name: "Fishing",    icon: "🎣", color: "#4fb3c9", blurb: "Catch fish from rivers and seas.", skill: true },
-      { id: "cooking",    name: "Cooking",    icon: "🍲", color: "#e5894a", blurb: "Turn raw food into meals.", skill: true },
-      { id: "smithing",   name: "Smithing",   icon: "🔨", color: "#d0a24e", blurb: "Smelt bars and forge gear.", skill: true },
     ],
   },
 ];
