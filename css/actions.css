@@ -102,6 +102,8 @@
   font-weight: 800;
 }
 .needs-level[hidden] { display: none; }
+.needs-level.left { right: auto; left: 6px; }
+.needs-tool[hidden] { display: none; }
 .action-card.locked > .needs-level { opacity: 1; }
 
 /* Built: no longer clickable to build. A built station links to its skill page instead. */

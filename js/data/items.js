@@ -9,8 +9,11 @@ export const ITEMS = {
   flower:  { name: "Flower",      icon: "🌼" },
 
   // Gathered with tools
-  logs:  { name: "Logs",  icon: "🪵" },
-  stone: { name: "Stone", icon: "🪨" },
+  logs:       { name: "Logs",       icon: "🪵" },
+  stone:      { name: "Stone",      icon: "🪨" },
+  copper_ore: { name: "Copper Ore", icon: "🟠" },
+  tin_ore:    { name: "Tin Ore",    icon: "⚪" },
+  uncut_gem:  { name: "Uncut Gem",  icon: "💎" },
 
   // Produced by village buildings
   water: { name: "Water", icon: "💧" },
@@ -30,6 +33,7 @@ export const ITEMS = {
   // Furnace (Smithing)
   charcoal:     { name: "Charcoal",     icon: "⚫" },
   stone_bricks: { name: "Stone Bricks", icon: "🧱" },
+  bronze_bar:   { name: "Bronze Bar",   icon: "🥉" },
 };
 
 export function getItem(id) {

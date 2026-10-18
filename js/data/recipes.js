@@ -151,6 +151,22 @@ export const RECIPES = [
     output: { item: "stone_bricks", amount: 1 },
     repeat: true,
   },
+  {
+    id: "bronze_bar",
+    name: "Bronze Bar",
+    skill: "smithing",
+    station: "furnace",
+    level: 1,
+    xp: 12,
+    seconds: 5,
+    inputs: [
+      { item: "copper_ore", amount: 1 },
+      { item: "tin_ore",    amount: 1 },
+      { item: "charcoal",   amount: 1 },
+    ],
+    output: { item: "bronze_bar", amount: 1 },
+    repeat: true,
+  },
 ];
 
 export function getRecipe(id) {

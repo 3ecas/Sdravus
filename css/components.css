@@ -80,6 +80,7 @@
   color: var(--muted);
 }
 .craft-hint a { color: var(--text); }
+.place-note { margin-bottom: 10px; font-size: 11px; }
 
 /* Item amount in the bottom-left corner of a box (stash cells). */
 .item-count {

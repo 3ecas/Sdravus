@@ -6,7 +6,7 @@
 import { renderPlaceholder } from "./placeholder.js";
 import { nodePage } from "./nodePage.js";
 import { TREES } from "../data/trees.js";
-import { ROCKS } from "../data/rocks.js";
+import { MINING_SITES } from "../data/miningSites.js";
 import { renderStash } from "./stash.js";
 import { renderGear } from "./gear.js";
 import { renderForaging } from "./foraging.js";
@@ -21,8 +21,8 @@ const VIEWS = {
   crafting: recipePage("crafting", { verb: "craft", empty: "Nothing to craft yet. Go foraging to find materials." }),
   cooking: recipePage("cooking", { verb: "cook", empty: "Nothing to cook yet. Find some food first, like berries while foraging." }),
   smithing: recipePage("smithing", { verb: "smith", empty: "Nothing to smith yet. Get some logs or mine some stone first." }),
-  lumberjack: nodePage("lumberjack", TREES, { verb: "Chopping" }),
-  mining: nodePage("mining", ROCKS, { verb: "Mining" }),
+  lumberjack: nodePage("lumberjack", [{ id: "trees", level: 1, nodes: TREES }], { verb: "Chopping" }),
+  mining: nodePage("mining", MINING_SITES, { verb: "Mining", tabs: true }),
 };
 
 export function getPageView(id) {

@@ -40,7 +40,7 @@ export const STATIONS = [
       { item: "stone", amount: 10 },
       { item: "logs",  amount: 4 },
     ],
-    unlocks: "Smithing: charcoal, stone bricks (metal bars later)",
+    unlocks: "Smithing: charcoal, stone bricks, bronze bars",
   },
 ];
 
