@@ -1,18 +1,13 @@
-// The player's progress: skill XP, items in the stash, tools on the Tool Belt,
-// village stations and buildings, and what they've discovered.
+// The player's progress: items in the stash, tools on the Tool Belt, what's built in the
+// Village, and what they've discovered.
 // Anything that changes state calls notify() so the screen can update.
 
-import { MAX_LEVEL, TOOL_BELT_SLOTS } from "../config.js";
-import { PAGES } from "../data/pages.js";
-import { xpForLevel } from "./xp.js";
+import { TOOL_BELT_SLOTS } from "../config.js";
 
 export const state = {
-  skills: Object.fromEntries(
-    PAGES.filter((page) => page.skill).map((page) => [page.id, { xp: 0 }])
-  ),
   items: {},
   toolBelt: Array(TOOL_BELT_SLOTS).fill(null), // item id per slot, or null if empty
-  built: {},  // station or building id -> true once built
+  built: {},  // station or building id -> how many are built (stations: 1)
   seen: {},   // item id -> true once ever owned (reveals recipes, stations and buildings)
   viewed: {}, // "recipe:id" / "station:id" / "building:id" -> true once shown (for "New" badges)
 };
@@ -45,13 +40,4 @@ export function itemCount(id) {
 // True if the player owns at least `amount` of each item in a list like [{ item, amount }].
 export function hasItems(list) {
   return list.every(({ item, amount }) => itemCount(item) >= amount);
-}
-
-export function addXp(skillId, amount) {
-  const skill = state.skills[skillId];
-  skill.xp = Math.min(skill.xp + amount, xpForLevel(MAX_LEVEL));
-}
-
-export function skillXp(skillId) {
-  return state.skills[skillId].xp;
 }

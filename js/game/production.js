@@ -1,5 +1,5 @@
 // Buildings that produce resources (like the Well) do it on their own, every few seconds,
-// alongside whatever the player is doing. Runs while the game is open.
+// while you do other things. Runs while the game is open.
 
 import { BUILDINGS } from "../data/buildings.js";
 import { addItem, notify } from "./state.js";

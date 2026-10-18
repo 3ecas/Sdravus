@@ -1,8 +1,8 @@
 // Village page, in two sections:
-//   Stations  – built once, unlock recipes (e.g. the Workbench). Click a built station to open
-//               its tab on the skill page that uses it (Workbench -> Crafting › Workbench).
-//   Buildings – built once, then produce resources on their own (e.g. the Well).
-// Each appears once you've had any of its materials. Click to build.
+//   Stations  – unlock recipes (e.g. the Workbench). Click a built station to open its tab on
+//               the page that uses it (Workbench -> Crafting › Workbench).
+//   Buildings – produce resources on their own over time (e.g. the Well).
+// Each appears once you've had any of its materials. Click to build it instantly.
 
 import { getStation } from "../data/stations.js";
 import { getBuilding } from "../data/buildings.js";
@@ -11,9 +11,9 @@ import { getPage } from "../data/pages.js";
 import { routeHref } from "../router.js";
 import { onChange } from "../game/state.js";
 import { visibleStations, visibleBuildings, isNew, markViewed } from "../game/discovery.js";
-import { toggleBuild, buildActionId, canBuild, isBuilt } from "../game/village.js";
+import { build, canBuild, isBuilt } from "../game/village.js";
 import { productionProgress, onProduced } from "../game/production.js";
-import { bindActionCards, showPop } from "../ui/actionCards.js";
+import { showGains } from "../ui/pop.js";
 import { costHtml, updateCost } from "../ui/costList.js";
 
 const SECTIONS = [
@@ -28,7 +28,7 @@ export function renderVillage(container) {
   container.addEventListener("click", (event) => {
     if (event.target.closest(".info-btn")) return event.preventDefault(); // "?" only shows info
     const card = event.target.closest(".action-card[data-id]");
-    if (card) toggleBuild(thingFor(card));
+    if (card) build(thingFor(card));
   });
 
   function update() {
@@ -44,7 +44,7 @@ export function renderVillage(container) {
 
     container.querySelectorAll(".action-card[data-id]").forEach((card) => {
       const thing = thingFor(card);
-      card.classList.toggle("locked", !canBuild(thing) && !card.classList.contains("active"));
+      card.classList.toggle("locked", !canBuild(thing));
       updateCost(card, thing.cost);
     });
   }
@@ -61,19 +61,17 @@ export function renderVillage(container) {
 
   const stopProduced = onProduced((buildingId, gains) => {
     const card = container.querySelector(`[data-produce="${buildingId}"]`);
-    if (card) gains.forEach(({ item, amount }, i) => showPop(card, `+${amount} ${getItem(item).icon}`, i));
+    if (card) showGains(card, gains);
   });
 
   update();
   animate();
   const stopListening = onChange(update);
-  const unbindCards = bindActionCards(container);
 
   return () => {
     stopListening();
     stopProduced();
     cancelAnimationFrame(frame);
-    unbindCards();
   };
 }
 
@@ -141,17 +139,13 @@ function cardHtml(type, thing, isNewThing) {
     `;
   }
   return `
-    <button class="action-card" data-type="${type}" data-id="${thing.id}" data-action="${buildActionId(thing)}">
+    <button class="action-card" data-type="${type}" data-id="${thing.id}">
       ${isNewThing ? `<span class="new-tag">New</span>` : ""}
       <span class="action-icon">${thing.icon}</span>
       <span class="action-name">${thing.name}</span>
       ${infoHtml(thing)}
       ${costHtml(thing.cost)}
-      <span class="action-meta">
-        <span>${thing.seconds}s</span>
-        <span>Build</span>
-      </span>
-      <span class="action-progress"><span class="action-progress-fill"></span></span>
+      <span class="build-tag">Build</span>
     </button>
   `;
 }

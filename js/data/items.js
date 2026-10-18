@@ -1,8 +1,8 @@
 // Every item the player can own.
-// tool: { type, tier, speed } means it goes on the Tool Belt. type: "axe" / "pickaxe";
+// tool: { type, tier, yield } means it goes on the Tool Belt. type: "axe" / "pickaxe";
 //   tier: which trees/rocks it can work (a node needs a tool of at least its toolTier);
-//   speed: how much faster than a flint tool (0.2 = 20% faster). Planned ladder:
-//   Flint 0, Bronze 0.2, Iron 0.35, Steel 0.45, Mithril 0.55, Adamant 0.62, Starsteel 0.7.
+//   yield: how many items each click gives. Planned ladder:
+//   Flint 1, Bronze 2, Iron 3, Steel 4, Mithril 5, Adamant 6, Starsteel 8.
 // tint: optional colour tint for the icon, to tell tiers apart (see .tint-* in components.css).
 
 export const ITEMS = {
@@ -44,8 +44,8 @@ export const ITEMS = {
 
   // Crafted
   twine:       { name: "Twine",       icon: "🧶" },
-  flint_axe:     { name: "Flint Axe",     icon: "🪓", tool: { type: "axe",     tier: 1, speed: 0 } },
-  flint_pickaxe: { name: "Flint Pickaxe", icon: "⛏️", tool: { type: "pickaxe", tier: 1, speed: 0 } },
+  flint_axe:     { name: "Flint Axe",     icon: "🪓", tool: { type: "axe",     tier: 1, yield: 1 } },
+  flint_pickaxe: { name: "Flint Pickaxe", icon: "⛏️", tool: { type: "pickaxe", tier: 1, yield: 1 } },
   planks:      { name: "Planks",      icon: "🟫" },
   oak_planks:  { name: "Oak Planks",  icon: "🟫", tint: "oak" },
   wooden_bowl: { name: "Wooden Bowl", icon: "🥣" },
@@ -69,8 +69,8 @@ export const ITEMS = {
   starsteel_bar: { name: "Starsteel Bar", icon: "⭐" },
 
   // Anvil (Smithing): metal tools
-  bronze_axe:     { name: "Bronze Axe",     icon: "🪓", tint: "bronze", tool: { type: "axe",     tier: 2, speed: 0.2 } },
-  bronze_pickaxe: { name: "Bronze Pickaxe", icon: "⛏️", tint: "bronze", tool: { type: "pickaxe", tier: 2, speed: 0.2 } },
+  bronze_axe:     { name: "Bronze Axe",     icon: "🪓", tint: "bronze", tool: { type: "axe",     tier: 2, yield: 2 } },
+  bronze_pickaxe: { name: "Bronze Pickaxe", icon: "⛏️", tint: "bronze", tool: { type: "pickaxe", tier: 2, yield: 2 } },
 };
 
 export function getItem(id) {

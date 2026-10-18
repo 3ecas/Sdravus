@@ -16,7 +16,3 @@ export function iconHtml(item) {
   return item.tint ? `<span class="tint tint-${item.tint}">${item.icon}</span>` : item.icon;
 }
 
-// 2.55 -> "2.6s", 3 -> "3s"
-export function formatSeconds(seconds) {
-  return `${Number.isInteger(seconds) ? seconds : seconds.toFixed(1)}s`;
-}

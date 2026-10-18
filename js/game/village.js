@@ -1,35 +1,24 @@
-// Village rules: build stations (unlock recipes) and buildings (produce resources) with
-// materials. Building takes a few seconds, like other actions.
+// Village rules: build stations (unlock recipes) and buildings (produce resources) instantly,
+// by paying their materials.
 
-import { startAction, stopAction, activeActionId } from "./actions.js";
-import { state, hasItems, removeItem } from "./state.js";
+import { state, hasItems, removeItem, notify } from "./state.js";
 
 export function isBuilt(id) {
-  return Boolean(state.built[id]);
+  return builtCount(id) > 0;
 }
 
-export function buildActionId(thing) {
-  return `village:${thing.id}`;
+export function builtCount(id) {
+  return Number(state.built[id]) || 0;
 }
 
 export function canBuild(thing) {
   return !isBuilt(thing.id) && hasItems(thing.cost);
 }
 
-export function isBuilding(thing) {
-  return activeActionId() === buildActionId(thing);
-}
-
-// Click a station or building: start building it, or stop if already building it.
-export function toggleBuild(thing) {
-  if (isBuilding(thing)) return stopAction();
-  if (!canBuild(thing)) return;
-
-  startAction(buildActionId(thing), thing.seconds * 1000, () => {
-    stopAction(); // built once, then done
-    if (!canBuild(thing)) return [];
-    thing.cost.forEach(({ item, amount }) => removeItem(item, amount));
-    state.built[thing.id] = true;
-    return [];
-  }, { verb: "Building", name: thing.name, icon: thing.icon, page: "village" });
+export function build(thing) {
+  if (!canBuild(thing)) return false;
+  thing.cost.forEach(({ item, amount }) => removeItem(item, amount));
+  state.built[thing.id] = builtCount(thing.id) + 1;
+  notify();
+  return true;
 }

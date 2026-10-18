@@ -1,8 +1,7 @@
 // Builds the side menu, highlights the current page, and handles the mobile drawer.
 
 import { MENU_GROUPS } from "../data/pages.js";
-import { onChange, skillXp } from "../game/state.js";
-import { levelFromXp } from "../game/xp.js";
+import { onChange } from "../game/state.js";
 import { pageHasNew } from "../game/discovery.js";
 
 const sidebarEl = document.getElementById("sidebar");
@@ -16,9 +15,7 @@ export function renderSidebar() {
   toggleEl.addEventListener("click", openSidebar);
   scrimEl.addEventListener("click", closeSidebar);
 
-  updateLevels();
   updateNewDots();
-  onChange(updateLevels);
   onChange(updateNewDots);
 }
 
@@ -26,13 +23,6 @@ export function renderSidebar() {
 function updateNewDots() {
   menuEl.querySelectorAll(".menu-new").forEach((dot) => {
     dot.hidden = !pageHasNew(dot.dataset.page);
-  });
-}
-
-// Keep each skill's "Lv" in the menu up to date.
-function updateLevels() {
-  menuEl.querySelectorAll(".menu-level").forEach((el) => {
-    el.textContent = `Lv ${levelFromXp(skillXp(el.dataset.skill))}`;
   });
 }
 
@@ -67,7 +57,6 @@ function itemHtml(page) {
       <span class="menu-icon">${page.icon}</span>
       <span class="menu-label">${page.name}</span>
       <span class="menu-new" data-page="${page.id}" title="Something new" hidden></span>
-      ${page.skill ? `<span class="menu-level" data-skill="${page.id}">Lv 1</span>` : ""}
     </a>
   `;
 }

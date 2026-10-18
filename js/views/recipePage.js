@@ -1,22 +1,20 @@
 // Page for a skill that makes things from recipes (Crafting, Cooking...). One tab per place
 // you make them: "By hand" (if the skill has hand recipes), then each Village station that
 // belongs to the skill (Crafting: Workbench, Cooking: Campfire). One tab's recipes at a time.
-// Recipes appear once you've had any of their ingredients. Click a recipe to make it,
-// click again to stop. The tab is part of the address: #crafting/workbench.
+// Recipes appear once you've had their main ingredient. Click a recipe to make one instantly.
+// The tab is part of the address: #crafting/workbench.
 //
 // recipePage("crafting", { verb: "craft", empty: "..." }) returns the page's render function.
 
 import { STATIONS } from "../data/stations.js";
 import { getRecipe } from "../data/recipes.js";
-import { getPage } from "../data/pages.js";
 import { getItem } from "../data/items.js";
-import { onChange, skillXp } from "../game/state.js";
-import { toggleCraft, craftActionId, canCraft } from "../game/crafting.js";
+import { onChange } from "../game/state.js";
+import { craft, canCraft } from "../game/crafting.js";
 import { knownRecipes, isNew, markViewed } from "../game/discovery.js";
 import { isBuilt } from "../game/village.js";
-import { levelFromXp } from "../game/xp.js";
 import { routeHref } from "../router.js";
-import { bindActionCards } from "../ui/actionCards.js";
+import { showGains } from "../ui/pop.js";
 import { costHtml, updateCost } from "../ui/costList.js";
 import { iconHtml } from "../ui/format.js";
 
@@ -32,7 +30,7 @@ function renderRecipePage(container, route, { skill, verb, empty }) {
 
   container.addEventListener("click", (event) => {
     const card = event.target.closest(".action-card");
-    if (card) toggleCraft(getRecipe(card.dataset.id));
+    if (card) showGains(card, craft(getRecipe(card.dataset.id)));
   });
 
   function update() {
@@ -54,23 +52,15 @@ function renderRecipePage(container, route, { skill, verb, empty }) {
   }
 
   function refreshCards() {
-    const level = levelFromXp(skillXp(skill));
     container.querySelectorAll(".action-card").forEach((card) => {
       const recipe = getRecipe(card.dataset.id);
-      card.classList.toggle("locked", !canCraft(recipe) && !card.classList.contains("active"));
-      card.querySelector(".needs-level").hidden = level >= recipe.level;
+      card.classList.toggle("locked", !canCraft(recipe));
       updateCost(card, recipe.inputs);
     });
   }
 
   update();
-  const stopListening = onChange(update);
-  const unbindCards = bindActionCards(container);
-
-  return () => {
-    stopListening();
-    unbindCards();
-  };
+  return onChange(update);
 }
 
 // "By hand" plus each of the skill's stations you know a recipe for (built or not).
@@ -118,17 +108,11 @@ function tabBodyHtml(tab, recipes, newIds, verb) {
 function recipeCardHtml(recipe, isNewRecipe) {
   const output = getItem(recipe.output.item);
   return `
-    <button class="action-card" data-id="${recipe.id}" data-action="${craftActionId(recipe)}">
+    <button class="action-card" data-id="${recipe.id}">
       ${isNewRecipe ? `<span class="new-tag">New</span>` : ""}
-      <span class="needs-level" title="Needs ${getPage(recipe.skill).name} level ${recipe.level}" hidden>Lv ${recipe.level}</span>
       <span class="action-icon">${iconHtml(output)}</span>
       <span class="action-name">${recipe.name}${recipe.output.amount > 1 ? ` <small>×${recipe.output.amount}</small>` : ""}</span>
       ${costHtml(recipe.inputs)}
-      <span class="action-meta">
-        <span>${recipe.seconds}s</span>
-        <span>+${recipe.xp} XP</span>
-      </span>
-      <span class="action-progress"><span class="action-progress-fill"></span></span>
     </button>
   `;
 }
