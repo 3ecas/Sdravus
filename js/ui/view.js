@@ -24,21 +24,24 @@ function headerHtml(page) {
   return `
     <div class="view-header">
       <div class="view-icon">${page.icon}</div>
-      <div>
+      <div class="view-title">
         <h1>${page.name}</h1>
+        ${page.skill ? levelHtml() : ""}
         <p>${page.blurb}</p>
       </div>
-      ${page.skill ? levelHtml() : ""}
     </div>
   `;
 }
 
+// Level and XP, shown right under the page title for skills.
 function levelHtml() {
   return `
     <div class="view-level">
-      <span class="lvl-text">Level 1 <small>/ ${MAX_LEVEL}</small></span>
+      <div class="level-row">
+        <span class="lvl-text">Level 1 <small>/ ${MAX_LEVEL}</small></span>
+        <span class="xp-text">0 / 83 XP</span>
+      </div>
       <div class="xp-bar"><div class="xp-fill" style="width:0%"></div></div>
-      <span class="xp-text">0 / 83 XP</span>
     </div>
   `;
 }

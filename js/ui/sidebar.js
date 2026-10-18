@@ -43,16 +43,8 @@ function itemHtml(page) {
   return `
     <a class="menu-item" href="#${page.id}" data-id="${page.id}" style="--accent:${page.color}">
       <span class="menu-icon">${page.icon}</span>
-      <span class="menu-label">
-        <span class="menu-name">${page.name}</span>
-        ${page.skill ? xpBarHtml() : ""}
-      </span>
+      <span class="menu-label">${page.name}</span>
       ${page.skill ? `<span class="menu-level">Lv 1</span>` : ""}
     </a>
   `;
-}
-
-// Thin XP progress bar shown under a skill's name.
-function xpBarHtml() {
-  return `<span class="menu-xp"><span class="menu-xp-fill" style="width:0%"></span></span>`;
 }
