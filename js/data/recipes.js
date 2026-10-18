@@ -162,18 +162,6 @@ export const RECIPES = [
     repeat: true,
   },
   {
-    id: "oak_charcoal",
-    name: "Oak Charcoal",
-    skill: "smithing",
-    station: "furnace",
-    level: 12,
-    xp: 2,
-    seconds: 4,
-    inputs: [{ item: "oak_logs", amount: 1 }],
-    output: { item: "charcoal", amount: 2 },
-    repeat: true,
-  },
-  {
     id: "stone_bricks",
     name: "Stone Bricks",
     skill: "smithing",

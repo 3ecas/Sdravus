@@ -39,6 +39,8 @@ export const ITEMS = {
 
   // Produced by village buildings
   water: { name: "Water", icon: "💧" },
+  egg:   { name: "Egg",   icon: "🥚" },
+  milk:  { name: "Milk",  icon: "🥛" },
 
   // Crafted
   twine:       { name: "Twine",       icon: "🧶" },
