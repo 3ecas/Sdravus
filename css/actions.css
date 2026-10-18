@@ -1,24 +1,4 @@
-/* Skill action pages (Lumberjack, and later Mining, Fishing...): item stock and clickable action cards. */
-
-.stock-bar {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 14px;
-}
-
-.stock-chip {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  padding: 4px 10px;
-  border-radius: 99px;
-  background: var(--panel);
-  border: 1px solid var(--line);
-  font-size: 12px;
-  color: var(--muted);
-}
-.stock-chip strong { color: var(--text); }
+/* Skill action pages (Lumberjack, and later Mining, Fishing...): clickable action cards. */
 
 .action-grid {
   display: grid;
@@ -32,7 +12,7 @@
   flex-direction: column;
   align-items: center;
   gap: 2px;
-  padding: 16px 12px 12px;
+  padding: 16px 12px 18px;
   border-radius: var(--radius);
   background: var(--panel);
   border: 1px solid var(--line);
