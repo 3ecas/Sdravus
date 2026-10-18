@@ -7,7 +7,7 @@ import { getBuilding } from "../data/buildings.js";
 import { state, onChange } from "./state.js";
 
 const SAVE_KEY = "sdravus-save";
-const SAVE_VERSION = 5; // 2: new XP scale (actions give ~1 XP early). 3-4: no-XP test versions (no skills, built counts). 5: XP is back
+const SAVE_VERSION = 6; // 6: Bucket of Water (water is kept in buckets). 2: new XP scale (actions give ~1 XP early). 3-4: no-XP test versions (no skills, built counts). 5: XP is back
 
 // Old id -> new id, so progress carries over when something is renamed.
 const RENAMED_SKILLS = { exploring: "foraging" };
@@ -34,6 +34,7 @@ export function loadGame() {
   }
   for (const [oldId, count] of Object.entries(data.items || {})) {
     const id = renamedItem(oldId);
+    if (id === "water") continue; // loose water is gone: it's kept in buckets now
     if (ITEMS[id] && isCount(count)) state.items[id] = (state.items[id] || 0) + count;
   }
   (data.toolBelt || []).forEach((oldId, slot) => {
@@ -45,6 +46,7 @@ export function loadGame() {
   for (const id of Object.keys(data.built || data.stations || {})) {
     if (getStation(id) || getBuilding(id)) state.built[id] = true;
   }
+  if (isCount(data.wellFill)) state.wellFill = data.wellFill;
   for (const oldId of Object.keys(data.seen || {})) {
     const id = renamedItem(oldId);
     if (ITEMS[id]) state.seen[id] = true;
@@ -60,8 +62,8 @@ export function loadGame() {
 }
 
 export function saveGame() {
-  const { skills, items, toolBelt, built, seen, viewed } = state;
-  const data = { version: SAVE_VERSION, skills, items, toolBelt, built, seen, viewed };
+  const { skills, items, toolBelt, built, wellFill, seen, viewed } = state;
+  const data = { version: SAVE_VERSION, skills, items, toolBelt, built, wellFill, seen, viewed };
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   } catch {

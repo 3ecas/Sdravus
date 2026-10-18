@@ -1,8 +1,8 @@
 // Village buildings: built once, then they produce resources on their own over time,
 // even while you're doing something else. (Stations, which unlock recipes, are in stations.js.)
 // The Well is different: it doesn't produce on its own. You draw water from it (an action
-// like chopping): each trip pours `amount` water into your buckets (in the stash), filling one
-// bucket after another, and stops when they're all full.
+// like chopping): each trip pours `amount` water into an empty bucket from your stash. A full
+// bucket becomes a Bucket of Water and the next empty one is filled; it stops when none are left.
 // A building shows up in the Village once you've had any of its materials.
 
 export const BUILDINGS = [
@@ -16,7 +16,7 @@ export const BUILDINGS = [
       { item: "planks", amount: 10 },
       { item: "twine", amount: 5 },
     ],
-    draw: { item: "water", amount: 2, seconds: 5, verb: "Drawing water" },
+    draw: { amount: 2, seconds: 5, verb: "Drawing water" },
   },
   {
     id: "chicken_coop",

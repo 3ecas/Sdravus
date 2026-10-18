@@ -1,4 +1,5 @@
 // Recipes for skills that make things (Crafting, Cooking...).
+// A full bucket used as an input (Bucket of Water) gives its empty bucket back.
 // skill: which skill page it shows on and gives XP to; level is that skill's level.
 // station: null = by hand, or the Village station needed (e.g. "workbench").
 // inputs are used up each time. The FIRST input is the main ingredient: having it is
@@ -140,8 +141,8 @@ export const RECIPES = [
     xp: 2,
     seconds: 4,
     inputs: [
-      { item: "water",  amount: 1 },
-      { item: "flower", amount: 1 },
+      { item: "bucket_of_water", amount: 1 },
+      { item: "flower",          amount: 1 },
     ],
     output: { item: "flower_tea", amount: 1 },
     repeat: true,
@@ -155,9 +156,9 @@ export const RECIPES = [
     xp: 3,
     seconds: 6,
     inputs: [
-      { item: "berries",     amount: 3 },
-      { item: "water",       amount: 1 },
-      { item: "wooden_bowl", amount: 1 },
+      { item: "berries",         amount: 3 },
+      { item: "bucket_of_water", amount: 1 },
+      { item: "wooden_bowl",     amount: 1 },
     ],
     output: { item: "berry_stew", amount: 1 },
     repeat: true,

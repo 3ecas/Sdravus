@@ -41,7 +41,11 @@ export function toggleCraft(recipe) {
       return [];
     }
 
-    recipe.inputs.forEach(({ item, amount }) => removeItem(item, amount));
+    recipe.inputs.forEach(({ item, amount }) => {
+      removeItem(item, amount);
+      const empty = getItem(item).emptiesTo; // e.g. a Bucket of Water gives back its Wooden Bucket
+      if (empty) addItem(empty, amount);
+    });
     addItem(recipe.output.item, recipe.output.amount);
     addXp(recipe.skill, recipe.xp);
 

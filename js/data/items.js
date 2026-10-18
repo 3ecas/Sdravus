@@ -2,7 +2,8 @@
 // tool: { type, tier, yield } means it goes on the Tool Belt. type: "axe" / "pickaxe";
 //   tier: which trees/rocks it can work (a node needs a tool of at least its toolTier);
 //   yield: items per gathering cycle.
-// bucket: { capacity } means it holds water from the Well (buckets stay in the stash).
+// bucket: { capacity, fills } is an empty bucket: the Well fills it with `capacity` water and it
+//   becomes the `fills` item. emptiesTo: a full bucket gives back its empty bucket when a recipe uses it.
 //   Axes/pickaxes: Flint 1, Bronze 2, Iron 3, Steel 4 (planned: Mithril 5, Adamant 6, Starsteel 8).
 // tint: optional colour tint for the icon, to tell tiers apart (see .tint-* in components.css).
 
@@ -39,7 +40,7 @@ export const ITEMS = {
   diamond:  { name: "Diamond",  icon: "💎" },
 
   // Produced by village buildings
-  water: { name: "Water", icon: "💧" },
+  water: { name: "Water", icon: "💧" }, // only shown as the water poured at the Well; kept in buckets
   egg:   { name: "Egg",   icon: "🥚" },
   milk:  { name: "Milk",  icon: "🥛" },
 
@@ -78,8 +79,9 @@ export const ITEMS = {
   steel_axe:      { name: "Steel Axe",      icon: "🪓", tint: "steel",  tool: { type: "axe",     tier: 4, yield: 4 } },
   steel_pickaxe:  { name: "Steel Pickaxe",  icon: "⛏️", tint: "steel",  tool: { type: "pickaxe", tier: 4, yield: 4 } },
 
-  // Buckets: hold water from the Well. Planned tiers hold more.
-  wooden_bucket:  { name: "Wooden Bucket",  icon: "🪣", tint: "oak",    bucket: { capacity: 5 } },
+  // Buckets: filled at the Well. Planned tiers hold more.
+  wooden_bucket:   { name: "Wooden Bucket",   icon: "🪣", tint: "oak", bucket: { capacity: 5, fills: "bucket_of_water" } },
+  bucket_of_water: { name: "Bucket of Water", icon: "🪣", emptiesTo: "wooden_bucket" },
 };
 
 export function getItem(id) {

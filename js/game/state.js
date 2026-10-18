@@ -14,6 +14,7 @@ export const state = {
   toolBelt: Array(TOOL_BELT_SLOTS).fill(null), // item id per slot, or null if empty
   built: {},  // station or building id -> true once built
   seen: {},   // item id -> true once ever owned (reveals recipes, stations and buildings)
+  wellFill: 0, // water in the bucket being filled at the Well (not full yet)
   viewed: {}, // "recipe:id" / "station:id" / "building:id" -> true once shown (for "New" badges)
 };
 

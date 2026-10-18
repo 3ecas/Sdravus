@@ -2,7 +2,7 @@
 //   Stations  – built once, unlock recipes (e.g. the Workbench). Click a built station to open
 //               its tab on the skill page that uses it (Workbench -> Crafting › Workbench).
 //   Buildings – built once, then produce resources on their own (e.g. the Chicken Coop).
-//               A built Well is clicked like a tree: draw water into the buckets in your stash.
+//               A built Well is clicked like a tree: fill the empty buckets in your stash.
 // Each appears once you've had any of its materials. Click to build.
 
 import { getStation } from "../data/stations.js";
@@ -12,13 +12,13 @@ import { getPage } from "../data/pages.js";
 import { routeHref } from "../router.js";
 import { onChange } from "../game/state.js";
 import { visibleStations, visibleBuildings, isNew, markViewed } from "../game/discovery.js";
-import { toggleBuild, buildActionId, canBuild, isBuilt, toggleDraw, drawActionId, canDraw, hasBucket, waterCapacity } from "../game/village.js";
+import { toggleBuild, buildActionId, canBuild, isBuilt, toggleDraw, drawActionId, canDraw, emptyBucket, bucketFill } from "../game/village.js";
 import { itemCount } from "../game/state.js";
 import { activeActionId } from "../game/actions.js";
 import { productionProgress, onProduced } from "../game/production.js";
 import { bindActionCards, showPop } from "../ui/actionCards.js";
 import { costHtml, updateCost } from "../ui/costList.js";
-import { iconHtml, formatSeconds, withArticle } from "../ui/format.js";
+import { iconHtml, formatSeconds } from "../ui/format.js";
 
 const SECTIONS = [
   { type: "station", title: "Stations", visible: visibleStations, get: getStation },
@@ -58,8 +58,10 @@ export function renderVillage(container) {
       const building = getBuilding(card.dataset.draw);
       const active = activeActionId() === drawActionId(building);
       card.classList.toggle("locked", !canDraw(building) && !active);
-      card.querySelector(".needs-tool").hidden = hasBucket();
-      card.querySelector(".water-fill").textContent = `${itemCount(building.draw.item)}/${waterCapacity()}`;
+      const bucket = emptyBucket();
+      const { water, capacity } = bucketFill();
+      card.querySelector(".needs-tool").hidden = Boolean(bucket);
+      card.querySelector(".water-fill").textContent = bucket ? `${water}/${capacity} · ${itemCount(bucket)} empty` : "no empty bucket";
     });
   }
 
@@ -115,7 +117,7 @@ function infoHtml(thing) {
   let text = thing.unlocks;
   if (thing.draw) {
     title = "Draw water";
-    text = `Each trip pours ${thing.draw.amount} water into your buckets, one bucket after another, until they're all full. A Wooden Bucket holds 5.`;
+    text = `Each trip pours ${thing.draw.amount} water into an empty bucket from your stash. A full bucket becomes a Bucket of Water, then the next one is filled. A Wooden Bucket holds 5.`;
   } else if (thing.produces) {
     const { item, amount, seconds } = thing.produces;
     title = "Produces";
@@ -144,8 +146,8 @@ function cardHtml(type, thing, isNewThing) {
     `;
   }
   if (isBuilt(thing.id) && thing.draw) {
-    // A built Well: click to draw water into your buckets ("💧 3/10" = water / what buckets hold).
-    const { item, amount, seconds } = thing.draw;
+    // A built Well: click to fill empty buckets ("💧 2/5 · 3 empty" = the bucket being filled).
+    const { amount, seconds } = thing.draw;
     const bucket = getItem("wooden_bucket");
     return `
       <button class="action-card" data-draw="${thing.id}" data-action="${drawActionId(thing)}">
@@ -154,11 +156,11 @@ function cardHtml(type, thing, isNewThing) {
         ${infoHtml(thing)}
         <span class="action-meta">
           <span>${formatSeconds(seconds)}</span>
-          <span>+${amount} ${iconHtml(getItem(item))}</span>
+          <span>+${amount} ${getItem("water").icon}</span>
         </span>
-        <span class="water-line" title="Water / what your buckets hold">${iconHtml(getItem(item))} <span class="water-fill">0/0</span></span>
+        <span class="water-line" title="Water in the bucket being filled · empty buckets left">${getItem("water").icon} <span class="water-fill"></span></span>
         <span class="action-progress"><span class="action-progress-fill"></span></span>
-        <span class="needs-tool" title="Needs ${withArticle(bucket.name)} in the stash">${iconHtml(bucket)}</span>
+        <span class="needs-tool" title="Needs an empty ${bucket.name} in the stash">${iconHtml(bucket)}</span>
       </button>
     `;
   }
