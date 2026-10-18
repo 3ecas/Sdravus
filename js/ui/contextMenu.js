@@ -1,7 +1,6 @@
 // The game's own right-click menu.
 //
-// openContextMenu(x, y, { header, actions }) shows a small menu at the mouse position.
-//   header:  HTML shown at the top (optional)
+// openContextMenu(x, y, actions) shows a small list of actions at the mouse position.
 //   actions: [{ label, onClick, danger?, confirmLabel? }]
 //            confirmLabel: the first click changes the button to this text, and a
 //            second click is needed to run it (for things you can't undo).
@@ -9,13 +8,12 @@
 
 let menuEl = null;
 
-export function openContextMenu(x, y, { header = "", actions = [] }) {
+export function openContextMenu(x, y, actions) {
   closeContextMenu();
 
   menuEl = document.createElement("div");
   menuEl.className = "context-menu";
   menuEl.innerHTML = `
-    ${header ? `<div class="context-menu-header">${header}</div>` : ""}
     ${actions.map((action, i) => `
       <button class="context-menu-item${action.danger ? " danger" : ""}" data-index="${i}">${action.label}</button>
     `).join("")}

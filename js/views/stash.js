@@ -93,17 +93,7 @@ export function renderStash(container) {
 }
 
 function openItemMenu(id, x, y) {
-  const item = ITEMS[id];
-  openContextMenu(x, y, {
-    header: `
-      <div class="menu-item-title">
-        <span>${item.icon}</span>${item.name}
-        <span class="count">×${itemCount(id).toLocaleString()}</span>
-      </div>
-      <p class="menu-item-desc">${item.description}</p>
-    `,
-    actions: getItemActions(id),
-  });
+  openContextMenu(x, y, getItemActions(id));
 }
 
 function sortItems(ids) {
