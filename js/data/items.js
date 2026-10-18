@@ -19,6 +19,11 @@ export const ITEMS = {
   stone_axe:   { name: "Stone Axe",   icon: "🪓", tool: true },
   planks:      { name: "Planks",      icon: "🟫" },
   wooden_bowl: { name: "Wooden Bowl", icon: "🥣" },
+
+  // Cooked
+  roasted_berries: { name: "Roasted Berries", icon: "🍢" },
+  flower_tea:      { name: "Flower Tea",      icon: "🍵" },
+  berry_stew:      { name: "Berry Stew",      icon: "🍲" },
 };
 
 export function getItem(id) {

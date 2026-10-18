@@ -42,7 +42,8 @@ export function markViewed(type, things) {
 
 // Does this menu page have something new to look at?
 export function pageHasNew(pageId) {
-  if (pageId === "crafting") return visibleRecipes().some((recipe) => isNew("recipe", recipe.id));
+  const pageRecipes = visibleRecipes().filter((recipe) => recipe.skill === pageId);
+  if (pageRecipes.some((recipe) => isNew("recipe", recipe.id))) return true;
   if (pageId === "village") {
     const unbuiltNew = (type) => (thing) => !isBuilt(thing.id) && isNew(type, thing.id);
     return visibleStations().some(unbuiltNew("station")) || visibleBuildings().some(unbuiltNew("building"));

@@ -17,6 +17,19 @@ export const STATIONS = [
     ],
     unlocks: "Planks, bowls and other wooden things",
   },
+  {
+    id: "campfire",
+    name: "Campfire",
+    icon: "🔥",
+    skill: "cooking",
+    seconds: 8,
+    cost: [
+      { item: "branch", amount: 5 },
+      { item: "flint",  amount: 3 },
+      { item: "logs",   amount: 3 },
+    ],
+    unlocks: "Cooking: roasted berries, tea, stew",
+  },
 ];
 
 export function getStation(id) {

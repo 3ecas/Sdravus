@@ -1,10 +1,14 @@
-// Crafting page: one tab per place you craft. "By hand" first, then each Village station
-// that belongs to Crafting (e.g. the Workbench). Only one tab's recipes show at a time.
-// Recipes appear once you've had any of their ingredients. Click a recipe to craft,
+// Page for a skill that makes things from recipes (Crafting, Cooking...). One tab per place
+// you make them: "By hand" (if the skill has hand recipes), then each Village station that
+// belongs to the skill (Crafting: Workbench, Cooking: Campfire). One tab's recipes at a time.
+// Recipes appear once you've had any of their ingredients. Click a recipe to make it,
 // click again to stop. The tab is part of the address: #crafting/workbench.
+//
+// recipePage("crafting", { verb: "craft", empty: "..." }) returns the page's render function.
 
 import { STATIONS } from "../data/stations.js";
 import { getRecipe } from "../data/recipes.js";
+import { getPage } from "../data/pages.js";
 import { getItem } from "../data/items.js";
 import { onChange, skillXp } from "../game/state.js";
 import { toggleCraft, craftActionId, canCraft } from "../game/crafting.js";
@@ -15,10 +19,13 @@ import { routeHref } from "../router.js";
 import { bindActionCards } from "../ui/actionCards.js";
 import { costHtml, updateCost } from "../ui/costList.js";
 
-const SKILL = "crafting";
 const HAND = { id: "hand", name: "By hand", icon: "✋" };
 
-export function renderCrafting(container, page, route) {
+export function recipePage(skill, { verb, empty }) {
+  return (container, page, route) => renderRecipePage(container, route, { skill, verb, empty });
+}
+
+function renderRecipePage(container, route, { skill, verb, empty }) {
   const newThisVisit = new Set(); // recipes shown with a "New" badge during this visit
   let layoutKey = null; // what was last drawn; null so the first update always draws
 
@@ -28,25 +35,25 @@ export function renderCrafting(container, page, route) {
   });
 
   function update() {
-    const tabs = availableTabs();
+    const tabs = availableTabs(skill);
     const active = tabs.find((t) => t.id === route.tab) || tabs[0];
-    const recipes = active ? tabRecipes(active) : [];
-    const key = [tabs.map((t) => `${t.id}:${isBuilt(t.id)}:${hasNewIn(t)}`), active?.id, recipes.map((r) => r.id)].join("|");
+    const recipes = active ? tabRecipes(skill, active) : [];
+    const key = [tabs.map((t) => `${t.id}:${isBuilt(t.id)}:${hasNewIn(skill, t)}`), active?.id, recipes.map((r) => r.id)].join("|");
 
     if (key !== layoutKey) {
       layoutKey = key;
       const shown = active && !isUnbuiltStation(active) ? recipes : [];
       shown.filter((r) => isNew("recipe", r.id)).forEach((r) => newThisVisit.add(r.id));
       container.innerHTML = tabs.length
-        ? `${tabsHtml(tabs, active, route.from)}${tabBodyHtml(active, recipes, newThisVisit)}`
-        : `<p class="craft-hint">Nothing to craft yet. Go foraging to find materials.</p>`;
+        ? `${tabsHtml(skill, tabs, active, route.from)}${tabBodyHtml(active, recipes, newThisVisit, verb)}`
+        : `<p class="craft-hint">${empty}</p>`;
       markViewed("recipe", shown);
     }
     refreshCards();
   }
 
   function refreshCards() {
-    const level = levelFromXp(skillXp(SKILL));
+    const level = levelFromXp(skillXp(skill));
     container.querySelectorAll(".action-card").forEach((card) => {
       const recipe = getRecipe(card.dataset.id);
       card.classList.toggle("locked", !canCraft(recipe) && !card.classList.contains("active"));
@@ -65,44 +72,44 @@ export function renderCrafting(container, page, route) {
   };
 }
 
-// "By hand" plus each Crafting station you know a recipe for (built or not).
-function availableTabs() {
-  const known = knownRecipes();
-  const stations = STATIONS.filter((s) => s.skill === SKILL && known.some((r) => r.station === s.id));
+// "By hand" plus each of the skill's stations you know a recipe for (built or not).
+function availableTabs(skill) {
+  const known = knownRecipes().filter((r) => r.skill === skill);
+  const stations = STATIONS.filter((s) => s.skill === skill && known.some((r) => r.station === s.id));
   const hasHand = known.some((r) => !r.station);
   return [...(hasHand ? [HAND] : []), ...stations];
 }
 
-// Known recipes made at this tab's station (or by hand).
-function tabRecipes(tab) {
+// Known recipes of this skill made at this tab's station (or by hand).
+function tabRecipes(skill, tab) {
   const station = tab.id === HAND.id ? null : tab.id;
-  return knownRecipes().filter((r) => r.station === station);
+  return knownRecipes().filter((r) => r.skill === skill && r.station === station);
 }
 
 function isUnbuiltStation(tab) {
   return tab.id !== HAND.id && !isBuilt(tab.id);
 }
 
-function hasNewIn(tab) {
-  return !isUnbuiltStation(tab) && tabRecipes(tab).some((r) => isNew("recipe", r.id));
+function hasNewIn(skill, tab) {
+  return !isUnbuiltStation(tab) && tabRecipes(skill, tab).some((r) => isNew("recipe", r.id));
 }
 
-function tabsHtml(tabs, active, from) {
+function tabsHtml(skill, tabs, active, from) {
   return `
     <nav class="tabs">
       ${tabs.map((tab) => `
-        <a class="tab${tab === active ? " active" : ""}${isUnbuiltStation(tab) ? " unbuilt" : ""}" href="${routeHref(SKILL, tab.id, from)}">
+        <a class="tab${tab === active ? " active" : ""}${isUnbuiltStation(tab) ? " unbuilt" : ""}" href="${routeHref(skill, tab.id, from)}">
           <span>${tab.icon}</span>${tab.name}
-          ${tab !== active && hasNewIn(tab) ? `<span class="tab-dot" title="New recipes"></span>` : ""}
+          ${tab !== active && hasNewIn(skill, tab) ? `<span class="tab-dot" title="New recipes"></span>` : ""}
         </a>
       `).join("")}
     </nav>
   `;
 }
 
-function tabBodyHtml(tab, recipes, newIds) {
+function tabBodyHtml(tab, recipes, newIds, verb) {
   if (isUnbuiltStation(tab)) {
-    return `<p class="craft-hint">Build a ${tab.name} in the <a href="#village">Village</a> to craft here.</p>`;
+    return `<p class="craft-hint">Build a ${tab.name} in the <a href="#village">Village</a> to ${verb} here.</p>`;
   }
   return `<div class="action-grid">${recipes.map((r) => recipeCardHtml(r, newIds.has(r.id))).join("")}</div>`;
 }
@@ -112,7 +119,7 @@ function recipeCardHtml(recipe, isNewRecipe) {
   return `
     <button class="action-card" data-id="${recipe.id}" data-action="${craftActionId(recipe)}">
       ${isNewRecipe ? `<span class="new-tag">New</span>` : ""}
-      <span class="needs-level" title="Needs Crafting level ${recipe.level}" hidden>Lv ${recipe.level}</span>
+      <span class="needs-level" title="Needs ${getPage(recipe.skill).name} level ${recipe.level}" hidden>Lv ${recipe.level}</span>
       <span class="action-icon">${output.icon}</span>
       <span class="action-name">${recipe.name}</span>
       ${costHtml(recipe.inputs)}

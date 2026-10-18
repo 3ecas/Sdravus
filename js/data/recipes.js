@@ -1,6 +1,7 @@
-// Crafting recipes.
+// Recipes for skills that make things (Crafting, Cooking...).
+// skill: which skill page it shows on and gives XP to; level is that skill's level.
 // station: null = by hand, or the Village station needed (e.g. "workbench").
-// level: Crafting level needed. inputs are used up each craft.
+// inputs are used up each time.
 // repeat: false crafts one at a time (tools: you only need one).
 // A recipe shows up once you've had any of its inputs (and its station is built).
 
@@ -9,6 +10,7 @@ export const RECIPES = [
   {
     id: "twine",
     name: "Twine",
+    skill: "crafting",
     station: null,
     level: 1,
     xp: 5,
@@ -20,6 +22,7 @@ export const RECIPES = [
   {
     id: "stone_axe",
     name: "Stone Axe",
+    skill: "crafting",
     station: null,
     level: 1,
     xp: 15,
@@ -37,6 +40,7 @@ export const RECIPES = [
   {
     id: "planks",
     name: "Planks",
+    skill: "crafting",
     station: "workbench",
     level: 1,
     xp: 8,
@@ -48,12 +52,58 @@ export const RECIPES = [
   {
     id: "wooden_bowl",
     name: "Wooden Bowl",
+    skill: "crafting",
     station: "workbench",
     level: 5,
     xp: 20,
     seconds: 5,
     inputs: [{ item: "logs", amount: 3 }],
     output: { item: "wooden_bowl", amount: 1 },
+    repeat: true,
+  },
+
+  // Campfire (Cooking)
+  {
+    id: "roasted_berries",
+    name: "Roasted Berries",
+    skill: "cooking",
+    station: "campfire",
+    level: 1,
+    xp: 6,
+    seconds: 3,
+    inputs: [{ item: "berries", amount: 2 }],
+    output: { item: "roasted_berries", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "flower_tea",
+    name: "Flower Tea",
+    skill: "cooking",
+    station: "campfire",
+    level: 3,
+    xp: 12,
+    seconds: 4,
+    inputs: [
+      { item: "water",  amount: 1 },
+      { item: "flower", amount: 1 },
+    ],
+    output: { item: "flower_tea", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "berry_stew",
+    name: "Berry Stew",
+    skill: "cooking",
+    station: "campfire",
+    level: 5,
+    xp: 25,
+    seconds: 6,
+    inputs: [
+      { item: "berries",     amount: 3 },
+      { item: "water",       amount: 1 },
+      { item: "wooden_bowl", amount: 1 },
+    ],
+    output: { item: "berry_stew", amount: 1 },
     repeat: true,
   },
 ];

@@ -1,4 +1,4 @@
-// The one thing the player is doing right now (foraging, chopping, crafting...).
+// The one thing the player is doing right now (foraging, chopping, crafting, cooking...).
 // Like other idle games, only one action runs at a time and it repeats until stopped.
 //
 // onComplete runs at the end of each cycle and returns what was gained, e.g.

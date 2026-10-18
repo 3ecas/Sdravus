@@ -8,7 +8,7 @@ import { renderLumberjack } from "./lumberjack.js";
 import { renderStash } from "./stash.js";
 import { renderGear } from "./gear.js";
 import { renderForaging } from "./foraging.js";
-import { renderCrafting } from "./crafting.js";
+import { recipePage } from "./recipePage.js";
 import { renderVillage } from "./village.js";
 
 const VIEWS = {
@@ -16,7 +16,8 @@ const VIEWS = {
   stash: renderStash,
   gear: renderGear,
   foraging: renderForaging,
-  crafting: renderCrafting,
+  crafting: recipePage("crafting", { verb: "craft", empty: "Nothing to craft yet. Go foraging to find materials." }),
+  cooking: recipePage("cooking", { verb: "cook", empty: "Nothing to cook yet. Find some food first, like berries while foraging." }),
   lumberjack: renderLumberjack,
 };
 

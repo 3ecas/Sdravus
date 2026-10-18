@@ -1,5 +1,5 @@
-// Crafting rules: use up a recipe's inputs to make its output.
-// Needs the recipe's Crafting level and station (if any).
+// Rules for making things from recipes (Crafting, Cooking...): use up the inputs to make the
+// output, and give XP in the recipe's skill. Needs that skill's level and the station (if any).
 // Repeats until out of materials, except recipes with repeat: false (tools) which make one.
 
 import { startAction, stopAction, activeActionId } from "./actions.js";
@@ -7,14 +7,12 @@ import { addItem, removeItem, hasItems, addXp, skillXp } from "./state.js";
 import { levelFromXp } from "./xp.js";
 import { isBuilt } from "./village.js";
 
-const SKILL = "crafting";
-
 export function craftActionId(recipe) {
-  return `${SKILL}:${recipe.id}`;
+  return `${recipe.skill}:${recipe.id}`;
 }
 
 export function hasLevelFor(recipe) {
-  return levelFromXp(skillXp(SKILL)) >= recipe.level;
+  return levelFromXp(skillXp(recipe.skill)) >= recipe.level;
 }
 
 export function hasStationFor(recipe) {
@@ -29,7 +27,7 @@ export function isCrafting(recipe) {
   return activeActionId() === craftActionId(recipe);
 }
 
-// Click a recipe: start crafting it, or stop if already crafting it.
+// Click a recipe: start making it, or stop if already making it.
 export function toggleCraft(recipe) {
   if (isCrafting(recipe)) return stopAction();
   if (!canCraft(recipe)) return;
@@ -42,7 +40,7 @@ export function toggleCraft(recipe) {
 
     recipe.inputs.forEach(({ item, amount }) => removeItem(item, amount));
     addItem(recipe.output.item, recipe.output.amount);
-    addXp(SKILL, recipe.xp);
+    addXp(recipe.skill, recipe.xp);
 
     if (!recipe.repeat || !canCraft(recipe)) stopAction();
     return [recipe.output];
