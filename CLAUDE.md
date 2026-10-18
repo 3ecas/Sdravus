@@ -9,7 +9,7 @@ Idle RPG village builder / crafting browser game. Plain static site, no build st
 This will grow into a big game, so keep things separated and `index.html` clean.
 
 - `index.html` — page shell only: links to CSS files and the `js/main.js` module. No inline scripts or styles.
-- `assets/` — images, icons, favicon.
+- `assets/` — images, icons, favicon. `assets/icons/` holds the 16x16 pixel-art PNGs; an item or node with `image: "assets/icons/X.png"` shows it instead of its emoji (`iconHtml`, `.pixel-icon`: `image-rendering: pixelated`). Keep pixel icons at whole multiples of 16px (32px on cards) so pixels stay even.
 - `css/` — one file per area: `base.css` (tokens, reset), `layout.css` (app shell, mobile), `sidebar.css`, `view.css`, `activity-bar.css`, `components.css` (shared bits: `.panel`, `.panel-row`, `.item-count`), `actions.css` (skill action cards), `areas.css` (Foraging area cards), `stash.css`, `gear.css`, `context-menu.css`. Add a new file per new area and link it in `index.html`.
 - `js/` — ES modules (`import`/`export`), no globals.
   - `main.js` — entry point, wires everything together.

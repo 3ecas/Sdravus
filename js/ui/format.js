@@ -11,9 +11,12 @@ export function escapeHtml(text) {
   return String(text).replace(/[&<>"']/g, (c) => `&#${c.charCodeAt(0)};`);
 }
 
-// An item's icon as HTML, tinted if the item has a tint (e.g. bronze tools).
+// An item's (or tree's, rock's...) icon as HTML: its pixel-art PNG if it has `image`
+// (16x16, drawn with sharp pixels at the text size), otherwise its emoji.
+// Tinted if it has a tint (e.g. bronze tools).
 export function iconHtml(item) {
-  return item.tint ? `<span class="tint tint-${item.tint}">${item.icon}</span>` : item.icon;
+  const icon = item.image ? `<img class="pixel-icon" src="${item.image}" alt="">` : item.icon;
+  return item.tint ? `<span class="tint tint-${item.tint}">${icon}</span>` : icon;
 }
 
 // 2.55 -> "2.6s", 3 -> "3s"

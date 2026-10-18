@@ -5,6 +5,7 @@
 import { getPage } from "../data/pages.js";
 import { activeActionInfo, actionProgress } from "../game/actions.js";
 import { currentRoute, routeHref } from "../router.js";
+import { iconHtml } from "./format.js";
 
 const barEl = document.getElementById("activityBar");
 
@@ -38,7 +39,7 @@ function render(info) {
   barEl.style.setProperty("--accent", page.color);
   barEl.innerHTML = `
     <a class="activity-link" href="${routeHref(info.page, info.tab)}" title="Go to ${page.name}">
-      <span class="activity-icon">${info.icon}</span>
+      <span class="activity-icon">${iconHtml(info)}</span>
       <span class="activity-text"><strong>${info.verb} ${info.name}</strong> · ${page.icon} ${page.name}</span>
       <span class="activity-go">›</span>
     </a>

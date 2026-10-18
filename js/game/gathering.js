@@ -61,5 +61,5 @@ export function toggleGather(skill, node, { verb, tab = null, rare = [] }) {
     gains.forEach(({ item, amount }) => addItem(item, amount));
     addXp(skill, node.xp);
     return gains;
-  }, { verb, name: node.name, icon: node.icon, page: skill, tab });
+  }, { verb, name: node.name, icon: node.icon, image: node.image, tint: node.tint, page: skill, tab });
 }

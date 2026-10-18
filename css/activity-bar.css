@@ -55,3 +55,6 @@
   /* Sits under the sticky mobile top bar */
   .activity-bar { top: 63px; margin: 10px 16px 0; }
 }
+
+/* Pixel-art icons at exactly 1x (16px) so pixels stay even */
+.activity-icon .pixel-icon { width: 16px; height: 16px; }

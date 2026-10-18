@@ -1,5 +1,13 @@
 /* Small pieces used on several pages. */
 
+/* Pixel-art icons (16x16 PNGs): sized like the emoji they replace, pixels kept sharp */
+.pixel-icon {
+  width: 1em;
+  height: 1em;
+  vertical-align: -0.125em;
+  image-rendering: pixelated;
+}
+
 /* Icon tints to tell tool tiers apart (items with tint: "bronze", ...) */
 .tint { display: inline-block; }
 .tint-bronze { filter: sepia(1) saturate(2.2) hue-rotate(-12deg) brightness(0.95); }
