@@ -19,6 +19,9 @@ This will grow into a big game, so keep things separated and `index.html` clean.
   - `ui/` — shared UI pieces (`sidebar.js`, `view.js`).
   - `views/` — one file per page's content; register it in `views/index.js`. Pages without one show `placeholder.js`.
 
+## Cache busting
+The CSS and `js/main.js` links in `index.html` end in `?v=N`. Bump N (all of them together) in every commit that changes CSS or JS, so browsers fetch the new files instead of cached ones.
+
 ## Running locally
 ES modules don't load from `file://`. Serve the folder: `python3 -m http.server` then open http://localhost:8000.
 
