@@ -13,7 +13,7 @@ This will grow into a big game, so keep things separated and `index.html` clean.
 - `css/` — one file per area: `base.css` (tokens, reset), `layout.css` (app shell, mobile), `sidebar.css`, `view.css`, `activity-bar.css`, `components.css` (shared bits: `.panel`, `.panel-row`, `.item-count`), `actions.css` (skill action cards), `areas.css` (Foraging area cards), `stash.css`, `gear.css`, `context-menu.css`. Add a new file per new area and link it in `index.html`.
 - `js/` — ES modules (`import`/`export`), no globals.
   - `main.js` — entry point, wires everything together.
-  - `config.js` — game-wide settings (`MAX_LEVEL` is 100, `BACKPACK_SLOTS`, `TOOL_BELT_SLOTS`).
+  - `config.js` — game-wide settings (`MAX_LEVEL` is 100, `XP_CURVE`, `BACKPACK_SLOTS`, `TOOL_BELT_SLOTS`).
   - `router.js` — URL hash routing: `#page/tab?from=page` (e.g. `#crafting/workbench?from=village`). Views get the route; `from` shows a "← back" link.
   - `data/` — static game data: `pages.js` (menu), `items.js`, `areas.js` (Foraging areas), `trees.js` (Lumberjack), `miningSites.js` (Mining sites, each with its rocks and rare finds), `recipes.js` (each has a `skill`, a `station` or null = by hand, and a `level` in that skill), `stations.js` (Village stations), `buildings.js` (Village buildings that produce resources), `gear.js` (equipment slots).
   - `game/` — game rules, no DOM: `state.js` (player XP/items + `onChange`/`notify`), `xp.js` (level curve), `actions.js` (the one repeating idle action), `save.js` (localStorage save/load; bump `SAVE_VERSION` if the save format changes; when renaming a skill or item id, add it to `RENAMED_SKILLS` / `RENAMED_ITEMS` so saves carry over), `toolBelt.js` (equip/unequip tools; skills check the belt for tools), `village.js` (building stations and buildings; `state.built`), `production.js` (buildings deliver resources on their own timer, alongside the current action), `discovery.js` (recipes/stations appear once you've had one of their materials; "new" tracking for badges and menu dots), `foraging.js` (areas with random finds), `gathering.js` (node skills: Lumberjack trees, Mining rocks; tools on the belt; rare finds per place), and `crafting.js` for every recipe skill (Crafting, Cooking, Smithing: XP goes to `recipe.skill`). Action `onComplete` returns gains like `[{ item, amount }]`. `itemActions.js` lists right-click actions per item (add item-specific ones to `ITEM_ACTIONS`).
@@ -32,6 +32,11 @@ ES modules don't load from `file://`. Serve the folder: `python3 -m http.server`
 - **Stations belong to skills:** each station has a `skill`; its recipes show as a tab on that skill's page (Crafting: [By hand] [Workbench]; later Cooking: [Campfire], Smithing: [Furnace] [Anvil]). One tab at a time, never one giant page. Clicking a built station in the Village opens its tab.
 - **Mining:** sites (Quarry, later Hillside, Deep Cave) unlock with Mining level; inside a site you pick the rock and always get its ore, plus small rare-find chances. Foraging stays the random one.
 - **Gates:** each recipe has one station (or none) plus one skill level. Stations unlock new *kinds* of things; levels unlock better tiers within them.
+
+## XP and levels
+- Level curve (`XP_CURVE` in config.js): Level 2 = 10 XP, each next level needs ×1.14. Lv 10 = 161, Lv 50 ≈ 44K, Lv 90 ≈ 8.3M, Lv 100 ≈ 30.7M total XP. About 100+ hours to max a skill.
+- Action XP guide: about `1.066^(level - 1)` for a node/recipe that needs that level, so each level still takes a bit longer than the last: Lv 1 = 1, Lv 10 ≈ 2, Lv 20 ≈ 3, Lv 30 ≈ 6, Lv 50 ≈ 23, Lv 75 ≈ 110, Lv 90 ≈ 300. Small integers early (+1 per new tier). Recipes with more ingredients give a bit more.
+- When the XP scale changes, bump `SAVE_VERSION` and convert old XP in `save.js`.
 
 ## Scope
 Only add what is asked for. Suggest extras instead of adding them.

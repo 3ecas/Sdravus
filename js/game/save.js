@@ -7,7 +7,7 @@ import { getBuilding } from "../data/buildings.js";
 import { state, onChange } from "./state.js";
 
 const SAVE_KEY = "sdravus-save";
-const SAVE_VERSION = 1;
+const SAVE_VERSION = 2; // 2: new XP scale (actions give ~1 XP early)
 
 // Old id -> new id, so progress carries over when something is renamed.
 const RENAMED_SKILLS = { exploring: "foraging" };
@@ -21,12 +21,16 @@ export function loadGame() {
   } catch {
     return; // No access to storage, or a broken save: start fresh.
   }
-  if (!data || data.version !== SAVE_VERSION) return;
+  if (!data || !data.version || data.version > SAVE_VERSION) return;
+  // Version 1 saves earned ~10x more XP per action, so scale it down to keep progress fair.
+  const xpScale = data.version < 2 ? 0.1 : 1;
 
   // Only copy known skills and valid numbers, so an old or edited save can't break the game.
   for (const [oldId, skill] of Object.entries(data.skills || {})) {
     const id = RENAMED_SKILLS[oldId] || oldId;
-    if (state.skills[id] && isCount(skill.xp)) state.skills[id].xp = Math.max(state.skills[id].xp, skill.xp);
+    if (state.skills[id] && isCount(skill.xp)) {
+      state.skills[id].xp = Math.max(state.skills[id].xp, Math.round(skill.xp * xpScale));
+    }
   }
   for (const [oldId, count] of Object.entries(data.items || {})) {
     const id = renamedItem(oldId);

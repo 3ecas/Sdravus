@@ -14,9 +14,9 @@ export const MINING_SITES = [
     icon: "🏔️",
     level: 1,
     rocks: [
-      { id: "rock",   name: "Rock",        icon: "⛰️", level: 1, tool: PICKAXE, xp: 10, seconds: 4, item: "stone" },
-      { id: "copper", name: "Copper Rock", icon: "🟠", level: 3, tool: PICKAXE, xp: 14, seconds: 4, item: "copper_ore" },
-      { id: "tin",    name: "Tin Rock",    icon: "⚪", level: 5, tool: PICKAXE, xp: 16, seconds: 4, item: "tin_ore" },
+      { id: "rock",   name: "Rock",        icon: "⛰️", level: 1, tool: PICKAXE, xp: 1, seconds: 4, item: "stone" },
+      { id: "copper", name: "Copper Rock", icon: "🟠", level: 3, tool: PICKAXE, xp: 2, seconds: 4, item: "copper_ore" },
+      { id: "tin",    name: "Tin Rock",    icon: "⚪", level: 5, tool: PICKAXE, xp: 3, seconds: 4, item: "tin_ore" },
     ],
     rare: [{ item: "uncut_gem", chance: 0.02 }],
   },

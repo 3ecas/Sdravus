@@ -7,7 +7,7 @@ export const AREAS = [
     name: "Plains",
     image: "assets/areas/plains.svg",
     level: 1,
-    xp: 8,
+    xp: 1,
     seconds: 4,
     finds: [
       { item: "fiber",   weight: 30 },

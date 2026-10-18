@@ -1,15 +1,15 @@
-// XP needed for each level (RuneScape-style curve: level 2 at 83 XP), capped at MAX_LEVEL.
+// XP needed for each level, from XP_CURVE in config.js, capped at MAX_LEVEL.
 
-import { MAX_LEVEL } from "../config.js";
+import { MAX_LEVEL, XP_CURVE } from "../config.js";
 
 const XP_TABLE = buildXpTable();
 
 function buildXpTable() {
   const table = [0, 0]; // table[level] = total XP needed to reach that level
-  let points = 0;
-  for (let level = 1; level < MAX_LEVEL; level++) {
-    points += Math.floor(level + 300 * Math.pow(2, level / 7));
-    table[level + 1] = Math.floor(points / 4);
+  let step = XP_CURVE.first; // XP from one level to the next
+  for (let level = 2; level <= MAX_LEVEL; level++) {
+    table[level] = table[level - 1] + Math.round(step);
+    step *= XP_CURVE.growth;
   }
   return table;
 }
