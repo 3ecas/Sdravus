@@ -38,15 +38,37 @@
   line-height: 1.1;
   margin-bottom: 6px;
 }
-/* Can't start yet: missing a tool or materials */
-.action-card.locked { cursor: not-allowed; opacity: 0.55; }
+/* Can't start yet: missing a tool or materials. Everything fades except the missing-tool badge. */
+.action-card.locked { cursor: not-allowed; }
+.action-card.locked > :not(.needs-tool) { opacity: 0.45; }
 .action-card.locked:hover { transform: none; border-color: var(--line); }
 
+/* Missing tool: its icon in the top-right corner with a red prohibition sign over it */
 .needs-tool {
-  margin-top: 6px;
-  font-size: 10px;
-  font-weight: 700;
-  color: #e8a25a;
+  position: absolute;
+  top: 7px;
+  right: 7px;
+  width: 30px;
+  height: 30px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(10, 14, 22, 0.75);
+  font-size: 16px;
+}
+.needs-tool::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border: 2px solid #e5534b;
+  border-radius: 50%;
+  background: linear-gradient(
+    to top right,
+    transparent calc(50% - 1px),
+    rgba(229, 83, 75, 0.85) calc(50% - 1px),
+    rgba(229, 83, 75, 0.85) calc(50% + 1px),
+    transparent calc(50% + 1px)
+  );
 }
 .action-card:not(.locked) .needs-tool { display: none; }
 

@@ -1,5 +1,5 @@
 // Lumberjack page: click a tree to start chopping, click again to stop.
-// A tree you don't have the tool for shows what you need.
+// A tree you don't have the tool for is greyed out with the missing tool crossed out in the corner.
 
 import { TREES, getTree } from "../data/trees.js";
 import { getItem } from "../data/items.js";
@@ -42,7 +42,7 @@ function treeCardHtml(tree) {
         <span>+${tree.xp} XP</span>
       </span>
       <span class="action-progress"><span class="action-progress-fill"></span></span>
-      ${tool ? `<span class="needs-tool">Needs ${tool.icon} ${tool.name}</span>` : ""}
+      ${tool ? `<span class="needs-tool" title="Needs ${tool.name}">${tool.icon}</span>` : ""}
     </button>
   `;
 }
