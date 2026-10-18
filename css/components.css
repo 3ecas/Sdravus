@@ -1,6 +1,6 @@
 /* Small pieces used on several pages. */
 
-/* Item amount in the bottom-left corner of a box (stash cells, action cards). */
+/* Item amount in the bottom-left corner of a box (stash cells). */
 .item-count {
   position: absolute;
   left: 5px;

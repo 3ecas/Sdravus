@@ -5,7 +5,6 @@ import { getItem } from "../data/items.js";
 import { onChange, itemCount } from "../game/state.js";
 import { actionProgress } from "../game/actions.js";
 import { toggleChop, isChopping } from "../game/lumberjack.js";
-import { formatCount } from "../ui/format.js";
 
 export function renderLumberjack(container) {
   container.innerHTML = `
@@ -23,14 +22,8 @@ export function renderLumberjack(container) {
   function update() {
     cards.forEach((card) => {
       const tree = getTree(card.dataset.id);
-      const chopping = isChopping(tree);
-      const count = itemCount(tree.item);
-      lastCounts[tree.item] = count;
-
-      card.classList.toggle("active", chopping);
-      card.querySelector(".action-status").textContent = chopping ? "Chopping…" : "Click to chop";
-      card.querySelector(".item-count").textContent = formatCount(count);
-      card.title = `${getItem(tree.item).name} owned: ${count.toLocaleString()}`;
+      lastCounts[tree.item] = itemCount(tree.item);
+      card.classList.toggle("active", isChopping(tree));
     });
   }
 
@@ -74,10 +67,11 @@ function treeCardHtml(tree) {
     <button class="action-card" data-id="${tree.id}">
       <span class="action-icon">${tree.icon}</span>
       <span class="action-name">${tree.name}</span>
-      <span class="action-meta">+${tree.xp} XP · ${tree.seconds}s</span>
-      <span class="action-status">Click to chop</span>
       <span class="action-progress"><span class="action-progress-fill"></span></span>
-      <span class="item-count">0</span>
+      <span class="action-meta">
+        <span>${tree.seconds}s</span>
+        <span>+${tree.xp} XP</span>
+      </span>
     </button>
   `;
 }
