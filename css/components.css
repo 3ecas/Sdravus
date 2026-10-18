@@ -3,6 +3,7 @@
 /* Icon tints to tell tool tiers apart (items with tint: "bronze", ...) */
 .tint { display: inline-block; }
 .tint-bronze { filter: sepia(1) saturate(2.2) hue-rotate(-12deg) brightness(0.95); }
+.tint-oak    { filter: hue-rotate(-40deg) saturate(1.3) brightness(0.8); }
 
 /* Panels side by side (stacking on narrow screens), each with a small title. */
 .panel-row {

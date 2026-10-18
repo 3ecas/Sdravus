@@ -122,7 +122,7 @@ function recipeCardHtml(recipe, isNewRecipe) {
       ${isNewRecipe ? `<span class="new-tag">New</span>` : ""}
       <span class="needs-level" title="Needs ${getPage(recipe.skill).name} level ${recipe.level}" hidden>Lv ${recipe.level}</span>
       <span class="action-icon">${iconHtml(output)}</span>
-      <span class="action-name">${recipe.name}</span>
+      <span class="action-name">${recipe.name}${recipe.output.amount > 1 ? ` <small>×${recipe.output.amount}</small>` : ""}</span>
       ${costHtml(recipe.inputs)}
       <span class="action-meta">
         <span>${recipe.seconds}s</span>

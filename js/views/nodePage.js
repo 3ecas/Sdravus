@@ -83,7 +83,7 @@ function nodeCardHtml(skill, node) {
   return `
     <button class="action-card" data-id="${node.id}" data-action="${gatherActionId(skill, node)}">
       <span class="needs-level left" title="Needs level ${node.level}" hidden>Lv ${node.level}</span>
-      <span class="action-icon">${node.icon}</span>
+      <span class="action-icon">${iconHtml(node)}</span>
       <span class="action-name">${node.name}</span>
       <span class="action-meta">
         <span class="node-time">${formatSeconds(node.seconds)}</span>

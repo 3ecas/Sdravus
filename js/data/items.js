@@ -14,7 +14,8 @@ export const ITEMS = {
   flower:  { name: "Flower",      icon: "🌼" },
 
   // Gathered with tools
-  logs: { name: "Logs", icon: "🪵" },
+  logs:     { name: "Logs",     icon: "🪵" },
+  oak_logs: { name: "Oak Logs", icon: "🪵", tint: "oak" },
 
   // Mined
   stone:       { name: "Stone",       icon: "🪨" },
@@ -44,6 +45,7 @@ export const ITEMS = {
   flint_axe:     { name: "Flint Axe",     icon: "🪓", tool: { type: "axe",     tier: 1, speed: 0 } },
   flint_pickaxe: { name: "Flint Pickaxe", icon: "⛏️", tool: { type: "pickaxe", tier: 1, speed: 0 } },
   planks:      { name: "Planks",      icon: "🟫" },
+  oak_planks:  { name: "Oak Planks",  icon: "🟫", tint: "oak" },
   wooden_bowl: { name: "Wooden Bowl", icon: "🥣" },
   wooden_handle: { name: "Wooden Handle", icon: "🦯" },
 

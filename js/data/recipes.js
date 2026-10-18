@@ -90,6 +90,18 @@ export const RECIPES = [
     output: { item: "wooden_handle", amount: 1 },
     repeat: true,
   },
+  {
+    id: "oak_planks",
+    name: "Oak Planks",
+    skill: "crafting",
+    station: "workbench",
+    level: 15,
+    xp: 3,
+    seconds: 4,
+    inputs: [{ item: "oak_logs", amount: 2 }],
+    output: { item: "oak_planks", amount: 1 },
+    repeat: true,
+  },
 
   // Campfire (Cooking)
   {
@@ -147,6 +159,18 @@ export const RECIPES = [
     seconds: 4,
     inputs: [{ item: "logs", amount: 2 }],
     output: { item: "charcoal", amount: 1 },
+    repeat: true,
+  },
+  {
+    id: "oak_charcoal",
+    name: "Oak Charcoal",
+    skill: "smithing",
+    station: "furnace",
+    level: 12,
+    xp: 2,
+    seconds: 4,
+    inputs: [{ item: "oak_logs", amount: 1 }],
+    output: { item: "charcoal", amount: 2 },
     repeat: true,
   },
   {
