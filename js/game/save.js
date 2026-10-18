@@ -39,6 +39,7 @@ export function loadGame() {
   (data.toolBelt || []).forEach((oldId, slot) => {
     const id = renamedItem(oldId);
     if (slot < state.toolBelt.length && ITEMS[id]?.tool) state.toolBelt[slot] = id;
+    else if (ITEMS[id]) state.items[id] = (state.items[id] || 0) + 1; // no longer a tool (e.g. buckets): back to the stash
   });
   // ("stations" is the older name for "built"; versions 3-4 stored counts instead of true)
   for (const id of Object.keys(data.built || data.stations || {})) {

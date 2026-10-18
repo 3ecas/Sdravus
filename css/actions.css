@@ -114,6 +114,9 @@
   transform: translateY(-2px);
   border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
 }
+/* Well: "💧 3/10" water held / what your buckets hold */
+.water-line { margin-top: 4px; font-size: 10px; font-weight: 700; color: var(--muted); }
+
 .open-tag {
   margin-top: 4px;
   font-size: 10px;

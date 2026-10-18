@@ -1,7 +1,8 @@
 // Every item the player can own.
-// tool: { type, tier, yield } means it goes on the Tool Belt. type: "axe" / "pickaxe" / "bucket";
+// tool: { type, tier, yield } means it goes on the Tool Belt. type: "axe" / "pickaxe";
 //   tier: which trees/rocks it can work (a node needs a tool of at least its toolTier);
-//   yield: items per gathering cycle (for buckets: how much water one trip carries).
+//   yield: items per gathering cycle.
+// bucket: { capacity } means it holds water from the Well (buckets stay in the stash).
 //   Axes/pickaxes: Flint 1, Bronze 2, Iron 3, Steel 4 (planned: Mithril 5, Adamant 6, Starsteel 8).
 // tint: optional colour tint for the icon, to tell tiers apart (see .tint-* in components.css).
 
@@ -77,8 +78,8 @@ export const ITEMS = {
   steel_axe:      { name: "Steel Axe",      icon: "🪓", tint: "steel",  tool: { type: "axe",     tier: 4, yield: 4 } },
   steel_pickaxe:  { name: "Steel Pickaxe",  icon: "⛏️", tint: "steel",  tool: { type: "pickaxe", tier: 4, yield: 4 } },
 
-  // Buckets: carry water from the Well. Planned tiers carry more per trip.
-  wooden_bucket:  { name: "Wooden Bucket",  icon: "🪣", tint: "oak",    tool: { type: "bucket",  tier: 1, yield: 5 } },
+  // Buckets: hold water from the Well. Planned tiers hold more.
+  wooden_bucket:  { name: "Wooden Bucket",  icon: "🪣", tint: "oak",    bucket: { capacity: 5 } },
 };
 
 export function getItem(id) {

@@ -2,17 +2,19 @@
 //   Stations  – built once, unlock recipes (e.g. the Workbench). Click a built station to open
 //               its tab on the skill page that uses it (Workbench -> Crafting › Workbench).
 //   Buildings – built once, then produce resources on their own (e.g. the Chicken Coop).
-//               A built Well is clicked like a tree: draw water with a bucket on the Tool Belt.
+//               A built Well is clicked like a tree: draw water into the buckets in your stash.
 // Each appears once you've had any of its materials. Click to build.
 
 import { getStation } from "../data/stations.js";
 import { getBuilding } from "../data/buildings.js";
-import { getItem, toolForTier } from "../data/items.js";
+import { getItem } from "../data/items.js";
 import { getPage } from "../data/pages.js";
 import { routeHref } from "../router.js";
 import { onChange } from "../game/state.js";
 import { visibleStations, visibleBuildings, isNew, markViewed } from "../game/discovery.js";
-import { toggleBuild, buildActionId, canBuild, isBuilt, toggleDraw, drawActionId, canDraw, drawAmount } from "../game/village.js";
+import { toggleBuild, buildActionId, canBuild, isBuilt, toggleDraw, drawActionId, canDraw, hasBucket, waterCapacity } from "../game/village.js";
+import { itemCount } from "../game/state.js";
+import { activeActionId } from "../game/actions.js";
 import { productionProgress, onProduced } from "../game/production.js";
 import { bindActionCards, showPop } from "../ui/actionCards.js";
 import { costHtml, updateCost } from "../ui/costList.js";
@@ -54,10 +56,10 @@ export function renderVillage(container) {
 
     container.querySelectorAll("[data-draw]").forEach((card) => {
       const building = getBuilding(card.dataset.draw);
-      const usable = canDraw(building);
-      card.classList.toggle("locked", !usable);
-      card.querySelector(".needs-tool").hidden = usable;
-      card.querySelector(".draw-amount").textContent = `+${drawAmount(building) || 0}`;
+      const active = activeActionId() === drawActionId(building);
+      card.classList.toggle("locked", !canDraw(building) && !active);
+      card.querySelector(".needs-tool").hidden = hasBucket();
+      card.querySelector(".water-fill").textContent = `${itemCount(building.draw.item)}/${waterCapacity()}`;
     });
   }
 
@@ -113,7 +115,7 @@ function infoHtml(thing) {
   let text = thing.unlocks;
   if (thing.draw) {
     title = "Draw water";
-    text = `Needs ${withArticle(toolForTier(thing.draw.toolType, thing.draw.toolTier).name)} or better on the Tool Belt. Each trip gives what the bucket holds.`;
+    text = `Each trip pours ${thing.draw.amount} water into your buckets, one bucket after another, until they're all full. A Wooden Bucket holds 5.`;
   } else if (thing.produces) {
     const { item, amount, seconds } = thing.produces;
     title = "Produces";
@@ -142,9 +144,9 @@ function cardHtml(type, thing, isNewThing) {
     `;
   }
   if (isBuilt(thing.id) && thing.draw) {
-    // A built Well: click to draw water (needs a bucket on the Tool Belt).
-    const { item, seconds, toolType, toolTier } = thing.draw;
-    const bucket = toolForTier(toolType, toolTier);
+    // A built Well: click to draw water into your buckets ("💧 3/10" = water / what buckets hold).
+    const { item, amount, seconds } = thing.draw;
+    const bucket = getItem("wooden_bucket");
     return `
       <button class="action-card" data-draw="${thing.id}" data-action="${drawActionId(thing)}">
         <span class="action-icon">${thing.icon}</span>
@@ -152,10 +154,11 @@ function cardHtml(type, thing, isNewThing) {
         ${infoHtml(thing)}
         <span class="action-meta">
           <span>${formatSeconds(seconds)}</span>
-          <span><span class="draw-amount">+0</span> ${iconHtml(getItem(item))}</span>
+          <span>+${amount} ${iconHtml(getItem(item))}</span>
         </span>
+        <span class="water-line" title="Water / what your buckets hold">${iconHtml(getItem(item))} <span class="water-fill">0/0</span></span>
         <span class="action-progress"><span class="action-progress-fill"></span></span>
-        <span class="needs-tool" title="Needs ${withArticle(bucket.name)} or better on the Tool Belt">${iconHtml(bucket)}</span>
+        <span class="needs-tool" title="Needs ${withArticle(bucket.name)} in the stash">${iconHtml(bucket)}</span>
       </button>
     `;
   }
