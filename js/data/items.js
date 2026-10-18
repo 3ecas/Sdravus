@@ -71,6 +71,10 @@ export const ITEMS = {
   // Anvil (Smithing): metal tools
   bronze_axe:     { name: "Bronze Axe",     icon: "🪓", tint: "bronze", tool: { type: "axe",     tier: 2, yield: 2 } },
   bronze_pickaxe: { name: "Bronze Pickaxe", icon: "⛏️", tint: "bronze", tool: { type: "pickaxe", tier: 2, yield: 2 } },
+  iron_axe:       { name: "Iron Axe",       icon: "🪓", tint: "iron",   tool: { type: "axe",     tier: 3, yield: 3 } },
+  iron_pickaxe:   { name: "Iron Pickaxe",   icon: "⛏️", tint: "iron",   tool: { type: "pickaxe", tier: 3, yield: 3 } },
+  steel_axe:      { name: "Steel Axe",      icon: "🪓", tint: "steel",  tool: { type: "axe",     tier: 4, yield: 4 } },
+  steel_pickaxe:  { name: "Steel Pickaxe",  icon: "⛏️", tint: "steel",  tool: { type: "pickaxe", tier: 4, yield: 4 } },
 };
 
 export function getItem(id) {

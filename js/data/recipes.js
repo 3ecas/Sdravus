@@ -240,6 +240,50 @@ export const RECIPES = [
     ],
     output: { item: "bronze_pickaxe", amount: 1 },
   },
+  {
+    id: "iron_axe",
+    name: "Iron Axe",
+    skill: "smithing",
+    station: "anvil",
+    inputs: [
+      { item: "iron_bar",      amount: 3 },
+      { item: "wooden_handle", amount: 1 },
+    ],
+    output: { item: "iron_axe", amount: 1 },
+  },
+  {
+    id: "iron_pickaxe",
+    name: "Iron Pickaxe",
+    skill: "smithing",
+    station: "anvil",
+    inputs: [
+      { item: "iron_bar",      amount: 3 },
+      { item: "wooden_handle", amount: 1 },
+    ],
+    output: { item: "iron_pickaxe", amount: 1 },
+  },
+  {
+    id: "steel_axe",
+    name: "Steel Axe",
+    skill: "smithing",
+    station: "anvil",
+    inputs: [
+      { item: "steel_bar",     amount: 4 },
+      { item: "wooden_handle", amount: 1 },
+    ],
+    output: { item: "steel_axe", amount: 1 },
+  },
+  {
+    id: "steel_pickaxe",
+    name: "Steel Pickaxe",
+    skill: "smithing",
+    station: "anvil",
+    inputs: [
+      { item: "steel_bar",     amount: 4 },
+      { item: "wooden_handle", amount: 1 },
+    ],
+    output: { item: "steel_pickaxe", amount: 1 },
+  },
 ];
 
 export function getRecipe(id) {
