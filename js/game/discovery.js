@@ -1,8 +1,9 @@
-// What the player knows about: recipes and stations appear once you've had any of
+// What the player knows about: recipes, stations and buildings appear once you've had any of
 // their materials. Things not yet shown to the player count as "new" (menu dot + badge).
 
 import { RECIPES } from "../data/recipes.js";
 import { STATIONS } from "../data/stations.js";
+import { BUILDINGS } from "../data/buildings.js";
 import { state, notify } from "./state.js";
 import { isBuilt } from "./village.js";
 
@@ -24,6 +25,10 @@ export function visibleStations() {
   return STATIONS.filter((station) => hasSeenAny(station.cost));
 }
 
+export function visibleBuildings() {
+  return BUILDINGS.filter((building) => hasSeenAny(building.cost));
+}
+
 export function isNew(type, id) {
   return !state.viewed[`${type}:${id}`];
 }
@@ -39,7 +44,8 @@ export function markViewed(type, things) {
 export function pageHasNew(pageId) {
   if (pageId === "crafting") return visibleRecipes().some((recipe) => isNew("recipe", recipe.id));
   if (pageId === "village") {
-    return visibleStations().some((station) => !isBuilt(station.id) && isNew("station", station.id));
+    const unbuiltNew = (type) => (thing) => !isBuilt(thing.id) && isNew(type, thing.id);
+    return visibleStations().some(unbuiltNew("station")) || visibleBuildings().some(unbuiltNew("building"));
   }
   return false;
 }

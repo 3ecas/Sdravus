@@ -1,34 +1,35 @@
-// Village rules: build stations with materials. Building takes a few seconds, like other actions.
+// Village rules: build stations (unlock recipes) and buildings (produce resources) with
+// materials. Building takes a few seconds, like other actions.
 
 import { startAction, stopAction, activeActionId } from "./actions.js";
 import { state, hasItems, removeItem } from "./state.js";
 
-export function isBuilt(stationId) {
-  return Boolean(state.stations[stationId]);
+export function isBuilt(id) {
+  return Boolean(state.built[id]);
 }
 
-export function buildActionId(station) {
-  return `village:${station.id}`;
+export function buildActionId(thing) {
+  return `village:${thing.id}`;
 }
 
-export function canBuild(station) {
-  return !isBuilt(station.id) && hasItems(station.cost);
+export function canBuild(thing) {
+  return !isBuilt(thing.id) && hasItems(thing.cost);
 }
 
-export function isBuilding(station) {
-  return activeActionId() === buildActionId(station);
+export function isBuilding(thing) {
+  return activeActionId() === buildActionId(thing);
 }
 
-// Click a station: start building it, or stop if already building it.
-export function toggleBuild(station) {
-  if (isBuilding(station)) return stopAction();
-  if (!canBuild(station)) return;
+// Click a station or building: start building it, or stop if already building it.
+export function toggleBuild(thing) {
+  if (isBuilding(thing)) return stopAction();
+  if (!canBuild(thing)) return;
 
-  startAction(buildActionId(station), station.seconds * 1000, () => {
+  startAction(buildActionId(thing), thing.seconds * 1000, () => {
     stopAction(); // built once, then done
-    if (!canBuild(station)) return [];
-    station.cost.forEach(({ item, amount }) => removeItem(item, amount));
-    state.stations[station.id] = true;
+    if (!canBuild(thing)) return [];
+    thing.cost.forEach(({ item, amount }) => removeItem(item, amount));
+    state.built[thing.id] = true;
     return [];
   });
 }

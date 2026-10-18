@@ -1,8 +1,9 @@
-// Saves progress (skill XP, items, tool belt, stations, discoveries) in the browser's
+// Saves progress (skill XP, items, tool belt, built stations/buildings, discoveries) in the browser's
 // localStorage, and loads it on startup.
 
 import { ITEMS } from "../data/items.js";
 import { getStation } from "../data/stations.js";
+import { getBuilding } from "../data/buildings.js";
 import { state, onChange } from "./state.js";
 
 const SAVE_KEY = "sdravus-save";
@@ -33,8 +34,9 @@ export function loadGame() {
   (data.toolBelt || []).forEach((id, slot) => {
     if (slot < state.toolBelt.length && ITEMS[id]?.tool) state.toolBelt[slot] = id;
   });
-  for (const id of Object.keys(data.stations || {})) {
-    if (getStation(id)) state.stations[id] = true;
+  // ("stations" is the older name for "built")
+  for (const id of Object.keys(data.built || data.stations || {})) {
+    if (getStation(id) || getBuilding(id)) state.built[id] = true;
   }
   for (const oldId of Object.keys(data.seen || {})) {
     const id = RENAMED_ITEMS[oldId] || oldId;
@@ -48,8 +50,8 @@ export function loadGame() {
 }
 
 export function saveGame() {
-  const { skills, items, toolBelt, stations, seen, viewed } = state;
-  const data = { version: SAVE_VERSION, skills, items, toolBelt, stations, seen, viewed };
+  const { skills, items, toolBelt, built, seen, viewed } = state;
+  const data = { version: SAVE_VERSION, skills, items, toolBelt, built, seen, viewed };
   try {
     localStorage.setItem(SAVE_KEY, JSON.stringify(data));
   } catch {

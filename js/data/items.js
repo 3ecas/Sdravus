@@ -11,6 +11,9 @@ export const ITEMS = {
   // Gathered with tools
   logs: { name: "Logs", icon: "🪵" },
 
+  // Produced by village buildings
+  water: { name: "Water", icon: "💧" },
+
   // Crafted
   twine:       { name: "Twine",       icon: "🧶" },
   stone_axe:   { name: "Stone Axe",   icon: "🪓", tool: true },

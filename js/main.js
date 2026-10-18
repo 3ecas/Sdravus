@@ -3,6 +3,7 @@
 import { DEFAULT_PAGE } from "./config.js";
 import { getPage } from "./data/pages.js";
 import { loadGame, startAutoSave } from "./game/save.js";
+import { startProduction } from "./game/production.js";
 import { disableBrowserDefaults } from "./ui/browserDefaults.js";
 import { currentRoute, onRouteChange } from "./router.js";
 import { renderSidebar, setActivePage, closeSidebar } from "./ui/sidebar.js";
@@ -18,6 +19,7 @@ function showPage(id) {
 disableBrowserDefaults();
 loadGame();
 startAutoSave();
+startProduction();
 
 renderSidebar();
 onRouteChange(showPage);

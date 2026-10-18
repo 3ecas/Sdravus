@@ -38,7 +38,8 @@ export function bindActionCards(container) {
   };
 }
 
-function showPop(card, text, index) {
+// Floating "+1 🪵" over a card. Also used for building deliveries in the Village.
+export function showPop(card, text, index = 0) {
   const pop = document.createElement("span");
   pop.className = "pop";
   pop.textContent = text;
