@@ -8,6 +8,7 @@ import { disableBrowserDefaults } from "./ui/browserDefaults.js";
 import { currentRoute, onRouteChange } from "./router.js";
 import { renderSidebar, setActivePage, closeSidebar } from "./ui/sidebar.js";
 import { renderPage } from "./ui/view.js";
+import { startActivityBar } from "./ui/activityBar.js";
 
 function showPage(route) {
   const page = getPage(route.page) || getPage(DEFAULT_PAGE);
@@ -22,5 +23,6 @@ startAutoSave();
 startProduction();
 
 renderSidebar();
+startActivityBar();
 onRouteChange(showPage);
 showPage(currentRoute());

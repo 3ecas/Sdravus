@@ -28,7 +28,7 @@ export function toggleForage(area) {
     addItem(item, 1);
     addXp(SKILL, area.xp);
     return [{ item, amount: 1 }];
-  });
+  }, { verb: "Foraging", name: area.name, icon: "🧺", page: SKILL });
 }
 
 // Picks one item, where a higher weight is more likely.

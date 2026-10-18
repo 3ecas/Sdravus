@@ -31,5 +31,5 @@ export function toggleBuild(thing) {
     thing.cost.forEach(({ item, amount }) => removeItem(item, amount));
     state.built[thing.id] = true;
     return [];
-  });
+  }, { verb: "Building", name: thing.name, icon: thing.icon, page: "village" });
 }

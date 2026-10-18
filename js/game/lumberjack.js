@@ -37,5 +37,5 @@ export function toggleChop(tree) {
     addItem(tree.item, 1);
     addXp(SKILL, tree.xp);
     return [{ item: tree.item, amount: 1 }];
-  });
+  }, { verb: "Chopping", name: tree.name, icon: tree.icon, page: SKILL });
 }

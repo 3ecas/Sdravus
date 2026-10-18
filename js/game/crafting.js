@@ -6,6 +6,9 @@ import { startAction, stopAction, activeActionId } from "./actions.js";
 import { addItem, removeItem, hasItems, addXp, skillXp } from "./state.js";
 import { levelFromXp } from "./xp.js";
 import { isBuilt } from "./village.js";
+import { getItem } from "../data/items.js";
+
+const VERBS = { crafting: "Crafting", cooking: "Cooking" };
 
 export function craftActionId(recipe) {
   return `${recipe.skill}:${recipe.id}`;
@@ -44,5 +47,11 @@ export function toggleCraft(recipe) {
 
     if (!recipe.repeat || !canCraft(recipe)) stopAction();
     return [recipe.output];
+  }, {
+    verb: VERBS[recipe.skill] || "Making",
+    name: recipe.name,
+    icon: getItem(recipe.output.item).icon,
+    page: recipe.skill,
+    tab: recipe.station || "hand",
   });
 }

@@ -1,6 +1,9 @@
 // The one thing the player is doing right now (foraging, chopping, crafting, cooking...).
 // Like other idle games, only one action runs at a time and it repeats until stopped.
 //
+// info describes it for the activity bar: { verb, name, icon, page, tab? },
+// e.g. { verb: "Chopping", name: "Tree", icon: "🌳", page: "lumberjack" }.
+//
 // onComplete runs at the end of each cycle and returns what was gained, e.g.
 // [{ item: "logs", amount: 1 }], so the screen can show "+1 🪵". It may call
 // stopAction() itself (e.g. out of materials).
@@ -9,13 +12,13 @@ import { notify } from "./state.js";
 
 const TICK_MS = 100;
 
-let active = null; // { id, duration, startedAt, onComplete }
+let active = null; // { id, duration, startedAt, onComplete, info }
 let timer = null;
 const completeListeners = new Set();
 
-export function startAction(id, durationMs, onComplete) {
+export function startAction(id, durationMs, onComplete, info = null) {
   clearInterval(timer);
-  active = { id, duration: durationMs, startedAt: performance.now(), onComplete };
+  active = { id, duration: durationMs, startedAt: performance.now(), onComplete, info };
   timer = setInterval(tick, TICK_MS);
   notify();
 }
@@ -29,6 +32,11 @@ export function stopAction() {
 
 export function activeActionId() {
   return active ? active.id : null;
+}
+
+// What's running, for the activity bar: { verb, name, icon, page, tab }, or null.
+export function activeActionInfo() {
+  return active ? active.info : null;
 }
 
 // 0 to 1: how far the current action is through its cycle.
