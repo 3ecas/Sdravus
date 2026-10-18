@@ -15,9 +15,9 @@
 .view-header {
   display: flex;
   align-items: center;
-  gap: 18px;
+  gap: 12px;
   flex-wrap: wrap;
-  padding: 22px;
+  padding: 12px 16px;
   border-radius: var(--radius);
   background:
     linear-gradient(135deg, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%),
@@ -26,43 +26,42 @@
 }
 
 .view-icon {
-  width: 64px;
-  height: 64px;
-  border-radius: 16px;
+  width: 36px;
+  height: 36px;
+  border-radius: 9px;
   display: grid;
   place-items: center;
-  font-size: 34px;
+  font-size: 19px;
   background: color-mix(in srgb, var(--accent) 28%, transparent);
 }
 
-.view-header h1 { margin: 0 0 4px; font-size: 26px; }
-.view-header p  { margin: 0; color: var(--muted); }
+.view-header h1 { margin: 0; font-size: 17px; line-height: 1.2; }
 
 .view-title { flex: 1; min-width: 0; }
 
 .view-level {
-  max-width: 360px;
-  margin: 6px 0 10px;
+  max-width: 220px;
+  margin-top: 4px;
   display: flex;
   flex-direction: column;
-  gap: 5px;
+  gap: 3px;
 }
 .level-row {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  font-size: 13px;
+  font-size: 10px;
 }
 .lvl-text { font-weight: 800; }
 .lvl-text small { color: var(--muted); font-weight: 600; }
 .xp-bar {
-  height: 6px;
+  height: 4px;
   background: var(--bg);
   border-radius: 99px;
   overflow: hidden;
 }
 .xp-fill { height: 100%; background: var(--accent); border-radius: 99px; }
-.xp-text { font-size: 12px; color: var(--muted); }
+.xp-text { font-size: 10px; color: var(--muted); }
 
 .view-body { margin-top: 20px; }
 

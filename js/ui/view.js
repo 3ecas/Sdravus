@@ -27,7 +27,6 @@ function headerHtml(page) {
       <div class="view-title">
         <h1>${page.name}</h1>
         ${page.skill ? levelHtml() : ""}
-        <p>${page.blurb}</p>
       </div>
     </div>
   `;

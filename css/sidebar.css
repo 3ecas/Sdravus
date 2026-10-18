@@ -2,8 +2,8 @@
 
 /* Menu sizing: tweak these to resize the whole menu. */
 .sidebar {
-  --menu-text: 10px;
-  --menu-icon: 16px;
+  --menu-text: 11px;
+  --menu-icon: 20px;
   --menu-row-pad: 3px;
 }
 
