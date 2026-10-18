@@ -1,12 +1,14 @@
 // Maps each page id to the function that draws its content.
-// When a page gets real content, create js/views/<page>.js and register it here, e.g.
-//   import { renderLumberjack } from "./lumberjack.js";
-//   const VIEWS = { lumberjack: renderLumberjack };
+// A view function gets (container, page) and may return a cleanup function,
+// which runs when the player leaves the page.
 // Pages without an entry show the placeholder.
 
 import { renderPlaceholder } from "./placeholder.js";
+import { renderLumberjack } from "./lumberjack.js";
 
-const VIEWS = {};
+const VIEWS = {
+  lumberjack: renderLumberjack,
+};
 
 export function getPageView(id) {
   return VIEWS[id] || renderPlaceholder;

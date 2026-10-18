@@ -2,11 +2,19 @@
 
 import { GAME_NAME, MAX_LEVEL } from "../config.js";
 import { getPageView } from "../views/index.js";
+import { onChange, skillXp } from "../game/state.js";
+import { levelProgress } from "../game/xp.js";
 
 const viewEl = document.getElementById("view");
 const topbarTitleEl = document.getElementById("topbarTitle");
 
+let currentPage = null;
+let cleanupView = null;
+
 export function renderPage(page) {
+  if (cleanupView) cleanupView();
+  currentPage = page;
+
   topbarTitleEl.textContent = page.name;
   document.title = `${page.name} · ${GAME_NAME}`;
 
@@ -15,9 +23,24 @@ export function renderPage(page) {
     ${headerHtml(page)}
     <div class="view-body" id="viewBody"></div>
   `;
+  updateLevel();
 
   const render = getPageView(page.id);
-  render(document.getElementById("viewBody"), page);
+  cleanupView = render(document.getElementById("viewBody"), page) || null;
+}
+
+// Keep the level and XP in the header up to date.
+onChange(updateLevel);
+
+function updateLevel() {
+  if (!currentPage || !currentPage.skill) return;
+
+  const xp = skillXp(currentPage.id);
+  const { level, next, percent } = levelProgress(xp);
+
+  viewEl.querySelector(".lvl-num").textContent = level;
+  viewEl.querySelector(".xp-text").textContent = `${xp} / ${next} XP`;
+  viewEl.querySelector(".xp-fill").style.width = `${percent}%`;
 }
 
 function headerHtml(page) {
@@ -37,10 +60,10 @@ function levelHtml() {
   return `
     <div class="view-level">
       <div class="level-row">
-        <span class="lvl-text">Level 1 <small>/ ${MAX_LEVEL}</small></span>
-        <span class="xp-text">0 / 83 XP</span>
+        <span class="lvl-text">Level <span class="lvl-num">1</span> <small>/ ${MAX_LEVEL}</small></span>
+        <span class="xp-text"></span>
       </div>
-      <div class="xp-bar"><div class="xp-fill" style="width:0%"></div></div>
+      <div class="xp-bar"><div class="xp-fill"></div></div>
     </div>
   `;
 }

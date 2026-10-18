@@ -1,6 +1,8 @@
 // Builds the side menu, highlights the current page, and handles the mobile drawer.
 
 import { MENU_GROUPS } from "../data/pages.js";
+import { onChange, skillXp } from "../game/state.js";
+import { levelFromXp } from "../game/xp.js";
 
 const sidebarEl = document.getElementById("sidebar");
 const menuEl = document.getElementById("menu");
@@ -12,6 +14,15 @@ export function renderSidebar() {
 
   toggleEl.addEventListener("click", openSidebar);
   scrimEl.addEventListener("click", closeSidebar);
+
+  onChange(updateLevels);
+}
+
+// Keep each skill's "Lv" in the menu up to date.
+function updateLevels() {
+  menuEl.querySelectorAll(".menu-level").forEach((el) => {
+    el.textContent = `Lv ${levelFromXp(skillXp(el.dataset.skill))}`;
+  });
 }
 
 export function setActivePage(id) {
@@ -44,7 +55,7 @@ function itemHtml(page) {
     <a class="menu-item" href="#${page.id}" data-id="${page.id}" style="--accent:${page.color}">
       <span class="menu-icon">${page.icon}</span>
       <span class="menu-label">${page.name}</span>
-      ${page.skill ? `<span class="menu-level">Lv 1</span>` : ""}
+      ${page.skill ? `<span class="menu-level" data-skill="${page.id}">Lv 1</span>` : ""}
     </a>
   `;
 }
