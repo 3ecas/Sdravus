@@ -15,6 +15,7 @@ export function renderSidebar() {
   toggleEl.addEventListener("click", openSidebar);
   scrimEl.addEventListener("click", closeSidebar);
 
+  updateLevels();
   onChange(updateLevels);
 }
 

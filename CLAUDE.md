@@ -16,7 +16,7 @@ This will grow into a big game, so keep things separated and `index.html` clean.
   - `config.js` — game-wide settings (`MAX_LEVEL` is 100).
   - `router.js` — URL hash routing.
   - `data/` — static game data: `pages.js` (menu), `items.js`, `trees.js`.
-  - `game/` — game rules, no DOM: `state.js` (player XP/items + `onChange`/`notify`), `xp.js` (level curve), `actions.js` (the one repeating idle action), one file per skill (`lumberjack.js`).
+  - `game/` — game rules, no DOM: `state.js` (player XP/items + `onChange`/`notify`), `xp.js` (level curve), `actions.js` (the one repeating idle action), `save.js` (localStorage save/load; bump `SAVE_VERSION` if the save format changes), one file per skill (`lumberjack.js`).
   - `ui/` — shared UI pieces (`sidebar.js`, `view.js`). They listen to `onChange` to stay up to date.
   - `views/` — one file per page's content; register it in `views/index.js`. A view may return a cleanup function (stop listeners/animations) that runs when leaving the page. Pages without one show `placeholder.js`.
 
