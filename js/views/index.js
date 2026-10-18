@@ -1,5 +1,5 @@
 // Maps each page id to the function that draws its content.
-// A view function gets (container, page) and may return a cleanup function,
+// A view function gets (container, page, route) and may return a cleanup function,
 // which runs when the player leaves the page.
 // Pages without an entry show the placeholder.
 

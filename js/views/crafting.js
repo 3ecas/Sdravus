@@ -1,21 +1,24 @@
-// Crafting page: recipes grouped by where you make them: "By hand" first, then one
-// section per Village station. Recipes appear once you've had any of their ingredients.
-// Click a recipe to craft, click again to stop.
+// Crafting page: one tab per place you craft. "By hand" first, then each Village station
+// that belongs to Crafting (e.g. the Workbench). Only one tab's recipes show at a time.
+// Recipes appear once you've had any of their ingredients. Click a recipe to craft,
+// click again to stop. The tab is part of the address: #crafting/workbench.
 
 import { STATIONS } from "../data/stations.js";
 import { getRecipe } from "../data/recipes.js";
 import { getItem } from "../data/items.js";
 import { onChange, skillXp } from "../game/state.js";
 import { toggleCraft, craftActionId, canCraft } from "../game/crafting.js";
-import { knownRecipes, visibleRecipes, isNew, markViewed } from "../game/discovery.js";
+import { knownRecipes, isNew, markViewed } from "../game/discovery.js";
 import { isBuilt } from "../game/village.js";
 import { levelFromXp } from "../game/xp.js";
+import { routeHref } from "../router.js";
 import { bindActionCards } from "../ui/actionCards.js";
 import { costHtml, updateCost } from "../ui/costList.js";
 
-const HAND = { id: null, name: "By hand", icon: "✋" };
+const SKILL = "crafting";
+const HAND = { id: "hand", name: "By hand", icon: "✋" };
 
-export function renderCrafting(container) {
+export function renderCrafting(container, page, route) {
   const newThisVisit = new Set(); // recipes shown with a "New" badge during this visit
   let layoutKey = null; // what was last drawn; null so the first update always draws
 
@@ -24,21 +27,26 @@ export function renderCrafting(container) {
     if (card) toggleCraft(getRecipe(card.dataset.id));
   });
 
-  // Rebuild the sections when what's visible changes; otherwise just refresh numbers.
   function update() {
-    const visible = visibleRecipes();
-    const key = visible.map((r) => r.id).join() + "|" + STATIONS.map((s) => isBuilt(s.id)).join();
+    const tabs = availableTabs();
+    const active = tabs.find((t) => t.id === route.tab) || tabs[0];
+    const recipes = active ? tabRecipes(active) : [];
+    const key = [tabs.map((t) => `${t.id}:${isBuilt(t.id)}:${hasNewIn(t)}`), active?.id, recipes.map((r) => r.id)].join("|");
+
     if (key !== layoutKey) {
       layoutKey = key;
-      visible.filter((r) => isNew("recipe", r.id)).forEach((r) => newThisVisit.add(r.id));
-      container.innerHTML = sectionsHtml(visible, newThisVisit);
-      markViewed("recipe", visible);
+      const shown = active && !isUnbuiltStation(active) ? recipes : [];
+      shown.filter((r) => isNew("recipe", r.id)).forEach((r) => newThisVisit.add(r.id));
+      container.innerHTML = tabs.length
+        ? `${tabsHtml(tabs, active, route.from)}${tabBodyHtml(active, recipes, newThisVisit)}`
+        : `<p class="craft-hint">Nothing to craft yet. Go foraging to find materials.</p>`;
+      markViewed("recipe", shown);
     }
     refreshCards();
   }
 
   function refreshCards() {
-    const level = levelFromXp(skillXp("crafting"));
+    const level = levelFromXp(skillXp(SKILL));
     container.querySelectorAll(".action-card").forEach((card) => {
       const recipe = getRecipe(card.dataset.id);
       card.classList.toggle("locked", !canCraft(recipe) && !card.classList.contains("active"));
@@ -57,33 +65,46 @@ export function renderCrafting(container) {
   };
 }
 
-function sectionsHtml(visible, newIds) {
+// "By hand" plus each Crafting station you know a recipe for (built or not).
+function availableTabs() {
   const known = knownRecipes();
-  const sections = [HAND, ...STATIONS].map((station) => {
-    const recipes = visible.filter((r) => r.station === station.id);
-    const builtOrHand = !station.id || isBuilt(station.id);
+  const stations = STATIONS.filter((s) => s.skill === SKILL && known.some((r) => r.station === s.id));
+  const hasHand = known.some((r) => !r.station);
+  return [...(hasHand ? [HAND] : []), ...stations];
+}
 
-    if (builtOrHand && recipes.length) {
-      return `
-        <section class="craft-section">
-          <h2 class="panel-title">${station.icon} ${station.name}</h2>
-          <div class="action-grid">${recipes.map((r) => recipeCardHtml(r, newIds.has(r.id))).join("")}</div>
-        </section>
-      `;
-    }
-    // A station you know recipes for but haven't built yet: point to the Village.
-    if (!builtOrHand && known.some((r) => r.station === station.id)) {
-      return `
-        <section class="craft-section">
-          <h2 class="panel-title">${station.icon} ${station.name}</h2>
-          <p class="craft-hint">Build a ${station.name} in the Village to craft here.</p>
-        </section>
-      `;
-    }
-    return "";
-  }).join("");
+// Known recipes made at this tab's station (or by hand).
+function tabRecipes(tab) {
+  const station = tab.id === HAND.id ? null : tab.id;
+  return knownRecipes().filter((r) => r.station === station);
+}
 
-  return sections || `<p class="craft-hint">Nothing to craft yet. Go foraging to find materials.</p>`;
+function isUnbuiltStation(tab) {
+  return tab.id !== HAND.id && !isBuilt(tab.id);
+}
+
+function hasNewIn(tab) {
+  return !isUnbuiltStation(tab) && tabRecipes(tab).some((r) => isNew("recipe", r.id));
+}
+
+function tabsHtml(tabs, active, from) {
+  return `
+    <nav class="tabs">
+      ${tabs.map((tab) => `
+        <a class="tab${tab === active ? " active" : ""}${isUnbuiltStation(tab) ? " unbuilt" : ""}" href="${routeHref(SKILL, tab.id, from)}">
+          <span>${tab.icon}</span>${tab.name}
+          ${tab !== active && hasNewIn(tab) ? `<span class="tab-dot" title="New recipes"></span>` : ""}
+        </a>
+      `).join("")}
+    </nav>
+  `;
+}
+
+function tabBodyHtml(tab, recipes, newIds) {
+  if (isUnbuiltStation(tab)) {
+    return `<p class="craft-hint">Build a ${tab.name} in the <a href="#village">Village</a> to craft here.</p>`;
+  }
+  return `<div class="action-grid">${recipes.map((r) => recipeCardHtml(r, newIds.has(r.id))).join("")}</div>`;
 }
 
 function recipeCardHtml(recipe, isNewRecipe) {

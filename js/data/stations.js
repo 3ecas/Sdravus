@@ -1,4 +1,5 @@
-// Village stations: built once, each unlocks a group of crafting recipes (e.g. the Workbench).
+// Village stations: built once, each unlocks a group of recipes (e.g. the Workbench).
+// skill: the skill page whose recipes it unlocks; the station is a tab on that page.
 // (Buildings like the Well, which produce resources over time, are in buildings.js.)
 // A station shows up in the Village once you've had any of its materials.
 
@@ -7,6 +8,7 @@ export const STATIONS = [
     id: "workbench",
     name: "Workbench",
     icon: "🪚",
+    skill: "crafting",
     seconds: 10,
     cost: [
       { item: "logs",  amount: 6 },

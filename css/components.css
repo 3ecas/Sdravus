@@ -24,6 +24,54 @@
   color: var(--muted);
 }
 
+/* "← Village" link above the page header when you came from another page */
+.back-link {
+  display: inline-block;
+  margin-bottom: 8px;
+  font-size: 12px;
+  font-weight: 700;
+  color: var(--muted);
+  text-decoration: none;
+}
+.back-link:hover { color: var(--text); }
+
+/* Tabs on a skill page, one per station: [✋ By hand] [🪚 Workbench] */
+.tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  margin-bottom: 14px;
+}
+.tab {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 5px 12px;
+  border-radius: 99px;
+  border: 1px solid var(--line);
+  background: var(--panel);
+  color: var(--muted);
+  font-size: 12px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: color 0.15s, border-color 0.15s;
+}
+.tab:hover { color: var(--text); }
+.tab.active {
+  color: var(--text);
+  border-color: var(--accent);
+  background: color-mix(in srgb, var(--accent) 16%, var(--panel));
+}
+.tab.unbuilt { opacity: 0.6; }
+.tab-dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--gold);
+  box-shadow: 0 0 6px var(--gold);
+}
+
 /* Sections on Crafting / Village pages, e.g. "✋ By hand", "🪚 Workbench" */
 .craft-section + .craft-section { margin-top: 20px; }
 .craft-hint {
@@ -31,6 +79,7 @@
   font-size: 12px;
   color: var(--muted);
 }
+.craft-hint a { color: var(--text); }
 
 /* Item amount in the bottom-left corner of a box (stash cells). */
 .item-count {
@@ -42,4 +91,78 @@
   color: var(--text);
   text-shadow: 0 1px 2px rgba(0, 0, 0, 0.8);
   pointer-events: none;
+}
+
+/* "?" button, top-right of a card, showing info on hover or tap (area finds, what a station unlocks...) */
+.info-btn {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  z-index: 2;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: rgba(10, 14, 22, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 800;
+  cursor: help;
+}
+
+.info-pop {
+  display: none;
+  position: absolute;
+  top: 28px;
+  right: 0;
+  min-width: 150px;
+  padding: 8px 10px;
+  border-radius: 10px;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: left;
+  pointer-events: none; /* look-only: closes when you leave the "?", clicks go to the card */
+}
+/* Hover with the mouse, or Tab to it with the keyboard. (Not plain :focus, or a click would
+   leave it open on top of the card.) */
+.info-btn:hover .info-pop,
+.info-btn:focus-visible .info-pop { display: block; }
+
+.info-pop-title {
+  display: block;
+  margin-bottom: 6px;
+  font-size: 9px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.info-pop ul { list-style: none; margin: 0; padding: 0; }
+.info-pop li { display: flex; gap: 8px; padding: 2px 0; }
+.info-pop-text { display: block; font-weight: 600; }
+
+/* Smaller "?" on the compact action cards */
+.action-card .info-btn {
+  top: 6px;
+  right: 6px;
+  width: 18px;
+  height: 18px;
+  font-size: 10px;
+  background: var(--panel-2);
+  border-color: var(--line);
+  color: var(--muted);
+}
+.action-card .info-btn:hover { color: var(--text); }
+/* Opens beside the small card instead of covering it */
+.action-card .info-pop {
+  top: -4px;
+  left: calc(100% + 8px);
+  right: auto;
+  white-space: nowrap;
 }

@@ -9,10 +9,10 @@ import { currentRoute, onRouteChange } from "./router.js";
 import { renderSidebar, setActivePage, closeSidebar } from "./ui/sidebar.js";
 import { renderPage } from "./ui/view.js";
 
-function showPage(id) {
-  const page = getPage(id) || getPage(DEFAULT_PAGE);
+function showPage(route) {
+  const page = getPage(route.page) || getPage(DEFAULT_PAGE);
   setActivePage(page.id);
-  renderPage(page);
+  renderPage(page, route);
   closeSidebar();
 }
 

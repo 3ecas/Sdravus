@@ -1,11 +1,14 @@
 // Village page, in two sections:
-//   Stations  – built once, unlock crafting recipes (e.g. the Workbench).
+//   Stations  – built once, unlock recipes (e.g. the Workbench). Click a built station to open
+//               its tab on the skill page that uses it (Workbench -> Crafting › Workbench).
 //   Buildings – built once, then produce resources on their own (e.g. the Well).
 // Each appears once you've had any of its materials. Click to build.
 
 import { getStation } from "../data/stations.js";
 import { getBuilding } from "../data/buildings.js";
 import { getItem } from "../data/items.js";
+import { getPage } from "../data/pages.js";
+import { routeHref } from "../router.js";
 import { onChange } from "../game/state.js";
 import { visibleStations, visibleBuildings, isNew, markViewed } from "../game/discovery.js";
 import { toggleBuild, buildActionId, canBuild, isBuilt } from "../game/village.js";
@@ -23,6 +26,7 @@ export function renderVillage(container) {
   let layoutKey = null; // what was last drawn; null so the first update always draws
 
   container.addEventListener("click", (event) => {
+    if (event.target.closest(".info-btn")) return event.preventDefault(); // "?" only shows info
     const card = event.target.closest(".action-card[data-id]");
     if (card) toggleBuild(thingFor(card));
   });
@@ -91,16 +95,37 @@ function sectionsHtml(newKeys) {
   return html || `<p class="craft-hint">Nothing to build yet. Gather materials to discover what you can build.</p>`;
 }
 
-// What it does, shown under the name: what a station unlocks, or what a building produces.
-function purposeHtml(thing) {
+// "?" in the corner: hover to see what a station unlocks, or what a building produces.
+function infoHtml(thing) {
+  let title = "Unlocks";
+  let text = thing.unlocks;
   if (thing.produces) {
     const { item, amount, seconds } = thing.produces;
-    return `<span class="station-unlocks">Produces ${getItem(item).icon} ${amount} ${getItem(item).name} every ${seconds}s</span>`;
+    title = "Produces";
+    text = `${getItem(item).icon} ${amount} ${getItem(item).name} every ${seconds}s`;
   }
-  return `<span class="station-unlocks">${thing.unlocks}</span>`;
+  return `
+    <span class="info-btn" tabindex="0" aria-label="Info">?
+      <span class="info-pop">
+        <span class="info-pop-title">${title}</span>
+        <span class="info-pop-text">${text}</span>
+      </span>
+    </span>
+  `;
 }
 
 function cardHtml(type, thing, isNewThing) {
+  if (isBuilt(thing.id) && thing.skill) {
+    // A built station: opens its tab on its skill page.
+    return `
+      <a class="action-card built open" href="${routeHref(thing.skill, thing.id, "village")}">
+        <span class="action-icon">${thing.icon}</span>
+        <span class="action-name">${thing.name}</span>
+        ${infoHtml(thing)}
+        <span class="open-tag" title="Open in ${getPage(thing.skill).name}">Open ›</span>
+      </a>
+    `;
+  }
   if (isBuilt(thing.id)) {
     // A built building keeps working: show the bar toward its next delivery.
     const producing = thing.produces
@@ -110,7 +135,7 @@ function cardHtml(type, thing, isNewThing) {
       <div class="action-card built" ${thing.produces ? `data-produce="${thing.id}"` : ""}>
         <span class="action-icon">${thing.icon}</span>
         <span class="action-name">${thing.name}</span>
-        ${purposeHtml(thing)}
+        ${infoHtml(thing)}
         ${producing}
       </div>
     `;
@@ -120,7 +145,7 @@ function cardHtml(type, thing, isNewThing) {
       ${isNewThing ? `<span class="new-tag">New</span>` : ""}
       <span class="action-icon">${thing.icon}</span>
       <span class="action-name">${thing.name}</span>
-      ${purposeHtml(thing)}
+      ${infoHtml(thing)}
       ${costHtml(thing.cost)}
       <span class="action-meta">
         <span>${thing.seconds}s</span>

@@ -1,4 +1,4 @@
-/* Foraging page: area cards with a full picture background and a "?" finds list. */
+/* Foraging page: area cards with a full picture background (the "?" finds list is in components.css). */
 
 .area-grid {
   display: grid;
@@ -55,54 +55,3 @@
 }
 .area-footer .action-meta { color: rgba(255, 255, 255, 0.75); margin-top: 2px; }
 .area-footer .action-progress { background: rgba(0, 0, 0, 0.45); }
-
-/* "?" button, top-right, showing the finds list on hover or tap */
-.info-btn {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  z-index: 2;
-  width: 22px;
-  height: 22px;
-  display: grid;
-  place-items: center;
-  border-radius: 50%;
-  background: rgba(10, 14, 22, 0.6);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  color: #fff;
-  font-size: 12px;
-  font-weight: 800;
-  cursor: help;
-}
-
-.info-pop {
-  display: none;
-  position: absolute;
-  top: 28px;
-  right: 0;
-  min-width: 150px;
-  padding: 8px 10px;
-  border-radius: 10px;
-  background: var(--panel-2);
-  border: 1px solid var(--line);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.45);
-  color: var(--text);
-  font-size: 12px;
-  font-weight: 600;
-  text-align: left;
-  cursor: default;
-}
-.info-btn:hover .info-pop,
-.info-btn:focus .info-pop { display: block; }
-
-.info-pop-title {
-  display: block;
-  margin-bottom: 6px;
-  font-size: 9px;
-  font-weight: 800;
-  letter-spacing: 1.2px;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.info-pop ul { list-style: none; margin: 0; padding: 0; }
-.info-pop li { display: flex; gap: 8px; padding: 2px 0; }

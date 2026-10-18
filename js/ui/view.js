@@ -1,7 +1,9 @@
-// Renders the center view: the page header, then the page's own content.
+// Renders the center view: a "← back" link (when you came from another page), the page
+// header, then the page's own content.
 
 import { GAME_NAME, MAX_LEVEL } from "../config.js";
 import { getPageView } from "../views/index.js";
+import { getPage } from "../data/pages.js";
 import { onChange, skillXp } from "../game/state.js";
 import { levelProgress } from "../game/xp.js";
 
@@ -11,7 +13,7 @@ const topbarTitleEl = document.getElementById("topbarTitle");
 let currentPage = null;
 let cleanupView = null;
 
-export function renderPage(page) {
+export function renderPage(page, route = {}) {
   if (cleanupView) cleanupView();
   currentPage = page;
 
@@ -19,14 +21,16 @@ export function renderPage(page) {
   document.title = `${page.name} · ${GAME_NAME}`;
 
   viewEl.style.setProperty("--accent", page.color);
+  const from = route.from && getPage(route.from);
   viewEl.innerHTML = `
+    ${from ? `<a class="back-link" href="#${from.id}">← ${from.name}</a>` : ""}
     ${headerHtml(page)}
     <div class="view-body" id="viewBody"></div>
   `;
   updateLevel();
 
   const render = getPageView(page.id);
-  cleanupView = render(document.getElementById("viewBody"), page) || null;
+  cleanupView = render(document.getElementById("viewBody"), page, route) || null;
 }
 
 // Keep the level and XP in the header up to date.

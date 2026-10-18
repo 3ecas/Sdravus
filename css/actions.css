@@ -41,7 +41,7 @@
 }
 /* Can't start yet: missing a tool or materials. Everything fades except the missing-tool badge. */
 .action-card.locked { cursor: not-allowed; }
-.action-card.locked > :not(.needs-tool, .needs-level, .new-tag) { opacity: 0.45; }
+.action-card.locked > :not(.needs-tool, .needs-level, .new-tag, .info-btn) { opacity: 0.45; }
 .action-card.locked:hover { transform: none; border-color: var(--line); }
 
 /* Missing tool: its icon in the top-right corner with a red prohibition sign over it */
@@ -104,22 +104,26 @@
 .needs-level[hidden] { display: none; }
 .action-card.locked > .needs-level { opacity: 1; }
 
-/* Built station: no longer clickable */
+/* Built: no longer clickable to build. A built station links to its skill page instead. */
 .action-card.built { cursor: default; }
 .action-card.built:hover { transform: none; border-color: var(--line); }
+.action-card.built.open { cursor: pointer; text-decoration: none; }
+.action-card.built.open:hover {
+  transform: translateY(-2px);
+  border-color: color-mix(in srgb, var(--accent) 60%, var(--line));
+}
+.open-tag {
+  margin-top: 4px;
+  font-size: 10px;
+  font-weight: 800;
+  color: #7cc47f;
+}
 .built-tag {
   margin-top: 6px;
   font-size: 10px;
   font-weight: 800;
   color: #7cc47f;
 }
-.station-unlocks {
-  max-width: 100%;
-  font-size: 9px;
-  color: var(--muted);
-  text-align: center;
-}
-
 /* Recipe ingredients: "🌿 2/3", red when you don't have enough */
 .recipe-inputs {
   display: flex;
