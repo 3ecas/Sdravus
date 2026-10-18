@@ -1,8 +1,11 @@
 // Stash page: a searchable, sortable grid of every item the player owns.
+// Right-click an item for its actions.
 
 import { ITEMS } from "../data/items.js";
 import { onChange, itemCount } from "../game/state.js";
 import { formatCount, escapeHtml } from "../ui/format.js";
+import { openContextMenu } from "../ui/contextMenu.js";
+import { getItemActions } from "../game/itemActions.js";
 
 // Remembered while the game is open, so leaving and coming back keeps your choice.
 const view = {
@@ -34,6 +37,14 @@ export function renderStash(container) {
   const searchEl = container.querySelector(".stash-search");
   const sortButtons = [...container.querySelectorAll(".sort-btn")];
   const itemsEl = container.querySelector(".stash-items");
+
+  // Right-click an item: open its menu. (One listener, so it keeps working when the grid redraws.)
+  itemsEl.addEventListener("contextmenu", (event) => {
+    const cell = event.target.closest(".stash-cell");
+    if (!cell) return;
+    event.preventDefault();
+    openItemMenu(cell.dataset.item, event.clientX, event.clientY);
+  });
 
   searchEl.addEventListener("input", () => {
     view.search = searchEl.value;
@@ -81,6 +92,20 @@ export function renderStash(container) {
   return onChange(updateItems);
 }
 
+function openItemMenu(id, x, y) {
+  const item = ITEMS[id];
+  openContextMenu(x, y, {
+    header: `
+      <div class="menu-item-title">
+        <span>${item.icon}</span>${item.name}
+        <span class="count">×${itemCount(id).toLocaleString()}</span>
+      </div>
+      <p class="menu-item-desc">${item.description}</p>
+    `,
+    actions: getItemActions(id),
+  });
+}
+
 function sortItems(ids) {
   const byName = (a, b) => ITEMS[a].name.localeCompare(ITEMS[b].name);
   const byCount = (a, b) => itemCount(a) - itemCount(b) || byName(a, b);
@@ -93,7 +118,7 @@ function cellHtml(id) {
   const item = ITEMS[id];
   const count = itemCount(id);
   return `
-    <div class="stash-cell" title="${item.name}: ${count.toLocaleString()}">
+    <div class="stash-cell" data-item="${id}" title="${item.name}: ${count.toLocaleString()}">
       <div class="stash-box">
         <span class="stash-icon">${item.icon}</span>
         <span class="item-count">${formatCount(count)}</span>
